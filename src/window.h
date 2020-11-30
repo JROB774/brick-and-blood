@@ -1,6 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#define WINDOW_TITLE "SANTAJAM"
+
 GLOBAL struct
 {
     SDL_Window* window;

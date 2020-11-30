@@ -37,6 +37,14 @@ INTERNAL void cap_framerate ()
 
     gFrameTimer.current_fps = CAST(float, gFrameTimer.performance_frequency) / CAST(float, elapsed_counter);
     gFrameTimer.last_counter = SDL_GetPerformanceCounter();
+
+    // Display the current FPS in the title bar if we're in a debug build
+    #if defined(BUILD_DEBUG)
+    const size_t title_buffer_size = 64;
+    char title_buffer[title_buffer_size];
+    snprintf(title_buffer, title_buffer_size, "%s (FPS: %.2f)", WINDOW_TITLE, gFrameTimer.current_fps);
+    SDL_SetWindowTitle(gWindow.window, title_buffer);
+    #endif
 }
 #endif
 
