@@ -25,9 +25,28 @@
 #include <SDL2/SDL_mixer.h>
 
 // Headers
-// ...
+#include "assets.h"
+#include "utility.h"
+#include "logger.h"
+#include "ftimer.h"
+#include "render.h"
+#include "window.h"
+#include "input.h"
+#include "audio.h"
+#include "settings.h"
+#include "effect.h"
+#include "application.h"
 
 // Sources
-// ...
+#include "utility.c"
+#include "logger.c"
+#include "ftimer.c"
+#include "render.c"
+#include "window.c"
+#include "input.c"
+#include "audio.c"
+#include "settings.c"
+#include "effect.c"
+#include "application.c"
 
 #endif /* MAIN_WIN32_H */
