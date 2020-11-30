@@ -11,6 +11,10 @@
 
 typedef U32 ARGBColor;
 
+// Some useful macros for converting separate components into a U32 ARGB color.
+#define MAKE_RGBA(r,g,b,a) (CAST(ARGBColor,(((a   )<<24)|((r)<<16)|((g)<<8)|(b))))
+#define MAKE_RGB( r,g,b)   (CAST(ARGBColor,(((0xFF)<<24)|((r)<<16)|((g)<<8)|(b))))
+
 typedef struct Clip__ { int x, y, w, h; } Clip;
 
 #define PAL_MODE_DEFAULT 0
@@ -48,11 +52,19 @@ GLOBAL const Clip SPR_TILE = { 0, 0, 16, 8 };
 
 // PALETTES
 
-#define PAL_BACKGROUND 0
-#define PAL_WHITE      1
-#define PAL_BLACK      2
-#define PAL_TEXT_SHADE 3
-#define PAL_TESTTILE0  4
-#define PAL_TESTTILE1  5
+#define PAL_BACKGROUND  0
+#define PAL_WHITE       1
+#define PAL_BLACK       2
+#define PAL_TEXT_SHADE  3
+#define PAL_GRASS0      4
+#define PAL_GRASS1      5
+#define PAL_DIRT0       6
+#define PAL_DIRT1       7
+#define PAL_SAND0       8
+#define PAL_SAND1       9
+#define PAL_WATER0     10
+#define PAL_WATER1     11
+#define PAL_DEEPWATER0 12
+#define PAL_DEEPWATER1 13
 
 #endif /* RENDER_H */

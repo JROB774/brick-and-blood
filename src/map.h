@@ -1,21 +1,21 @@
 #ifndef MAP_H
 #define MAP_H
 
-#define MAP_TILE_W 4
-#define MAP_TILE_H 4
+#define MAP_TILE_W 64
+#define MAP_TILE_H 64
 
 #define TILE_W 16
 #define TILE_H 8
 
 typedef struct Tile__
 {
-    int palette;
+    float height;
 
 } Tile;
 
 typedef struct Map__
 {
-    Tile tile[MAP_TILE_W][MAP_TILE_H];
+    Tile tile[MAP_TILE_W*MAP_TILE_H];
 
 } Map;
 

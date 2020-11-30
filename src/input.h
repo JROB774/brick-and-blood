@@ -5,7 +5,13 @@ INTERNAL void update_input_state ();
 
 // MOUSE
 
-typedef enum MouseButton__ { LMB = SDL_BUTTON_LEFT, RMB = SDL_BUTTON_RIGHT, MOUSE_BUTTON_TOTAL } MouseButton;
+typedef enum MouseButton__
+{
+    LMB = SDL_BUTTON_LEFT,
+    RMB = SDL_BUTTON_RIGHT,
+    MOUSE_BUTTON_TOTAL
+
+} MouseButton;
 
 INTERNAL bool button_pressed  (MouseButton button);
 INTERNAL bool button_released (MouseButton button);
@@ -19,7 +25,16 @@ INTERNAL float get_mouse_y ();
 
 // KEYBOARD
 
-typedef enum KeyboardCode__ { ESCAPE = SDLK_ESCAPE, RESTART = SDLK_r, KEYBOARD_CODE_TOTAL } KeyboardCode;
+typedef enum KeyboardCode__
+{
+    KEY_F5 = SDLK_F5,
+    KEY_W  = SDLK_w,
+    KEY_A  = SDLK_a,
+    KEY_S  = SDLK_s,
+    KEY_D  = SDLK_d,
+    KEYBOARD_CODE_TOTAL
+
+} KeyboardCode;
 
 INTERNAL bool key_pressed  (KeyboardCode code);
 INTERNAL bool key_released (KeyboardCode code);

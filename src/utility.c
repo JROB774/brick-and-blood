@@ -13,6 +13,10 @@ INTERNAL float lerp (float a, float b, float t)
 {
     return a + t * (b - a);
 }
+INTERNAL float slerp (float a, float b, float t)
+{
+    return lerp(a, b, t*t*(3-2*t));
+}
 
 INTERNAL float round_to_multiple (float num, float multiple)
 {

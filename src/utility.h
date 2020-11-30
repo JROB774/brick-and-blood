@@ -36,7 +36,8 @@ typedef  int64_t S64;
 
 INTERNAL void rotate_vec2 (float* x, float* y, float rad);
 
-INTERNAL float lerp (float a, float b, float t);
+INTERNAL float  lerp (float a, float b, float t);
+INTERNAL float slerp (float a, float b, float t);
 
 INTERNAL float round_to_multiple (float num, float multiple);
 
