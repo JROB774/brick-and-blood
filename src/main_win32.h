@@ -35,6 +35,7 @@
 #include "audio.h"
 #include "settings.h"
 #include "effect.h"
+#include "map.h"
 #include "application.h"
 
 // Sources
@@ -47,6 +48,7 @@
 #include "audio.c"
 #include "settings.c"
 #include "effect.c"
+#include "map.c"
 #include "application.c"
 
 #endif /* MAIN_WIN32_H */

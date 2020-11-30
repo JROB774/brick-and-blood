@@ -1,12 +1,13 @@
 INTERNAL bool init_application ()
 {
     seed_random();
+    init_map();
     return true;
 }
 
 INTERNAL void quit_application ()
 {
-    // Nothing...
+    quit_map();
 }
 
 INTERNAL void handle_application (SDL_Event* event)
@@ -23,4 +24,5 @@ INTERNAL void update_application (float dt)
 INTERNAL void render_application (float dt)
 {
     render_clear(get_palette_color(PAL_BACKGROUND,0));
+    render_map(120, 20);
 }

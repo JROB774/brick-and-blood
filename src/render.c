@@ -8,7 +8,7 @@
 #define PALETTE_CLEAR 0xFFC1C1C1
 
 #define RENDER_TEXT_BUFFER_SIZE 1024
-#define FIRST_GLYPH_TILE_INDEX   225
+#define FIRST_GLYPH_TILE_INDEX   928
 
 #pragma pack(push,1)
 typedef struct BMPHeader__
@@ -417,17 +417,17 @@ INTERNAL void render_text (int x, int y, int palette_index, const char* text, ..
     {
         switch (*c)
         {
-            case ('\n'): x = start_x, y += TILE_H; break;
+            case ('\n'): x = start_x, y += GLYPH_H; break;
             default:
             {
                 int tile = FIRST_GLYPH_TILE_INDEX+((*c)-(' '));
                 Clip glyph;
-                glyph.x = tile % (gRenderer.bitmap.w / TILE_W) * TILE_W;
-                glyph.y = tile / (gRenderer.bitmap.w / TILE_W) * TILE_H;
-                glyph.w = TILE_W;
-                glyph.h = TILE_H;
+                glyph.x = tile % (gRenderer.bitmap.w / GLYPH_W) * GLYPH_W;
+                glyph.y = tile / (gRenderer.bitmap.w / GLYPH_H) * GLYPH_H;
+                glyph.w = GLYPH_W;
+                glyph.h = GLYPH_H;
                 render_bitmap(x,y, palette_index, &glyph);
-                x += TILE_W;
+                x += GLYPH_W;
             } break;
         }
     }
@@ -642,7 +642,7 @@ INTERNAL int get_text_w (const char* text, ...)
         }
         else
         {
-            linewidth += TILE_W;
+            linewidth += GLYPH_W;
         }
     }
 
@@ -659,13 +659,13 @@ INTERNAL int get_text_h (const char* text, ...)
     vsnprintf(text_buffer, RENDER_TEXT_BUFFER_SIZE, text, args);
     va_end(args);
 
-    int height = TILE_H;
+    int height = GLYPH_H;
 
     for (int i=0; i<strlen(text_buffer); ++i)
     {
         if (text_buffer[i] == '\n')
         {
-            height += TILE_H;
+            height += GLYPH_H;
         }
     }
 

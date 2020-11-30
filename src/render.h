@@ -6,8 +6,8 @@
 #define SCREEN_W 320 // Width
 #define SCREEN_H 240 // Height
 
-#define TILE_W 8
-#define TILE_H 8
+#define GLYPH_W 8
+#define GLYPH_H 8
 
 typedef U32 ARGBColor;
 
@@ -40,7 +40,7 @@ INTERNAL void      end_camera        ();
 
 // SPRITES
 
-// ...
+GLOBAL const Clip SPR_TILE = { 0, 0, 16, 8 };
 
 // ANIMATIONS
 
@@ -49,7 +49,10 @@ INTERNAL void      end_camera        ();
 // PALETTES
 
 #define PAL_BACKGROUND 0
-#define PAL_BLACK      1
-#define PAL_TEST       2
+#define PAL_WHITE      1
+#define PAL_BLACK      2
+#define PAL_TEXT_SHADE 3
+#define PAL_TESTTILE0  4
+#define PAL_TESTTILE1  5
 
 #endif /* RENDER_H */
