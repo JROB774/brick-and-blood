@@ -6,13 +6,10 @@
 #define APP_VERSION_PATCH 0
 
 typedef enum AppState__ { APP_STATE_NONE } AppState;
-typedef enum MenuState__ { MENU_STATE_NONE } MenuState;
 
 GLOBAL struct
 {
     AppState state;
-    MenuState menu_state;
-
     int frame;
 
 } gApp;

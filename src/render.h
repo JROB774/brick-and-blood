@@ -3,8 +3,8 @@
 
 // The size of the "screen" we render to internally.
 // This can be scaled up based on the window size.
-#define SCREEN_W 160 // Width
-#define SCREEN_H 144 // Height
+#define SCREEN_W 320 // Width
+#define SCREEN_H 240 // Height
 
 #define TILE_W 8
 #define TILE_H 8

@@ -361,6 +361,9 @@ INTERNAL void render_bitmap (int x, int y, int palette_index, const Clip* clip)
     int bw = clip->w;
     int bh = clip->h;
 
+    assert(bw <= gRenderer.bitmap.w);
+    assert(bh <= gRenderer.bitmap.h);
+
     // The rectangular region we will be drawing to.
     int x1 = x;
     int y1 = y;

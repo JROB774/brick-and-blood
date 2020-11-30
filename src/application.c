@@ -1,6 +1,5 @@
 INTERNAL bool init_application ()
 {
-    SDL_ShowCursor(SDL_DISABLE);
     seed_random();
     return true;
 }
@@ -23,7 +22,5 @@ INTERNAL void update_application (float dt)
 
 INTERNAL void render_application (float dt)
 {
-    Clip clip = { 0,0,160,144 };
     render_clear(get_palette_color(PAL_BACKGROUND,0));
-    render_bitmap(0,0, PAL_TEST, &clip);
 }
