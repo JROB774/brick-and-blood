@@ -1,8 +1,8 @@
 #ifndef MAP_H
 #define MAP_H
 
-#define MAP_TILE_W 64
-#define MAP_TILE_H 64
+#define MAP_TILE_W 128
+#define MAP_TILE_H 128
 
 #define TILE_W 16
 #define TILE_H 8

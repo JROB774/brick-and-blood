@@ -3,8 +3,8 @@
 
 // The size of the "screen" we render to internally.
 // This can be scaled up based on the window size.
-#define SCREEN_W 320 // Width
-#define SCREEN_H 240 // Height
+#define SCREEN_W (1280/4) // Width
+#define SCREEN_H ( 720/4) // Height
 
 #define GLYPH_W 8
 #define GLYPH_H 8
@@ -44,7 +44,7 @@ INTERNAL void      end_camera        ();
 
 // SPRITES
 
-GLOBAL const Clip SPR_TILE = { 0, 0, 16, 8 };
+GLOBAL const Clip SPR_TILE = { 0, 0, 16, 16 };
 
 // ANIMATIONS
 

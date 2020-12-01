@@ -60,9 +60,9 @@ INTERNAL void seed_perlin_noise ()
 INTERNAL void init_map ()
 {
     seed_perlin_noise();
-    for (int iy=0; iy<MAP_TILE_W; ++iy)
+    for (int iy=0; iy<MAP_TILE_H; ++iy)
     {
-        for (int ix=0; ix<MAP_TILE_H; ++ix)
+        for (int ix=0; ix<MAP_TILE_W; ++ix)
         {
             float x = CAST(float,ix) / 64;
             float y = CAST(float,iy) / 64;
@@ -90,33 +90,33 @@ INTERNAL void render_map (int x, int y)
     int palindex = 0;
     int palette[] =
     {
-        PAL_GRASS0,PAL_GRASS1,
-        PAL_DIRT0,PAL_DIRT1,
-        PAL_SAND0,PAL_SAND1,
+        PAL_DEEPWATER0,PAL_DEEPWATER1,
         PAL_WATER0,PAL_WATER1,
-        PAL_DEEPWATER0,PAL_DEEPWATER1
+        PAL_SAND0,PAL_SAND1,
+        PAL_DIRT0,PAL_DIRT1,
+        PAL_GRASS0,PAL_GRASS1
     };
     for (int iy=0; iy<MAP_TILE_H; ++iy)
     {
         for (int ix=0; ix<MAP_TILE_W; ++ix)
         {
-            if      (gMap.tile[iy*MAP_TILE_W+ix].height > 0.50f) paloffset = 0;
-            else if (gMap.tile[iy*MAP_TILE_W+ix].height > 0.45f) paloffset = 2;
-            else if (gMap.tile[iy*MAP_TILE_W+ix].height > 0.40f) paloffset = 4;
-            else if (gMap.tile[iy*MAP_TILE_W+ix].height > 0.30f) paloffset = 6;
-            else                                                 paloffset = 8;
+            if      (gMap.tile[iy*MAP_TILE_W+ix].height > 0.40f) paloffset = 8;
+            else if (gMap.tile[iy*MAP_TILE_W+ix].height > 0.35f) paloffset = 6;
+            else if (gMap.tile[iy*MAP_TILE_W+ix].height > 0.32f) paloffset = 4;
+            else if (gMap.tile[iy*MAP_TILE_W+ix].height > 0.28f) paloffset = 2;
+            else                                                 paloffset = 0;
 
-            int sx = ((ix-iy)*(TILE_W/2)) + (SCREEN_W/2) - (TILE_W/2);
-            int sy = ((ix+iy)*(TILE_H/2)) + (SCREEN_H/2) - ((MAP_TILE_H*TILE_H)/2);
+            int sx = ((ix-iy)*((TILE_W  )/2)) + (SCREEN_W/2) - (TILE_W/2);
+            int sy = ((ix+iy)*((TILE_H-1)/2)) + (SCREEN_H/2) - ((MAP_TILE_H*TILE_H)/4);
             render_bitmap(sx,sy, ((palindex%2 == 0) ? palette[paloffset+0] : palette[paloffset+1]), &SPR_TILE);
 
-            palindex++;
+            // palindex++;
         }
-        SWAP(palette[0],palette[1], int);
-        SWAP(palette[2],palette[3], int);
-        SWAP(palette[4],palette[5], int);
-        SWAP(palette[6],palette[7], int);
-        SWAP(palette[8],palette[9], int);
+        // SWAP(palette[0],palette[1], int);
+        // SWAP(palette[2],palette[3], int);
+        // SWAP(palette[4],palette[5], int);
+        // SWAP(palette[6],palette[7], int);
+        // SWAP(palette[8],palette[9], int);
     }
 }
 
