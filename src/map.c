@@ -37,9 +37,9 @@ INTERNAL float perlin_noise2f (float x, float y)
     int t = perlin_noise2i(x_int+1,y_int  );
     int u = perlin_noise2i(x_int,  y_int+1);
     int v = perlin_noise2i(x_int+1,y_int+1);
-    float lo = slerp(s,t,x_frac);
-    float hi = slerp(u,v,x_frac);
-    return slerp(lo,hi, y_frac);
+    float lo = smooth_lerp(s,t,x_frac);
+    float hi = smooth_lerp(u,v,x_frac);
+    return smooth_lerp(lo,hi, y_frac);
 }
 
 INTERNAL float perlin_noise (float x, float y)
