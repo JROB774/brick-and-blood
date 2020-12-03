@@ -44,7 +44,8 @@ INTERNAL void      end_camera        ();
 
 // SPRITES
 
-GLOBAL const Clip SPR_TILE = { 0, 0, 16, 16 };
+GLOBAL const Clip SPR_TILE   = { 0,   0, 16, 16 };
+GLOBAL const Clip SPR_CURSOR = { 0, 224,  8,  8 };
 
 // ANIMATIONS
 
@@ -56,6 +57,7 @@ GLOBAL const Clip SPR_TILE = { 0, 0, 16, 16 };
 #define PAL_WHITE       1
 #define PAL_BLACK       2
 #define PAL_TEXT_SHADE  3
+#define PAL_CURSOR      3
 #define PAL_GRASS0      4
 #define PAL_GRASS1      5
 #define PAL_DIRT0       6

@@ -1,5 +1,6 @@
 INTERNAL bool init_application ()
 {
+    SDL_ShowCursor(SDL_DISABLE);
     seed_random();
     init_map();
     return true;
@@ -36,4 +37,9 @@ INTERNAL void render_application (float dt)
     begin_camera();
     render_map(120, 20);
     end_camera();
+
+    float cursor_x = get_mouse_x();
+    float cursor_y = get_mouse_y();
+
+    render_bitmap(cursor_x,cursor_y, PAL_CURSOR, &SPR_CURSOR);
 }
