@@ -1,8 +1,8 @@
 // Simple 2D Perlin noise implementation taken from here: https://gist.github.com/nowl/828013
 
-GLOBAL unsigned int gPerlinSeed = 0;
+INTERNAL unsigned int iPerlinSeed = 0;
 
-GLOBAL const U8 PERLIN_HASH[] =
+INTERNAL const U8 PERLIN_HASH[] =
 {
     208,34,231,213,32,248,233,56,161,78,24,140,71,48,140,254,245,255,247,247,40,
     185,248,251,245,28,124,204,204,76,36,1,107,28,234,163,202,224,245,128,167,204,
@@ -20,7 +20,7 @@ GLOBAL const U8 PERLIN_HASH[] =
 
 INTERNAL int perlin_noise2i (int x, int y)
 {
-    int y_index = (y + gPerlinSeed) % 256;
+    int y_index = (y + iPerlinSeed) % 256;
     if (y_index < 0) y_index += 256;
     int x_index = (PERLIN_HASH[y_index] + x) % 256;
     if (x_index < 0) x_index += 256;
@@ -52,7 +52,7 @@ INTERNAL float perlin_noise (float x, float y)
 
 INTERNAL void seed_perlin_noise ()
 {
-    gPerlinSeed = CAST(unsigned int, time(NULL)*random_int_range(0,100));
+    iPerlinSeed = CAST(unsigned int, time(NULL)*random_int_range(0,100));
 }
 
 // MAP

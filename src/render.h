@@ -40,8 +40,8 @@ INTERNAL ARGBColor get_palette_color (int palette_index, int color_index);
 
 // SPRITES
 
-GLOBAL const Clip SPR_TILE   = { 0,   0, 16, 16 };
-GLOBAL const Clip SPR_CURSOR = { 0, 224,  8,  8 };
+GLOBAL const Clip SPR_TILE   = {  0,   0, 16, 16 };
+GLOBAL const Clip SPR_CURSOR = {  0, 224,  8,  8 };
 
 // ANIMATIONS
 
