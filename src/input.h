@@ -27,11 +27,12 @@ INTERNAL float get_mouse_y ();
 
 typedef enum KeyboardCode__
 {
-    KEY_F5 = SDLK_F5,
-    KEY_W  = SDLK_w,
-    KEY_A  = SDLK_a,
-    KEY_S  = SDLK_s,
-    KEY_D  = SDLK_d,
+    KEY_LSHIFT = SDLK_LSHIFT,
+    KEY_F5     = SDLK_F5,
+    KEY_W      = SDLK_w,
+    KEY_A      = SDLK_a,
+    KEY_S      = SDLK_s,
+    KEY_D      = SDLK_d,
     KEYBOARD_CODE_TOTAL
 
 } KeyboardCode;
