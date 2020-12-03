@@ -1,6 +1,8 @@
 INTERNAL bool init_application ()
 {
     SDL_ShowCursor(SDL_DISABLE);
+    init_camera();
+    set_camera_smoothing(0.1f);
     seed_random();
     init_map();
     return true;
@@ -27,7 +29,7 @@ INTERNAL void update_application (float dt)
     if (key_down(KEY_A)) gCamera.xpos -= 250 * dt;
     if (key_down(KEY_D)) gCamera.xpos += 250 * dt;
 
-    // update_camera(dt);
+    update_camera(dt);
 }
 
 INTERNAL void render_application (float dt)
