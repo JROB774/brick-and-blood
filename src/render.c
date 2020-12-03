@@ -56,13 +56,8 @@ GLOBAL struct
     Bitmap        bitmap;
     Palette       palette;
     int           palette_mode;
-    int           txoffset;
-    int           tyoffset;
     int           xoffset;
     int           yoffset;
-    float         shake_time;
-    int           shake_x;
-    int           shake_y;
 
 } gRenderer;
 
@@ -677,38 +672,4 @@ INTERNAL ARGBColor get_palette_color (int palette_index, int color_index)
     assert((color_index >= 0) && (color_index < gRenderer.palette.w));
     ARGBColor* palette = gRenderer.palette.pixels + (palette_index*gRenderer.palette.w+(gRenderer.palette_mode*4));
     return palette[color_index];
-}
-
-INTERNAL void shake_camera (int x, int y, float duration)
-{
-    gRenderer.shake_x = x, gRenderer.shake_y = y;
-    gRenderer.shake_time = duration;
-}
-
-INTERNAL void update_camera (float dt)
-{
-    // Perform screen/camera shake and update the timer.
-    if (gRenderer.shake_time > 0.0f)
-    {
-        gRenderer.txoffset = random_int_range(-abs(gRenderer.shake_x), abs(gRenderer.shake_x));
-        gRenderer.tyoffset = random_int_range(-abs(gRenderer.shake_y), abs(gRenderer.shake_y));
-        gRenderer.shake_time -= dt;
-    }
-    else
-    {
-        gRenderer.txoffset = 0;
-        gRenderer.tyoffset = 0;
-    }
-}
-
-INTERNAL void begin_camera ()
-{
-    gRenderer.xoffset = gRenderer.txoffset;
-    gRenderer.yoffset = gRenderer.tyoffset;
-}
-
-INTERNAL void end_camera ()
-{
-    gRenderer.xoffset = 0;
-    gRenderer.yoffset = 0;
 }

@@ -37,10 +37,6 @@ INTERNAL SDL_Rect  get_viewport      ();
 INTERNAL int       get_text_w        (const char* text, ...);
 INTERNAL int       get_text_h        (const char* text, ...);
 INTERNAL ARGBColor get_palette_color (int palette_index, int color_index);
-INTERNAL void      shake_camera      (int x, int y, float duration);
-INTERNAL void      update_camera     (float dt);
-INTERNAL void      begin_camera      ();
-INTERNAL void      end_camera        ();
 
 // SPRITES
 

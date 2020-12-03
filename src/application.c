@@ -22,10 +22,10 @@ INTERNAL void update_application (float dt)
 
     if (key_pressed(KEY_F5)) init_map();
 
-    if (key_down(KEY_W)) gRenderer.tyoffset += 250 * dt;
-    if (key_down(KEY_S)) gRenderer.tyoffset -= 250 * dt;
-    if (key_down(KEY_A)) gRenderer.txoffset += 250 * dt;
-    if (key_down(KEY_D)) gRenderer.txoffset -= 250 * dt;
+    if (key_down(KEY_W)) gCamera.ypos -= 250 * dt;
+    if (key_down(KEY_S)) gCamera.ypos += 250 * dt;
+    if (key_down(KEY_A)) gCamera.xpos -= 250 * dt;
+    if (key_down(KEY_D)) gCamera.xpos += 250 * dt;
 
     // update_camera(dt);
 }
