@@ -1,12 +1,16 @@
-bin/win32/x64/*.exe
-bin/win32/x86/*.exe
+.vs/
 
-bin/web/*.html
-bin/web/*.js
-bin/web/*.wasm
-bin/web/*.data
+*.log
+*.exe
+*.dmp
+*.res
+*.obj
+*.pdb
 
 *.sublime-workspace
 
-*.log
-*.dat
+binary/**/*.dll
+binary/**/*.data
+binary/**/*.js
+binary/**/*.wasm
+binary/**/*.html
