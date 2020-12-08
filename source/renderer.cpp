@@ -46,21 +46,7 @@ INTERNAL void DrawFill (Rect rect, Color color)
     DrawFill(rect.x, rect.y, rect.w, rect.h, color);
 }
 
-INTERNAL void DrawImage (Image& image, float x, float y, Flip flip, const SDL_Rect* clip)
-{
-    SDL_Color c = ColorToSDLColor(image.color);
-    SDL_SetTextureColorMod(image.texture, c.r,c.g,c.b);
-    SDL_SetTextureAlphaMod(image.texture, c.a);
-    SDL_FRect rect = { x,y,image.w,image.h };
-    if (clip) { rect.w = (float)clip->w, rect.h = (float)clip->h; }
-    rect.x = roundf(rect.x) - gRenderOffset.x;
-    rect.y = roundf(rect.y) - gRenderOffset.y;
-    rect.w = roundf(rect.w);
-    rect.h = roundf(rect.h);
-    SDL_RenderCopyExF(gWindow.renderer, image.texture, clip, &rect, 0.0f, NULL, flip);
-}
-
-INTERNAL void DrawImageEx (Image& image, float x, float y, float angle, Flip flip, const SDL_Rect* clip)
+INTERNAL void DrawImage (Image& image, float x, float y, float angle, Flip flip, const SDL_Rect* clip)
 {
     SDL_Color c = ColorToSDLColor(image.color);
     SDL_SetTextureColorMod(image.texture, c.r,c.g,c.b);
@@ -97,7 +83,7 @@ INTERNAL void DrawText (Font& font, std::string text, float x, float y, Color co
         }
         else
         {
-            DrawImage(font.image, ix, iy, FLIP_NONE, &font.bounds[static_cast<U8>(text.at(i))]);
+            DrawImage(font.image, ix, iy, 0.0f, FLIP_NONE, &font.bounds[static_cast<U8>(text.at(i))]);
             ix += font.charw;
         }
     }

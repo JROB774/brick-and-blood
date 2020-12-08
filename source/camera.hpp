@@ -16,7 +16,7 @@ GLOBAL struct Camera
 
 } gCamera;
 
-INTERNAL void UpdateCamera (float dt);
+INTERNAL void UpdateCamera ();
 
 INTERNAL void SetCameraTarget (float x, float y);
 INTERNAL void SetCamera       (float x, float y);

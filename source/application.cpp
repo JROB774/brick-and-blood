@@ -1,19 +1,37 @@
 INTERNAL void InitApplication ()
 {
-    // Nothing...
+    gApplication.state = APP_STATE_GAME;
+    InitParticleSystem();
+    InitGame();
 }
 
 INTERNAL void QuitApplication ()
 {
-    // Nothing...
+    QuitGame();
+    QuitParticleSystem();
 }
 
 INTERNAL void UpdateApplication (float dt)
 {
-    // Nothing...
+    gApplication.delta_time = dt;
+    gApplication.total_time += dt;
+    gApplication.frame++;
+
+    switch (gApplication.state)
+    {
+        case (APP_STATE_GAME): UpdateGame(); break;
+    }
+
+    UpdateParticles();
+    UpdateCamera();
 }
 
 INTERNAL void RenderApplication (float dt)
 {
-    // Nothing...
+    switch (gApplication.state)
+    {
+        case (APP_STATE_GAME): RenderGame(); break;
+    }
+
+    DrawParticles();
 }

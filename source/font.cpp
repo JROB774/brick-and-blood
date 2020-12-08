@@ -1,15 +1,20 @@
-GLOBAL constexpr int FONT_ROW_COUNT = 3;
-GLOBAL constexpr int FONT_COL_COUNT = 32;
-
 INTERNAL void LoadFont (Font& font, float cw, float ch, std::string file_name)
 {
     LoadImage(font.image, file_name);
 
-    for (int iy=0; iy<FONT_ROW_COUNT; ++iy)
+    int x = 0;
+    int y = 0;
+    int w = (int)cw;
+    int h = (int)ch;
+
+    for (int i=0; i<FONT_CHAR_COUNT; ++i)
     {
-        for (int ix=0; ix<FONT_COL_COUNT; ++ix)
+        font.bounds[i] = { x,y,w,h };
+        x += w;
+        if (x >= font.image.w)
         {
-            font.bounds[iy*FONT_COL_COUNT+ix] = { ix*(int)cw, iy*(int)ch, (int)cw, (int)ch };
+            x = 0;
+            y += h;
         }
     }
 

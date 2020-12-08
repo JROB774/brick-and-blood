@@ -59,6 +59,7 @@
 #include "particle.hpp"
 #include "collision.hpp"
 #include "camera.hpp"
+#include "game.hpp"
 #include "application.hpp"
 
 // Source includes.
@@ -77,6 +78,7 @@
 #include "particle.cpp"
 #include "collision.cpp"
 #include "camera.cpp"
+#include "game.cpp"
 #include "application.cpp"
 
 #endif /* MAIN_WIN32_HPP */

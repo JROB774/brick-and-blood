@@ -1,8 +1,8 @@
-INTERNAL void UpdateCamera (float dt)
+INTERNAL void UpdateCamera ()
 {
     if (gCamera.timer > 0.0f)
     {
-        gCamera.timer -= dt;
+        gCamera.timer -= gApplication.delta_time;
         if (gCamera.timer <= 0.0f)
         {
             gCamera.shake_minx = 0.0f;
@@ -12,8 +12,8 @@ INTERNAL void UpdateCamera (float dt)
         }
     }
 
-    gCamera.x = Lerp(gCamera.x, gCamera.target_x, dt*5);
-    gCamera.y = Lerp(gCamera.y, gCamera.target_y, dt*5);
+    gCamera.x = Lerp(gCamera.x, gCamera.target_x, gApplication.delta_time*5);
+    gCamera.y = Lerp(gCamera.y, gCamera.target_y, gApplication.delta_time*5);
 }
 
 INTERNAL void SetCameraTarget (float x, float y)
