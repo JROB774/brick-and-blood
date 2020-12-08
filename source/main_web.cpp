@@ -10,7 +10,8 @@ void main_loop ()
         HandleInputEvents(event);
     }
 
-    if (IsKeyPressed(SDL_SCANCODE_F) || IsKeyPressed(SDL_SCANCODE_F11))
+    if (IsKeyPressed(SDL_SCANCODE_F) || IsKeyPressed(SDL_SCANCODE_F11) ||
+        (IsKeyDown(SDL_SCANCODE_LALT) && IsKeyPressed(SDL_SCANCODE_RETURN)))
     {
         SetFullscreen(!IsFullscreen());
     }

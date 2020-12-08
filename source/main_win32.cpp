@@ -43,16 +43,17 @@ int main (int argc, char** argv)
             }
         }
 
-        if (IsKeyPressed(SDL_SCANCODE_F) || IsKeyPressed(SDL_SCANCODE_F11))
+        if (IsKeyPressed(SDL_SCANCODE_F) || IsKeyPressed(SDL_SCANCODE_F11) ||
+            (IsKeyDown(SDL_SCANCODE_LALT) && IsKeyPressed(SDL_SCANCODE_RETURN)))
         {
             SetFullscreen(!IsFullscreen());
         }
 
         ClearWindow(MakeColor(0,0,0));
         SetViewport();
-
         UpdateApplication(gTimer.delta_time);
         RenderApplication(gTimer.delta_time);
+        UnsetViewport();
 
         CapFramerate();
 
