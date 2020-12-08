@@ -1,28 +1,29 @@
 INTERNAL void LoadImage (Image& image, std::string file_name)
 {
     file_name = gAssetPath + file_name;
-    SDL_Surface* surface = SDL_LoadBMP(file_name.c_str());
-    if (!surface)
+
+    constexpr int BPP = 4; // We force the image to be in 32-bit RGBA format!
+    int w,h,bpp;
+    unsigned char* data = stbi_load(file_name.c_str(), &w,&h,&bpp, BPP);
+    if (!data) LOG_ERROR(ERR_MAX, "Failed to load image from file '%s'!", file_name.c_str());
+    else
     {
-        LOG_ERROR(ERR_MAX, "Failed to load image file '%s'! (%s)", file_name.c_str(), SDL_GetError());
-        return;
+        int pitch = w*BPP;
+        SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom((void*)data, w,h,BPP*8,pitch, SDL_PIXELFORMAT_RGBA32);
+        if (!surface) LOG_ERROR(ERR_MAX, "Failed to create surface '%s'! (%s)", file_name.c_str(), SDL_GetError());
+        else
+        {
+            image.texture = SDL_CreateTextureFromSurface(gWindow.renderer, surface);
+            if (!image.texture) LOG_ERROR(ERR_MAX, "Failed to create texture '%s'! (%s)", file_name.c_str(), SDL_GetError());
+            else
+            {
+                image.w = (float)w, image.h = (float)h;
+                image.color = MakeColor(1,1,1,1);
+            }
+            SDL_FreeSurface(surface);
+        }
+        stbi_image_free(data);
     }
-
-    SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0x00,0x7F,0x7F));
-
-    image.texture = SDL_CreateTextureFromSurface(gWindow.renderer, surface);
-    if (!image.texture)
-    {
-        LOG_ERROR(ERR_MAX, "Failed to create texture '%s'! (%s)", file_name.c_str(), SDL_GetError());
-        return;
-    }
-
-    image.w = (float)surface->w;
-    image.h = (float)surface->h;
-
-    image.color = MakeColor(1,1,1,1);
-
-    SDL_FreeSurface(surface);
 }
 
 INTERNAL void FreeImage (Image& image)

@@ -26,6 +26,10 @@
 #include <GON/GON.hpp>
 #include <GON/GON.cpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
+#include <STB/stb_image.h>
+
 // Header includes.
 #include "utility.hpp"
 #include "error.hpp"
