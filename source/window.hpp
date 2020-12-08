@@ -1,7 +1,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-GLOBAL constexpr const char* WINDOW_TITLE    = "DOG!";
+GLOBAL constexpr const char* WINDOW_TITLE    = "SANTAJAM";
 GLOBAL constexpr int         WINDOW_SCREEN_W = 320;
 GLOBAL constexpr int         WINDOW_SCREEN_H = 240;
 GLOBAL constexpr int         WINDOW_START_W  = 640;
