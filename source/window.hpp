@@ -3,9 +3,9 @@
 
 GLOBAL constexpr const char* WINDOW_TITLE    = "SANTAJAM";
 GLOBAL constexpr int         WINDOW_SCREEN_W = 320;
-GLOBAL constexpr int         WINDOW_SCREEN_H = 240;
+GLOBAL constexpr int         WINDOW_SCREEN_H = 180;
 GLOBAL constexpr int         WINDOW_START_W  = 640;
-GLOBAL constexpr int         WINDOW_START_H  = 480;
+GLOBAL constexpr int         WINDOW_START_H  = 360;
 
 GLOBAL struct Window
 {
@@ -25,6 +25,7 @@ INTERNAL void RefreshWindow   ();
 INTERNAL void ShowWindow      ();
 INTERNAL void HideWindow      ();
 INTERNAL void SetViewport     ();
+INTERNAL void UnsetViewport   ();
 INTERNAL void SetFullscreen   (bool enable);
 INTERNAL bool IsFullscreen    ();
 INTERNAL void SetWindowSize   (int width, int height);

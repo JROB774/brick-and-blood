@@ -1,9 +1,11 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#define APP_VERSION_MAJOR 1
-#define APP_VERSION_MINOR 0
-#define APP_VERSION_PATCH 0
+GLOBAL constexpr int APP_VERSION_MAJOR = 1;
+GLOBAL constexpr int APP_VERSION_MINOR = 0;
+GLOBAL constexpr int APP_VERSION_PATCH = 0;
+
+GLOBAL constexpr Color APP_SCREEN_CLEAR_COLOR = { 0.1f,0.1f,0.1f,1.0f };
 
 enum AppState
 {

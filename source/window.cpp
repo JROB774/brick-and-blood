@@ -192,3 +192,8 @@ INTERNAL void SetViewport ()
 
     SDL_RenderSetViewport(gWindow.renderer, &viewport);
 }
+
+INTERNAL void UnsetViewport ()
+{
+    SDL_RenderSetViewport(gWindow.renderer, NULL);
+}
