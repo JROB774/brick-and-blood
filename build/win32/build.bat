@@ -15,7 +15,7 @@ if not exist %OutputPath% mkdir %OutputPath%
 if %BuildMode%==Release rc -nologo -i %ResourcePath% %ResourceFile%
 
 call build\win32\utility\buildtime.bat "cl %IncludeDirs% %Defines% %CompilerFlags% %CompilerWarnings% -Fe%OutputExecutable% %InputSource% -link %LinkerFlags% %LinkerWarnings% %LibraryDirs% %Libraries% %InputResource%"
-copy library\win32\%Architecture%\*.dll %OutputPath%
+copy source\depends\libsdl2\library\%Architecture%\*.dll %OutputPath%
 
 pushd %OutputPath%
 if %BuildMode%==Release del %ResourcePath%*.res

@@ -23,12 +23,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
-#include <GON/GON.hpp>
-#include <GON/GON.cpp>
+#include <GON.hpp>
+#include <GON.cpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_STATIC
-#include <STB/stb_image.h>
+#include <stb_image.h>
 
 // Header includes.
 #include "utility.hpp"
