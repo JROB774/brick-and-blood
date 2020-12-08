@@ -30,7 +30,7 @@ set InputResource=resource\resources.res
 set InputSource=source\main_win32.cpp
 
 set OutputPath=binary\win32\
-set OutputName=DOG-%Architecture%
+set OutputName=SANTAJAM-%Architecture%
 
 if %BuildMode%==Release (
     set CompilerFlags=%CompilerFlags%
