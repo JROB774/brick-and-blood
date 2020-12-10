@@ -25,7 +25,7 @@ struct Particle
     Vec2 pos,vel;
     float angle; // In radians.
     Animation anim;
-    Color color;
+    Vec4 color;
     bool dead;
     bool visible;
 

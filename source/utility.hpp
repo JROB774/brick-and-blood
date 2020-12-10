@@ -21,21 +21,41 @@ typedef  int16_t S16;
 typedef  int32_t S32;
 typedef  int64_t S64;
 
-struct Vec2  { float x, y;       };
-struct Vec3  { float x, y, z;    };
-struct Vec4  { float x, y, z, w; };
-struct Color { float r, g, b, a; };
-struct Rect  { float x, y, w, h; };
+union Vec2
+{
+    struct { float x, y; };
+    struct { float r, g; };
+    struct { float s, t; };
+    float raw[2];
+};
+union Vec3
+{
+    struct { float x, y, z; };
+    struct { float r, g, b; };
+    struct { float s, t, p; };
+    float raw[3];
+};
+union Vec4
+{
+    struct { float x, y, z, w; };
+    struct { float r, g, b, a; };
+    struct { float s, t, p, q; };
+    float raw[4];
+};
+
+struct Rect
+{
+    float x, y, w, h;
+};
 
 // We store colors as four floating-point values whereas SDL handles colors as
 // four U8 values. This function is used to map from our color range to SDL's.
 // For example the following Color values will map to SDL_Color values like so:
 //
-//    Color { 1.0, 1.0, 1.0, 1.0 }  ==>  SDL_Color { 255, 255, 255, 255 }
-//    Color { 0.5, 0.2, 0.7, 1.0 }  ==>  SDL_Color { 127,  51, 178, 255 }
+//    Vec4 { 1.0, 1.0, 1.0, 1.0 }  ==>  SDL_Color { 255, 255, 255, 255 }
+//    Vec4 { 0.5, 0.2, 0.7, 1.0 }  ==>  SDL_Color { 127,  51, 178, 255 }
 
-INTERNAL SDL_Color ColorToSDLColor (Color color);
-INTERNAL Color     MakeColor       (float r, float g, float b, float a = 1.0f);
+INTERNAL SDL_Color ColorToSDLColor (Vec4 color);
 
 // Alert message box.
 

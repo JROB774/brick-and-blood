@@ -18,7 +18,7 @@ INTERNAL void LoadImage (Image& image, std::string file_name)
             else
             {
                 image.w = (float)w, image.h = (float)h;
-                image.color = MakeColor(1,1,1,1);
+                image.color = { 1,1,1,1 };
             }
             SDL_FreeSurface(surface);
         }

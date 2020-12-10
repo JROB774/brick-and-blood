@@ -1,6 +1,6 @@
 GLOBAL Vec2 gRenderOffset = { 0,0 };
 
-INTERNAL void DrawPoint (float x, float y, Color color)
+INTERNAL void DrawPoint (float x, float y, Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
     SDL_SetRenderDrawColor(gWindow.renderer, c.r,c.g,c.b,c.a);
@@ -9,7 +9,7 @@ INTERNAL void DrawPoint (float x, float y, Color color)
     SDL_RenderDrawPointF(gWindow.renderer, x,y);
 }
 
-INTERNAL void DrawLine (float x1, float y1, float x2, float y2, Color color)
+INTERNAL void DrawLine (float x1, float y1, float x2, float y2, Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
     SDL_SetRenderDrawColor(gWindow.renderer, c.r,c.g,c.b,c.a);
@@ -20,7 +20,7 @@ INTERNAL void DrawLine (float x1, float y1, float x2, float y2, Color color)
     SDL_RenderDrawLineF(gWindow.renderer, x1,y1,x2,y2);
 }
 
-INTERNAL void DrawRect (float x, float y, float w, float h, Color color)
+INTERNAL void DrawRect (float x, float y, float w, float h, Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
     SDL_SetRenderDrawColor(gWindow.renderer, c.r,c.g,c.b,c.a);
@@ -28,7 +28,7 @@ INTERNAL void DrawRect (float x, float y, float w, float h, Color color)
     SDL_RenderDrawRectF(gWindow.renderer, &rect);
 }
 
-INTERNAL void DrawFill (float x, float y, float w, float h, Color color)
+INTERNAL void DrawFill (float x, float y, float w, float h, Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
     SDL_SetRenderDrawColor(gWindow.renderer, c.r,c.g,c.b,c.a);
@@ -36,12 +36,12 @@ INTERNAL void DrawFill (float x, float y, float w, float h, Color color)
     SDL_RenderFillRectF(gWindow.renderer, &rect);
 }
 
-INTERNAL void DrawRect (Rect rect, Color color)
+INTERNAL void DrawRect (Rect rect, Vec4 color)
 {
     DrawRect(rect.x, rect.y, rect.w, rect.h, color);
 }
 
-INTERNAL void DrawFill (Rect rect, Color color)
+INTERNAL void DrawFill (Rect rect, Vec4 color)
 {
     DrawFill(rect.x, rect.y, rect.w, rect.h, color);
 }
@@ -62,7 +62,7 @@ INTERNAL void DrawImage (Image& image, float x, float y, float angle, Flip flip,
     SDL_RenderCopyExF(gWindow.renderer, image.texture, clip, &rect, angle, &center, flip);
 }
 
-INTERNAL void DrawText (Font& font, std::string text, float x, float y, Color color)
+INTERNAL void DrawText (Font& font, std::string text, float x, float y, Vec4 color)
 {
     // NOTE: We just assume the caller wants multi-line text to be center aligned.
 

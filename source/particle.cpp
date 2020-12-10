@@ -34,7 +34,7 @@ INTERNAL void CreateParticles (ParticleType type, int minx, int miny, int maxx, 
         particle.type = type;
         particle.vel = { 0,0 };
         LoadAnimation(particle.anim, base.anims[RandomRange(0, (int)base.anims.size()-1)]);
-        particle.color = MakeColor(1,1,1);
+        particle.color = { 1,1,1,1 };
         particle.dead = false;
         particle.visible = true;
         particle.lifetime = RandomFloatRange(base.min_lifetime, base.max_lifetime) * lifetime_multiplier;

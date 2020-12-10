@@ -49,7 +49,7 @@ int main (int argc, char** argv)
             SetFullscreen(!IsFullscreen());
         }
 
-        ClearWindow(MakeColor(0,0,0));
+        ClearWindow({ 0,0,0,1 });
         SetViewport();
         UpdateApplication(gTimer.delta_time);
         RenderApplication(gTimer.delta_time);

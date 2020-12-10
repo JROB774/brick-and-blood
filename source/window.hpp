@@ -20,7 +20,7 @@ GLOBAL struct Window
 
 INTERNAL bool InitWindow      ();
 INTERNAL void QuitWindow      ();
-INTERNAL void ClearWindow     (Color color);
+INTERNAL void ClearWindow     (Vec4 color);
 INTERNAL void RefreshWindow   ();
 INTERNAL void ShowWindow      ();
 INTERNAL void HideWindow      ();

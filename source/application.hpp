@@ -5,7 +5,7 @@ GLOBAL constexpr int APP_VERSION_MAJOR = 1;
 GLOBAL constexpr int APP_VERSION_MINOR = 0;
 GLOBAL constexpr int APP_VERSION_PATCH = 0;
 
-GLOBAL constexpr Color APP_SCREEN_CLEAR_COLOR = { 0.1f,0.1f,0.1f,1.0f };
+GLOBAL constexpr Vec4 APP_SCREEN_CLEAR_COLOR = { 0.1f,0.1f,0.1f,1.0f };
 
 enum AppState
 {

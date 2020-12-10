@@ -158,7 +158,7 @@ INTERNAL void SetWindowSize (int width, int height)
 
 #endif // PLATFORM_WEB =========================================================
 
-INTERNAL void ClearWindow (Color color)
+INTERNAL void ClearWindow (Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
     SDL_SetRenderDrawColor(gWindow.renderer, c.r,c.g,c.b,c.a);

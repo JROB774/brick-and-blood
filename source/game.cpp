@@ -1,19 +1,19 @@
 INTERNAL void InitGame ()
 {
-    // Nothing...
+    CreatePlayer(gGameState.player, 0,0);
 }
 
 INTERNAL void QuitGame ()
 {
-    // Nothing...
+    DeletePlayer(gGameState.player);
 }
 
 INTERNAL void UpdateGame ()
 {
-    // Nothing...
+    UpdatePlayer(gGameState.player);
 }
 
 INTERNAL void RenderGame ()
 {
-    // Nothing...
+    RenderPlayer(gGameState.player);
 }
