@@ -55,7 +55,8 @@ struct Rect
 //    Vec4 { 1.0, 1.0, 1.0, 1.0 }  ==>  SDL_Color { 255, 255, 255, 255 }
 //    Vec4 { 0.5, 0.2, 0.7, 1.0 }  ==>  SDL_Color { 127,  51, 178, 255 }
 
-INTERNAL SDL_Color ColorToSDLColor (Vec4 color);
+INTERNAL SDL_Color ColorToSDLColor (Vec4      color);
+INTERNAL Vec4      SDLColorToColor (SDL_Color color);
 
 // Alert message box.
 

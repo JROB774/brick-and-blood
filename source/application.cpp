@@ -29,7 +29,7 @@ INTERNAL void UpdateApplication (float dt)
 INTERNAL void RenderApplication (float dt)
 {
     constexpr Rect SCREEN = { 0,0,WINDOW_SCREEN_W,WINDOW_SCREEN_H };
-    DrawFill(SCREEN, APP_SCREEN_CLEAR_COLOR);
+    DrawFill(SCREEN, SDLColorToColor({ 71,45,60,255 }));
 
     switch (gApplication.state)
     {

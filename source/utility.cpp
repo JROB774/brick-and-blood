@@ -8,6 +8,16 @@ INTERNAL SDL_Color ColorToSDLColor (Vec4 color)
     return c;
 }
 
+INTERNAL Vec4 SDLColorToColor (SDL_Color color)
+{
+    Vec4 c;
+    c.r = (float)(color.r) / 255.0f;
+    c.g = (float)(color.g) / 255.0f;
+    c.b = (float)(color.b) / 255.0f;
+    c.a = (float)(color.a) / 255.0f;
+    return c;
+}
+
 INTERNAL std::vector<std::string> TokenizeString (std::string str, char delim)
 {
     std::stringstream test(str);
