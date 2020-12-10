@@ -30,9 +30,6 @@
 #define STB_IMAGE_STATIC
 #include <stb_image.h>
 
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-
 // Header includes.
 #include "utility.hpp"
 #include "error.hpp"
@@ -49,8 +46,6 @@
 #include "collision.hpp"
 #include "asset_manager.hpp"
 #include "camera.hpp"
-#include "player.hpp"
-#include "game.hpp"
 #include "application.hpp"
 
 // Source includes.
@@ -69,8 +64,6 @@
 #include "collision.cpp"
 #include "asset_manager.cpp"
 #include "camera.cpp"
-#include "player.cpp"
-#include "game.cpp"
 #include "application.cpp"
 
 #endif /* MAIN_WEB_HPP */

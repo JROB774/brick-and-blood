@@ -121,29 +121,11 @@ INTERNAL bool InitWindow ()
     gWindow.running = true;
     gWindow.fullscreen = false;
 
-    // OpenGL Attributes
+    // @Incomplete: Not handling OpenGL yet...
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
-
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-    // We aren't using either of these buffers (yet) so no need for them to be set.
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
-
-    // The window starts off hidden so we don't have a white window displaying whilst all the resources load and systems initialize.
-    gWindow.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, gWindow.width,gWindow.height, SDL_WINDOW_RESIZABLE|SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
-    if (!gWindow.window)
+    if (SDL_CreateWindowAndRenderer(WINDOW_START_W,WINDOW_START_H, 0, &gWindow.window, &gWindow.renderer) < 0)
     {
-        LOG_ERROR(ERR_MAX, "Failed to create virtual window! (%s)", SDL_GetError());
-        return false;
-    }
-
-    gWindow.context = SDL_GL_CreateContext(gWindow.window);
-    if (!gWindow.context)
-    {
-        LOG_ERROR(ERR_MAX, "Failed to create OpenGL context! (%s)", SDL_GetError());
+        LOG_ERROR(ERR_MAX, "Failed to create window and/or renderer! (%s)", SDL_GetError());
         return false;
     }
 
