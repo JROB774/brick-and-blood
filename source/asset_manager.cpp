@@ -2,15 +2,16 @@
 
 AssetManager::AssetManager ()
 {
-
     // Get the location of the executable as the assets folder should be defined relative to that.
     char exe_path[MAX_PATH] = {0};
     GetModuleFileNameA(NULL, exe_path, MAX_PATH);
     char* slash = NULL;
     for (char* c=exe_path; *c; ++c) if (*c == '\\' || *c == '/') slash = c;
     if (slash) *slash = '\0'; // Strip the executable's name from the path.
+
     asset_base_path = exe_path;
     asset_base_path += "/";
+
     // If there is a file in the current working directory specifying the assets relative path
     // then we append that to the executable path, otherwise we just expect the exe directory.
     std::ifstream file("asset_path.txt", std::ios::in);
@@ -24,6 +25,7 @@ AssetManager::AssetManager ()
     {
         asset_base_path += "assets/";
     }
+
     // Make sure the asset path always ends in a slash.
     if (asset_base_path.back() != '\\' && asset_base_path.back() != '/')
     {

@@ -31,7 +31,7 @@ template<typename T>
 INTERNAL auto* GetAsset (std::string name)
 {
     std::string file_name = name + T::Ext;
-    std::string full_file_name = gAssetManager.asset_base_path + T::Path + file_name; // @Imprope: Hard-coded resource path!
+    std::string full_file_name = gAssetManager.asset_base_path + T::Path + file_name;
     T* asset = dynamic_cast<T*>(gAssetManager.assets[file_name]); // Will create the asset if it doesn't exist.
     if (!asset)
     {
