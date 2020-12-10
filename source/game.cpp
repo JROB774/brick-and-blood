@@ -1,19 +1,19 @@
 INTERNAL void InitGame ()
 {
-    CreatePlayer(gGameState.player, 0,0);
+    SpawnEntity(ENTITY_TYPE_PLAYER, 0,0);
 }
 
 INTERNAL void QuitGame ()
 {
-    DeletePlayer(gGameState.player);
+    // Nothing...
 }
 
 INTERNAL void UpdateGame ()
 {
-    UpdatePlayer(gGameState.player);
+    UpdateEntities();
 }
 
 INTERNAL void RenderGame ()
 {
-    RenderPlayer(gGameState.player);
+    RenderEntities();
 }

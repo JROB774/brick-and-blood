@@ -3,7 +3,6 @@
 
 GLOBAL struct GameState
 {
-    Player player;
 
 } gGameState;
 

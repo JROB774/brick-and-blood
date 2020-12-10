@@ -59,7 +59,7 @@
 #include "collision.hpp"
 #include "asset_manager.hpp"
 #include "camera.hpp"
-#include "player.hpp"
+#include "entity.hpp"
 #include "game.hpp"
 #include "application.hpp"
 
@@ -79,7 +79,7 @@
 #include "collision.cpp"
 #include "asset_manager.cpp"
 #include "camera.cpp"
-#include "player.cpp"
+#include "entity.cpp"
 #include "game.cpp"
 #include "application.cpp"
 
