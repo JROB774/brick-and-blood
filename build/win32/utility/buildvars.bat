@@ -12,7 +12,7 @@ set Architecture=amd64
 :: Can be either "Debug" or "Release"
 set BuildMode=Debug
 
-set IncludeDirs=-I source\depends\libgon -I source\depends\libstb -I source\depends\libsdl2\include -I source\depends\libglad
+set IncludeDirs=-I source\depends\libgon -I source\depends\libstb -I source\depends\libsdl2\include
 set LibraryDirs=-libpath:source\depends\libsdl2\library\%Architecture%
 
 set Defines=
