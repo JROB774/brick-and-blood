@@ -36,11 +36,11 @@ INTERNAL void CreateParticles (ParticleType type, int minx, int miny, int maxx, 
         particle.visible = true;
         particle.lifetime = RandomFloatRange(base.min_lifetime, base.max_lifetime) * lifetime_multiplier;
 
-        float fw = GetAnimationFrameWidth(particle.anim);
-        float fh = GetAnimationFrameHeight(particle.anim);
+        int fw = GetAnimationFrameWidth(particle.anim);
+        int fh = GetAnimationFrameHeight(particle.anim);
 
-        particle.pos.x = RandomFloatRange((float)minx-(fw/2), (float)maxx-(fw/2));
-        particle.pos.y = RandomFloatRange((float)miny-(fh/2), (float)maxy-(fh/2));
+        particle.pos.x = (float)RandomRange(minx-(fw/2), maxx-(fw/2));
+        particle.pos.y = (float)RandomRange(miny-(fh/2), maxy-(fh/2));
 
         base.create(particle);
     }
@@ -91,7 +91,7 @@ INTERNAL void DrawParticles ()
         if (particle.visible && !particle.dead)
         {
             UpdateAnimation(particle.anim, gApplication.delta_time);
-            ImmDrawImage("particle", particle.pos.x, particle.pos.y, {0,0}, particle.angle, FLIP_NONE, particle.color, GetAnimationClip(particle.anim));
+            DrawImage("particle", particle.pos.x, particle.pos.y, particle.angle, FLIP_NONE, particle.color, GetAnimationClip(particle.anim));
         }
     }
 }

@@ -1,23 +1,31 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-struct Camera
+GLOBAL struct Camera
 {
-    Mat4 projection_matrix;
-    Mat4 view_matrix;
+    float x;
+    float y;
 
-    // Separate values for lerping the camera.
-    float x, current_x;
-    float y, current_y;
+    float target_x;
+    float target_y;
 
-    // Internals
-    float l;
-    float r;
-    float b;
-    float t;
-};
+    float shake_minx, shake_maxx;
+    float shake_miny, shake_maxy;
 
-INTERNAL void CreateCamera (Camera& camera, float left, float right, float bottom, float top);
-INTERNAL void UpdateCamera (Camera& camera);
+    float timer;
+
+} gCamera;
+
+INTERNAL void UpdateCamera ();
+
+INTERNAL void SetCameraTarget (float x, float y);
+INTERNAL void SetCamera       (float x, float y);
+
+// Wrap the section of rendering that should be affected by the camera position in these function calls!
+INTERNAL void BeginCamera ();
+INTERNAL void EndCamera   ();
+
+INTERNAL void ShakeCamera (float minx, float miny, float maxx, float maxy, float duration);
+INTERNAL void ResetCameraShake ();
 
 #endif /* CAMERA_HPP */

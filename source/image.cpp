@@ -1,34 +1,36 @@
 INTERNAL void LoadImage (Image& image, std::string file_name)
 {
-    constexpr int BPP = 4; // We force our images to be 32-bit RGBA (4 components).
+    /*
+    constexpr int BPP = 4; // We force the image to be in 32-bit RGBA format!
     int w,h,bpp;
-    unsigned char* data = stbi_load(file_name.c_str(), &w,&h,&bpp,BPP);
-    if (!data)
+    unsigned char* data = stbi_load(file_name.c_str(), &w,&h,&bpp, BPP);
+    if (!data) LOG_ERROR(ERR_MAX, "Failed to load image from file '%s'!", file_name.c_str());
+    else
     {
-        LOG_ERROR(ERR_MAX, "Failed to load image file! (%s)", file_name.c_str());
-        return;
+        int pitch = w*BPP;
+        SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom((void*)data, w,h,BPP*8,pitch, SDL_PIXELFORMAT_RGBA32);
+        if (!surface) LOG_ERROR(ERR_MAX, "Failed to create surface '%s'! (%s)", file_name.c_str(), SDL_GetError());
+        else
+        {
+            image.texture = SDL_CreateTextureFromSurface(gWindow.renderer, surface);
+            if (!image.texture) LOG_ERROR(ERR_MAX, "Failed to create texture '%s'! (%s)", file_name.c_str(), SDL_GetError());
+            else
+            {
+                image.w = (float)w;
+                image.h = (float)h;
+            }
+            SDL_FreeSurface(surface);
+        }
+        stbi_image_free(data);
     }
-
-    glActiveTexture(GL_TEXTURE0);
-
-    glGenTextures(1, &image.texture);
-    glBindTexture(GL_TEXTURE_2D, image.texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,   GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,   GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w,h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-    image.w = static_cast<float>(w);
-    image.h = static_cast<float>(h);
-
-    stbi_image_free(data);
+    */
 }
 
 INTERNAL void FreeImage (Image& image)
 {
-    glDeleteTextures(1, &image.texture);
+    /*
+    SDL_DestroyTexture(image.texture);
+    image.texture = NULL;
     image.w = 0.0f, image.h = 0.0f;
+    */
 }

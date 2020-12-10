@@ -21,12 +21,27 @@ typedef  int16_t S16;
 typedef  int32_t S32;
 typedef  int64_t S64;
 
-typedef glm::vec2 Vec2;
-typedef glm::vec3 Vec3;
-typedef glm::vec4 Vec4;
-typedef glm::mat2 Mat2;
-typedef glm::mat3 Mat3;
-typedef glm::mat4 Mat4;
+union Vec2
+{
+    struct { float x, y; };
+    struct { float r, g; };
+    struct { float s, t; };
+    float raw[2];
+};
+union Vec3
+{
+    struct { float x, y, z; };
+    struct { float r, g, b; };
+    struct { float s, t, p; };
+    float raw[3];
+};
+union Vec4
+{
+    struct { float x, y, z, w; };
+    struct { float r, g, b, a; };
+    struct { float s, t, p, q; };
+    float raw[4];
+};
 
 struct Rect
 {

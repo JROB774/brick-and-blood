@@ -4,7 +4,7 @@
 struct AnimationFrame
 {
     float duration;
-    Rect clip;
+    SDL_Rect clip;
 };
 
 struct Animation
@@ -33,9 +33,9 @@ INTERNAL void UpdateAnimation (AnimationState& state, float dt);
 INTERNAL void ResetAnimation  (AnimationState& state);
 INTERNAL bool IsAnimationDone (AnimationState& state);
 
-INTERNAL const Rect* GetAnimationClip (AnimationState& state);
+INTERNAL const SDL_Rect* GetAnimationClip (AnimationState& state);
 
-INTERNAL float GetAnimationFrameWidth  (AnimationState& state);
-INTERNAL float GetAnimationFrameHeight (AnimationState& state);
+INTERNAL int GetAnimationFrameWidth  (AnimationState& state);
+INTERNAL int GetAnimationFrameHeight (AnimationState& state);
 
 #endif /* ANIMATION_HPP */

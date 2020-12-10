@@ -9,10 +9,10 @@ INTERNAL void LoadAnimation (Animation& animation, std::string file_name)
 
     animation.looped = gon["looped"].Bool();
 
-    float x = (float)gon["start_position"][0].Number();
-    float y = (float)gon["start_position"][1].Number();
-    float w = (float)gon["frame_size"    ][0].Number();
-    float h = (float)gon["frame_size"    ][1].Number();
+    int x = gon["start_position"][0].Int();
+    int y = gon["start_position"][1].Int();
+    int w = gon["frame_size"    ][0].Int();
+    int h = gon["frame_size"    ][1].Int();
 
     int frame_count = gon["frame_count"].Int();
     animation.frames.clear();
@@ -96,21 +96,21 @@ INTERNAL bool IsAnimationDone (AnimationState& state)
     return false;
 }
 
-INTERNAL const Rect* GetAnimationClip (AnimationState& state)
+INTERNAL const SDL_Rect* GetAnimationClip (AnimationState& state)
 {
     Animation* animation = GetAsset<AssetAnimation>(state.anim);
     if (!animation) return NULL;
     return &animation->frames.at(state.frame).clip;
 }
 
-INTERNAL float GetAnimationFrameWidth (AnimationState& state)
+INTERNAL int GetAnimationFrameWidth (AnimationState& state)
 {
-    const Rect* clip = GetAnimationClip(state);
+    const SDL_Rect* clip = GetAnimationClip(state);
     return (clip) ? clip->w : 0;
 }
 
-INTERNAL float GetAnimationFrameHeight (AnimationState& state)
+INTERNAL int GetAnimationFrameHeight (AnimationState& state)
 {
-    const Rect* clip = GetAnimationClip(state);
+    const SDL_Rect* clip = GetAnimationClip(state);
     return (clip) ? clip->h : 0;
 }

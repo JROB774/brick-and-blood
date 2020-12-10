@@ -1,66 +1,5 @@
-struct Vertex
-{
-    Vec2 position;
-    Vec4 color;
-    Vec2 texcoord;
-};
+GLOBAL Vec2 gRenderOffset = { 0,0 };
 
-GLOBAL struct Renderer
-{
-
-} gRenderer;
-
-INTERNAL void InitRenderer ()
-{
-    // Nothing...
-}
-
-INTERNAL void QuitRenderer ()
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawPoint (float x, float y, Vec4 color)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawLine (float x1, float y1, float x2, float y2, Vec4 color)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawRect (float x, float y, float w, float h, Vec4 color)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawFill (float x, float y, float w, float h, Vec4 color)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawRect (Rect rect, Vec4 color)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawFill (Rect rect, Vec4 color)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawImage (std::string image_name, float x, float y, Vec2 center, float angle, Flip flip, Vec4 color, const Rect* clip)
-{
-    // Nothing...
-}
-
-INTERNAL void ImmDrawText (std::string font_name, std::string text, float x, float y, Vec4 color)
-{
-    // Nothing...
-}
-
-/*
 INTERNAL void DrawPoint (float x, float y, Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
@@ -151,4 +90,3 @@ INTERNAL void DrawText (std::string font_name, std::string text, float x, float 
         }
     }
 }
-*/
