@@ -1,5 +1,3 @@
-:: Build Process Script
-
 @echo off
 setlocal
 

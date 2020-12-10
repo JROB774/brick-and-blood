@@ -1,5 +1,3 @@
-:: Output Program Execution Script
-
 @echo off
 setlocal
 

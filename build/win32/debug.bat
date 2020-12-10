@@ -1,5 +1,3 @@
-:: Visual Studio Debugger Launch Script
-
 @echo off
 setlocal
 
