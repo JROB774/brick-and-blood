@@ -67,6 +67,15 @@ void AssetImage::Free ()
     FreeImage(data);
 }
 
+void AssetShader::Load (std::string file_name)
+{
+    LoadShader(data, file_name);
+}
+void AssetShader::Free ()
+{
+    FreeShader(data);
+}
+
 void AssetAnimation::Load (std::string file_name)
 {
     LoadAnimation(data, file_name);

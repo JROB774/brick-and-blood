@@ -1,99 +1,21 @@
-INTERNAL void UpdateCamera ()
+INTERNAL void CreateCamera (Camera& camera, float left, float right, float bottom, float top)
 {
-    if (gCamera.timer > 0.0f)
-    {
-        gCamera.timer -= gApplication.delta_time;
-        if (gCamera.timer <= 0.0f)
-        {
-            gCamera.shake_minx = 0.0f;
-            gCamera.shake_miny = 0.0f;
-            gCamera.shake_maxx = 0.0f;
-            gCamera.shake_maxy = 0.0f;
-        }
-    }
+    camera.projection_matrix = glm::ortho(left,right,bottom,top);
+    camera.view_matrix = Mat4(1.0f);
 
-    gCamera.x = Lerp(gCamera.x, gCamera.target_x, gApplication.delta_time*5);
-    gCamera.y = Lerp(gCamera.y, gCamera.target_y, gApplication.delta_time*5);
+    camera.x = 0.0f, camera.current_x = 0.0f;
+    camera.y = 0.0f, camera.current_y = 0.0f;
+
+    camera.l = left;
+    camera.r = right;
+    camera.b = bottom;
+    camera.t = top;
 }
 
-INTERNAL void SetCameraTarget (float x, float y)
+INTERNAL void UpdateCamera (Camera& camera)
 {
-    /*
-    // Lock the camera within the map boundaries and then set its position.
-    float xmax = (float)((gWorld.current_map.w * TILE_W) - WINDOW_SCREEN_W);
-    float ymax = (float)((gWorld.current_map.h * TILE_H) - WINDOW_SCREEN_H);
-    */
+    camera.current_x = Lerp(camera.current_x, camera.x, gApplication.delta_time * 5);
+    camera.current_y = Lerp(camera.current_y, camera.y, gApplication.delta_time * 5);
 
-    // @Temporary: Just a fix for so we can compile, we will handle the camera properly later!
-    float xmax = 0.0f;
-    float ymax = 0.0f;
-
-    if (x < 0)    x = 0;
-    if (y < 0)    y = 0;
-    if (x > xmax) x = xmax;
-    if (y > ymax) y = ymax;
-
-    gCamera.target_x = roundf(x);
-    gCamera.target_y = roundf(y);
-}
-
-INTERNAL void SetCamera (float x, float y)
-{
-    /*
-    // Lock the camera within the map boundaries and then set its position.
-    float xmax = (float)((gWorld.current_map.w * TILE_W) - WINDOW_SCREEN_W);
-    float ymax = (float)((gWorld.current_map.h * TILE_H) - WINDOW_SCREEN_H);
-    */
-
-    // @Temporary: Just a fix for so we can compile, we will handle the camera properly later!
-    float xmax = 0.0f;
-    float ymax = 0.0f;
-
-    if (x < 0)    x = 0;
-    if (y < 0)    y = 0;
-    if (x > xmax) x = xmax;
-    if (y > ymax) y = ymax;
-
-    gCamera.x        = roundf(x);
-    gCamera.y        = roundf(y);
-    gCamera.target_x = roundf(x);
-    gCamera.target_y = roundf(y);
-}
-
-INTERNAL void BeginCamera ()
-{
-    gRenderOffset.x = gCamera.x;
-    gRenderOffset.y = gCamera.y;
-
-    if (gCamera.timer)
-    {
-        gRenderOffset.x += RandomFloatRange(gCamera.shake_minx, gCamera.shake_maxx);
-        gRenderOffset.y += RandomFloatRange(gCamera.shake_miny, gCamera.shake_maxy);
-    }
-}
-
-INTERNAL void EndCamera ()
-{
-    gRenderOffset.x = 0;
-    gRenderOffset.y = 0;
-}
-
-INTERNAL void ShakeCamera (float minx, float miny, float maxx, float maxy, float duration)
-{
-    gCamera.shake_minx += minx;
-    gCamera.shake_miny += miny;
-    gCamera.shake_maxx += maxx;
-    gCamera.shake_maxy += maxy;
-
-    gCamera.timer = duration;
-}
-
-INTERNAL void ResetCameraShake ()
-{
-    gCamera.shake_minx = 0.0f;
-    gCamera.shake_miny = 0.0f;
-    gCamera.shake_maxx = 0.0f;
-    gCamera.shake_maxy = 0.0f;
-
-    gCamera.timer = 0.0f;
+    camera.view_matrix = glm::translate(Mat4(1.0f), Vec3(camera.x,camera.y,0.0f));
 }

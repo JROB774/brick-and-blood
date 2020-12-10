@@ -22,8 +22,8 @@ INTERNAL void UpdateApplication (float dt)
         case (APP_STATE_GAME): UpdateGame(); break;
     }
 
-    UpdateParticles();
-    UpdateCamera();
+    // UpdateParticles();
+    // UpdateCamera();
 }
 
 INTERNAL void RenderApplication (float dt)
@@ -35,5 +35,5 @@ INTERNAL void RenderApplication (float dt)
         case (APP_STATE_GAME): RenderGame(); break;
     }
 
-    DrawParticles();
+    // DrawParticles();
 }

@@ -46,10 +46,14 @@
 #include <glad/glad.h>
 #include <glad/glad.c>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // Header includes.
 #include "utility.hpp"
 #include "error.hpp"
 #include "image.hpp"
+#include "shader.hpp"
 #include "font.hpp"
 #include "settings.hpp"
 #include "window.hpp"
@@ -70,6 +74,7 @@
 #include "utility.cpp"
 #include "error.cpp"
 #include "image.cpp"
+#include "shader.cpp"
 #include "font.cpp"
 #include "settings.cpp"
 #include "window.cpp"

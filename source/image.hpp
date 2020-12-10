@@ -3,7 +3,7 @@
 
 struct Image
 {
-    SDL_Texture* texture;
+    GLuint texture;
     float w, h;
 };
 

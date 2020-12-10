@@ -56,6 +56,15 @@ struct AssetImage: public AssetBase
     Image data;
 };
 
+struct AssetShader: public AssetBase
+{
+    static inline const std::string Path = "shaders/";
+    static inline const std::string Ext = ".shader";
+    void Load (std::string file_name) override;
+    void Free () override;
+    Shader data;
+};
+
 struct AssetAnimation: public AssetBase
 {
     static inline const std::string Path = "anims/";
