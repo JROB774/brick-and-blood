@@ -11,22 +11,38 @@ INTERNAL bool InitWindow ()
     gWindow.width = gSettings.window_width;
     gWindow.height = gSettings.window_height;
 
+    // OpenGL Attributes
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    // We aren't using either of these buffers (yet) so no need for them to be set.
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
+
     // The window starts off hidden so we don't have a white window displaying whilst all the resources load and systems initialize.
-    gWindow.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, gWindow.width,gWindow.height, SDL_WINDOW_RESIZABLE|SDL_WINDOW_HIDDEN);
+    gWindow.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, gWindow.width,gWindow.height, SDL_WINDOW_RESIZABLE|SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
     if (!gWindow.window)
     {
         LOG_ERROR(ERR_MAX, "Failed to create window! (%s)", SDL_GetError());
         return false;
     }
 
-    gWindow.renderer = SDL_CreateRenderer(gWindow.window, -1, SDL_RENDERER_ACCELERATED);
-    if (!gWindow.renderer)
+    gWindow.context = SDL_GL_CreateContext(gWindow.window);
+    if (!gWindow.context)
     {
-        LOG_ERROR(ERR_MAX, "Failed to create renderer! (%s)", SDL_GetError());
+        LOG_ERROR(ERR_MAX, "Failed to create OpenGL context! (%s)", SDL_GetError());
         return false;
     }
 
-    SDL_SetRenderDrawBlendMode(gWindow.renderer, SDL_BLENDMODE_BLEND);
+    if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
+    {
+        LOG_ERROR(ERR_MAX, "Failed to load OpenGL procedures!");
+        return false;
+    }
+
     SDL_SetWindowMinimumSize(gWindow.window, WINDOW_SCREEN_W,WINDOW_SCREEN_H);
 
     SetFullscreen(gSettings.fullscreen);
@@ -36,7 +52,7 @@ INTERNAL bool InitWindow ()
 
 INTERNAL void QuitWindow ()
 {
-    SDL_DestroyRenderer(gWindow.renderer);
+    SDL_GL_DeleteContext(gWindow.context);
     SDL_DestroyWindow(gWindow.window);
     SDL_Quit();
 }
@@ -105,6 +121,8 @@ INTERNAL bool InitWindow ()
     gWindow.running = true;
     gWindow.fullscreen = false;
 
+    // @Incomplete: Not handling OpenGL yet...
+
     if (SDL_CreateWindowAndRenderer(WINDOW_START_W,WINDOW_START_H, 0, &gWindow.window, &gWindow.renderer) < 0)
     {
         LOG_ERROR(ERR_MAX, "Failed to create window and/or renderer! (%s)", SDL_GetError());
@@ -160,40 +178,21 @@ INTERNAL void SetWindowSize (int width, int height)
 
 INTERNAL void ClearWindow (Vec4 color)
 {
-    SDL_Color c = ColorToSDLColor(color);
-    SDL_SetRenderDrawColor(gWindow.renderer, c.r,c.g,c.b,c.a);
-    SDL_RenderClear(gWindow.renderer);
+    glClearColor(color.r,color.g,color.b,color.a);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 }
 
 INTERNAL void RefreshWindow ()
 {
-    SDL_RenderPresent(gWindow.renderer);
+    SDL_GL_SwapWindow(gWindow.window);
 }
 
 INTERNAL void SetViewport ()
 {
-    int windoww,windowh;
-    SDL_GetWindowSize(gWindow.window, &windoww,&windowh);
-
-    int sx = (int)floorf(((float)windoww / (float)WINDOW_SCREEN_W));
-    int sy = (int)floorf(((float)windowh / (float)WINDOW_SCREEN_H));
-
-    // Determine the smallest scale and use that.
-    float scale = (float)((sx < sy) ? sx : sy);
-
-    SDL_RenderSetScale(gWindow.renderer, scale,scale);
-
-    SDL_Rect viewport;
-
-    viewport.x = ((windoww - (WINDOW_SCREEN_W * (int)scale)) / 2) / (int)scale;
-    viewport.y = ((windowh - (WINDOW_SCREEN_H * (int)scale)) / 2) / (int)scale;
-    viewport.w = WINDOW_SCREEN_W;
-    viewport.h = WINDOW_SCREEN_H;
-
-    SDL_RenderSetViewport(gWindow.renderer, &viewport);
+    // @Incomplete: ...
 }
 
 INTERNAL void UnsetViewport ()
 {
-    SDL_RenderSetViewport(gWindow.renderer, NULL);
+    // @Incomplete: ...
 }

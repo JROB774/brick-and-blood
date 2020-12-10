@@ -1,5 +1,6 @@
 INTERNAL void LoadImage (Image& image, std::string file_name)
 {
+    /*
     constexpr int BPP = 4; // We force the image to be in 32-bit RGBA format!
     int w,h,bpp;
     unsigned char* data = stbi_load(file_name.c_str(), &w,&h,&bpp, BPP);
@@ -22,11 +23,14 @@ INTERNAL void LoadImage (Image& image, std::string file_name)
         }
         stbi_image_free(data);
     }
+    */
 }
 
 INTERNAL void FreeImage (Image& image)
 {
+    /*
     SDL_DestroyTexture(image.texture);
     image.texture = NULL;
     image.w = 0.0f, image.h = 0.0f;
+    */
 }
