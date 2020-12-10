@@ -28,7 +28,8 @@ INTERNAL void UpdateApplication (float dt)
 
 INTERNAL void RenderApplication (float dt)
 {
-    ClearWindow({ 1,0,0,1 });
+    constexpr Rect SCREEN = { 0,0,WINDOW_SCREEN_W,WINDOW_SCREEN_H };
+    DrawFill(SCREEN, APP_SCREEN_CLEAR_COLOR);
 
     switch (gApplication.state)
     {

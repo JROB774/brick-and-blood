@@ -9,9 +9,8 @@ GLOBAL constexpr int         WINDOW_START_H  = 360;
 
 GLOBAL struct Window
 {
-    SDL_Window*   window;
-    SDL_GLContext context;
     SDL_Renderer* renderer;
+    SDL_Window*   window;
     int           width;  // Used to cache size when in fullscreen!!!
     int           height; // Used to cache size when in fullscreen!!!
     bool          fullscreen;
