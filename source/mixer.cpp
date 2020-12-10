@@ -3,6 +3,40 @@ GLOBAL constexpr U16 MIXER_SAMPLE_FORMAT = MIX_DEFAULT_FORMAT;
 GLOBAL constexpr int MIXER_CHANNELS      = 2; // Stereo Sound
 GLOBAL constexpr int MIXER_SAMPLE_SIZE   = 2048;
 
+INTERNAL void LoadSound (Sound& sound, std::string file_name)
+{
+    sound.data = Mix_LoadWAV(file_name.c_str());
+    if (!sound.data)
+    {
+        LOG_ERROR(ERR_MAX, "Failed to load sound '%s'! (%s)", file_name.c_str(), Mix_GetError());
+    }
+}
+
+INTERNAL void FreeSound (Sound& sound)
+{
+    Mix_FreeChunk(sound.data);
+    sound.data = NULL;
+}
+
+INTERNAL void LoadMusic (Music& music, std::string file_name)
+{
+    music.data = Mix_LoadMUS(file_name.c_str());
+    if (!music.data)
+    {
+        LOG_ERROR(ERR_MAX, "Failed to load music '%s'! (%s)", file_name.c_str(), Mix_GetError());
+    }
+}
+
+INTERNAL void FreeMusic (Music& music)
+{
+    Mix_FreeMusic(music.data);
+    music.data = NULL;
+}
+
+//
+// INTERFACE
+//
+
 INTERNAL bool InitMixer ()
 {
     if (Mix_OpenAudio(MIXER_FREQUENCY, MIXER_SAMPLE_FORMAT, MIXER_CHANNELS, MIXER_SAMPLE_SIZE) != 0)
@@ -24,49 +58,21 @@ INTERNAL void QuitMixer ()
     Mix_CloseAudio();
 }
 
-INTERNAL void LoadSound (Sound& sound, std::string file_name)
+INTERNAL void PlaySound (std::string sound_name, int loops)
 {
-    file_name = gAssetPath + "sounds/" + file_name;
-    sound.data = Mix_LoadWAV(file_name.c_str());
-    if (!sound.data)
-    {
-        LOG_ERROR(ERR_MAX, "Failed to load sound '%s'! (%s)", file_name.c_str(), Mix_GetError());
-    }
-}
-
-INTERNAL void FreeSound (Sound& sound)
-{
-    Mix_FreeChunk(sound.data);
-    sound.data = NULL;
-}
-
-INTERNAL void PlaySound (Sound& sound, int loops)
-{
-    if (Mix_PlayChannel(-1, sound.data, loops) == -1)
+    Sound* sound = GetAsset<AssetSound>(sound_name);
+    if (!sound) return;
+    if (Mix_PlayChannel(-1, sound->data, loops) == -1)
     {
         LOG_ERROR(ERR_MIN, "Failed to play sound effect! (%s)", Mix_GetError());
     }
 }
 
-INTERNAL void LoadMusic (Music& music, std::string file_name)
+INTERNAL void PlayMusic (std::string music_name, int loops)
 {
-    file_name = gAssetPath + "music/" + file_name;
-    music.data = Mix_LoadMUS(file_name.c_str());
-    if (!music.data)
-    {
-        LOG_ERROR(ERR_MAX, "Failed to load music '%s'! (%s)", file_name.c_str(), Mix_GetError());
-    }
-}
-
-INTERNAL void FreeMusic (Music& music)
-{
-    Mix_FreeMusic(music.data);
-    music.data = NULL;
-}
-
-INTERNAL void PlayMusic (Music& music, int loops)
-{
-    if (Mix_PlayMusic(music.data, loops) == -1)
+    Music* music = GetAsset<AssetMusic>(music_name);
+    if (!music) return;
+    if (Mix_PlayMusic(music->data, loops) == -1)
     {
         LOG_ERROR(ERR_MIN, "Failed to play music! (%s)", Mix_GetError());
     }

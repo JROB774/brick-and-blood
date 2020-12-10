@@ -28,7 +28,6 @@ void main_loop ()
 
 int main (int argc, char** argv)
 {
-    SetupAssetPath();
     LoadSettings();
     InitWindow();
     InitMixer();

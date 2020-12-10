@@ -1,7 +1,5 @@
 INTERNAL void LoadImage (Image& image, std::string file_name)
 {
-    file_name = gAssetPath + file_name;
-
     constexpr int BPP = 4; // We force the image to be in 32-bit RGBA format!
     int w,h,bpp;
     unsigned char* data = stbi_load(file_name.c_str(), &w,&h,&bpp, BPP);
@@ -17,8 +15,8 @@ INTERNAL void LoadImage (Image& image, std::string file_name)
             if (!image.texture) LOG_ERROR(ERR_MAX, "Failed to create texture '%s'! (%s)", file_name.c_str(), SDL_GetError());
             else
             {
-                image.w = (float)w, image.h = (float)h;
-                image.color = { 1,1,1,1 };
+                image.w = (float)w;
+                image.h = (float)h;
             }
             SDL_FreeSurface(surface);
         }

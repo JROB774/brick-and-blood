@@ -6,17 +6,21 @@ GLOBAL constexpr int FONT_CHAR_COUNT = 256;
 struct Font
 {
     SDL_Rect bounds[FONT_CHAR_COUNT];
-    Image image;
+    std::string image;
     float charw;
     float charh;
 };
 
-INTERNAL void LoadFont (Font& font, float cw, float ch, std::string file_name);
+// SHOULD NOT BE USED DIRECTLY -- USE THE ASSET MANAGER INSTEAD!!!
+INTERNAL void LoadFont (Font& font, std::string file_name);
 INTERNAL void FreeFont (Font& font);
 
-INTERNAL float GetTextLineWidth (Font& font, std::string text, int line);
+//
+// INTERFACE
+//
 
-INTERNAL float GetTextWidth  (Font& font, std::string text);
-INTERNAL float GetTextHeight (Font& font, std::string text);
+INTERNAL float GetTextLineWidth (std::string font_name, std::string text, int line);
+INTERNAL float GetTextWidth     (std::string font_name, std::string text);
+INTERNAL float GetTextHeight    (std::string font_name, std::string text);
 
 #endif /* FONT_HPP */

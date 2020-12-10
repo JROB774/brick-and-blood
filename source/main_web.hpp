@@ -33,7 +33,6 @@
 // Header includes.
 #include "utility.hpp"
 #include "error.hpp"
-#include "assets.hpp"
 #include "image.hpp"
 #include "font.hpp"
 #include "settings.hpp"
@@ -45,13 +44,13 @@
 #include "animation.hpp"
 #include "particle.hpp"
 #include "collision.hpp"
+#include "asset_manager.hpp"
 #include "camera.hpp"
 #include "application.hpp"
 
 // Source includes.
 #include "utility.cpp"
 #include "error.cpp"
-#include "assets.cpp"
 #include "image.cpp"
 #include "font.cpp"
 #include "settings.cpp"
@@ -63,6 +62,7 @@
 #include "animation.cpp"
 #include "particle.cpp"
 #include "collision.cpp"
+#include "asset_manager.cpp"
 #include "camera.cpp"
 #include "application.cpp"
 

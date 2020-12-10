@@ -24,7 +24,7 @@ struct Particle
     ParticleType type;
     Vec2 pos,vel;
     float angle; // In radians.
-    Animation anim;
+    AnimationState anim;
     Vec4 color;
     bool dead;
     bool visible;

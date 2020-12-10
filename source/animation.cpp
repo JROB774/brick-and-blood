@@ -1,6 +1,5 @@
 INTERNAL void LoadAnimation (Animation& animation, std::string file_name)
 {
-    file_name = gAssetPath + "anims/" + file_name;
     GonObject gon = GonObject::Load(file_name);
     if (gon.type != GonObject::FieldType::OBJECT)
     {
@@ -23,9 +22,6 @@ INTERNAL void LoadAnimation (Animation& animation, std::string file_name)
         animation.frames.push_back({ duration, { x,y,w,h } });
         x += w;
     }
-
-    animation.state.timer = 0;
-    animation.state.frame = 0;
 }
 
 INTERNAL void FreeAnimation (Animation& animation)
@@ -33,69 +29,88 @@ INTERNAL void FreeAnimation (Animation& animation)
     animation.frames.clear();
 }
 
-INTERNAL void UpdateAnimation (Animation& animation, float dt)
+//
+// INTERFACE
+//
+
+INTERNAL void CreateAnimation (AnimationState& state, std::string animation_name)
 {
-    if (animation.looped || animation.state.frame < animation.frames.size())
+    state.anim = animation_name;
+    state.timer = 0, state.frame = 0;
+}
+
+INTERNAL void UpdateAnimation (AnimationState& state, float dt)
+{
+    Animation* animation = GetAsset<AssetAnimation>(state.anim);
+    if (!animation) return;
+
+    if (animation->looped || state.frame < animation->frames.size())
     {
         float time = 0.0f;
-        for (int i=0; i<animation.frames.size(); ++i)
+        for (int i=0; i<animation->frames.size(); ++i)
         {
-            time += animation.frames.at(i).duration;
-            if (animation.state.timer <= time)
+            time += animation->frames.at(i).duration;
+            if (state.timer <= time)
             {
-                animation.state.frame = i;
+                state.frame = i;
                 break;
             }
         }
 
-        animation.state.timer += dt;
+        state.timer += dt;
 
         // Handles wrapping back round to the start of the animation if we're looped.
-        if (animation.looped)
+        if (animation->looped)
         {
             float total_time = 0.0f;
-            for (auto& frame: animation.frames)
+            for (auto& frame: animation->frames)
             {
                 total_time += frame.duration;
             }
 
             if (total_time > 0.0f)
             {
-                while (animation.state.timer >= total_time)
+                while (state.timer >= total_time)
                 {
-                    animation.state.timer -= total_time;
+                    state.timer -= total_time;
                 }
             }
         }
     }
 }
 
-INTERNAL void ResetAnimation (Animation& animation)
+INTERNAL void ResetAnimation (AnimationState& state)
 {
-    animation.state.timer = 0;
-    animation.state.frame = 0;
+    state.timer = 0;
+    state.frame = 0;
 }
 
-INTERNAL bool IsAnimationDone (Animation& animation)
+INTERNAL bool IsAnimationDone (AnimationState& state)
 {
-    if (animation.looped) return false;
+    Animation* animation = GetAsset<AssetAnimation>(state.anim);
+    if (!animation) return false;
+    if (animation->looped) return false;
     float total_time = 0.0f;
-    for (auto& frame: animation.frames) total_time += frame.duration;
-    if (animation.state.timer >= total_time) return true;
+    for (auto& frame: animation->frames) total_time += frame.duration;
+    if (state.timer >= total_time) return true;
     return false;
 }
 
-INTERNAL const SDL_Rect* GetAnimationClip (Animation& animation)
+INTERNAL const SDL_Rect* GetAnimationClip (AnimationState& state)
 {
-    return &animation.frames.at(animation.state.frame).clip;
+    Animation* animation = GetAsset<AssetAnimation>(state.anim);
+    if (!animation) return NULL;
+    return &animation->frames.at(state.frame).clip;
 }
 
-INTERNAL int GetAnimationFrameWidth (Animation& animation)
+INTERNAL int GetAnimationFrameWidth (AnimationState& state)
 {
-    return GetAnimationClip(animation)->w;
+    const SDL_Rect* clip = GetAnimationClip(state);
+    return (clip) ? clip->w : 0;
 }
 
-INTERNAL int GetAnimationFrameHeight (Animation& animation)
+INTERNAL int GetAnimationFrameHeight (AnimationState& state)
 {
-    return GetAnimationClip(animation)->h;
+    const SDL_Rect* clip = GetAnimationClip(state);
+    return (clip) ? clip->h : 0;
 }

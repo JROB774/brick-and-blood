@@ -1,34 +1,50 @@
-INTERNAL void LoadFont (Font& font, float cw, float ch, std::string file_name)
+INTERNAL void LoadFont (Font& font, std::string file_name)
 {
-    LoadImage(font.image, file_name);
+    GonObject gon = GonObject::Load(file_name);
+    if (gon.type != GonObject::FieldType::OBJECT)
+    {
+        LOG_ERROR(ERR_MAX, "Font not a GON object! (%s)", file_name.c_str());
+        return;
+    }
+
+    font.image = gon["image"].String();
+    font.charw = static_cast<float>(gon["char_width"].Number());
+    font.charh = static_cast<float>(gon["char_height"].Number());
+
+    Image* image = GetAsset<AssetImage>(font.image);
+    if (!image)
+    {
+        LOG_ERROR(ERR_MAX, "Failed to load font image! (%s)", file_name.c_str());
+        return;
+    }
 
     int x = 0;
     int y = 0;
-    int w = (int)cw;
-    int h = (int)ch;
+    int w = (int)font.charw;
+    int h = (int)font.charh;
 
     for (int i=0; i<FONT_CHAR_COUNT; ++i)
     {
         font.bounds[i] = { x,y,w,h };
         x += w;
-        if (x >= font.image.w)
+        if (x >= image->w)
         {
             x = 0;
             y += h;
         }
     }
-
-    font.charw = cw;
-    font.charh = ch;
 }
 
 INTERNAL void FreeFont (Font& font)
 {
-    FreeImage(font.image);
+    // Nothing...
 }
 
-INTERNAL float GetTextLineWidth (Font& font, std::string text, int line)
+INTERNAL float GetTextLineWidth (std::string font_name, std::string text, int line)
 {
+    Font* font = GetAsset<AssetFont>(font_name);
+    if (!font) return 0.0f;
+
     float linewidth = 0;
     int lineindex = 0;
     for (int i=0; i<text.length(); ++i)
@@ -40,14 +56,17 @@ INTERNAL float GetTextLineWidth (Font& font, std::string text, int line)
         }
         else
         {
-            linewidth += font.charw;
+            linewidth += font->charw;
         }
     }
     return linewidth;
 }
 
-INTERNAL float GetTextWidth (Font& font, std::string text)
+INTERNAL float GetTextWidth (std::string font_name, std::string text)
 {
+    Font* font = GetAsset<AssetFont>(font_name);
+    if (!font) return 0.0f;
+
     float linewidth = 0;
     float width = 0;
     for (int i=0; i<text.length(); ++i)
@@ -59,20 +78,23 @@ INTERNAL float GetTextWidth (Font& font, std::string text)
         }
         else
         {
-            linewidth += font.charw;
+            linewidth += font->charw;
         }
     }
     return std::max(width, linewidth);
 }
 
-INTERNAL float GetTextHeight (Font& font, std::string text)
+INTERNAL float GetTextHeight (std::string font_name, std::string text)
 {
-    float height = font.charh;
+    Font* font = GetAsset<AssetFont>(font_name);
+    if (!font) return 0.0f;
+
+    float height = font->charh;
     for (int i=0; i<text.length(); ++i)
     {
         if (text[i] == '\n')
         {
-            height += font.charh;
+            height += font->charh;
         }
     }
     return height;

@@ -17,10 +17,10 @@ set LibraryDirs=-libpath:source\depends\libsdl2\library\%Architecture%
 
 set Defines=
 
-set CompilerFlags=-Zc:__cplusplus -std:c++17 -nologo -W4 -MT -Oi -GR- -EHsc -Z7
+set CompilerFlags=-Zc:__cplusplus -std:c++17 -nologo -W4 -MT -Oi -EHsc -Z7
 set LinkerFlags=-opt:ref -incremental:no
 
-set CompilerWarnings=-wd4100 -wd4505 -wd4189
+set CompilerWarnings=-wd4100 -wd4505 -wd4189 -wd4201
 set LinkerWarnings=-ignore:4099
 
 set ResourceFile=resource\resources.rc

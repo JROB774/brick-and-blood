@@ -1,20 +1,17 @@
 GLOBAL struct ParticleSystem
 {
     std::vector<Particle> particles;
-    Image image;
     float clear_timer;
 
 } gParticleSystem;
 
 INTERNAL void InitParticleSystem ()
 {
-    LoadImage(gParticleSystem.image, "textures/particle.png");
     gParticleSystem.clear_timer = 0.0f;
 }
 
 INTERNAL void QuitParticleSystem ()
 {
-    FreeImage(gParticleSystem.image);
     gParticleSystem.particles.clear();
 }
 
@@ -33,7 +30,7 @@ INTERNAL void CreateParticles (ParticleType type, int minx, int miny, int maxx, 
 
         particle.type = type;
         particle.vel = { 0,0 };
-        LoadAnimation(particle.anim, base.anims[RandomRange(0, (int)base.anims.size()-1)]);
+        CreateAnimation(particle.anim, base.anims[RandomRange(0, (int)base.anims.size()-1)]);
         particle.color = { 1,1,1,1 };
         particle.dead = false;
         particle.visible = true;
@@ -94,8 +91,7 @@ INTERNAL void DrawParticles ()
         if (particle.visible && !particle.dead)
         {
             UpdateAnimation(particle.anim, gApplication.delta_time);
-            gParticleSystem.image.color = particle.color;
-            DrawImage(gParticleSystem.image, particle.pos.x, particle.pos.y, particle.angle, FLIP_NONE, GetAnimationClip(particle.anim));
+            DrawImage("particle", particle.pos.x, particle.pos.y, particle.angle, FLIP_NONE, particle.color, GetAnimationClip(particle.anim));
         }
     }
 }

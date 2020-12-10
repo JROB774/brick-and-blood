@@ -7,28 +7,35 @@ struct AnimationFrame
     SDL_Rect clip;
 };
 
-struct AnimationState
-{
-    float timer;
-    int frame;
-};
-
 struct Animation
 {
     std::vector<AnimationFrame> frames;
     bool looped;
-    AnimationState state;
 };
 
-INTERNAL void LoadAnimation   (Animation& animation, std::string file_name);
-INTERNAL void FreeAnimation   (Animation& animation);
-INTERNAL void UpdateAnimation (Animation& animation, float dt);
-INTERNAL void ResetAnimation  (Animation& animation);
-INTERNAL bool IsAnimationDone (Animation& animation);
+struct AnimationState
+{
+    std::string anim;
+    float timer;
+    int frame;
+};
 
-INTERNAL const SDL_Rect* GetAnimationClip (Animation& animation);
+// SHOULD NOT BE USED DIRECTLY -- USE THE ASSET MANAGER INSTEAD!!!
+INTERNAL void LoadAnimation (Animation& animation, std::string file_name);
+INTERNAL void FreeAnimation (Animation& animation);
 
-INTERNAL int GetAnimationFrameWidth  (Animation& animation);
-INTERNAL int GetAnimationFrameHeight (Animation& animation);
+//
+// INTERFACE
+//
+
+INTERNAL void CreateAnimation (AnimationState& state, std::string animation_name);
+INTERNAL void UpdateAnimation (AnimationState& state, float dt);
+INTERNAL void ResetAnimation  (AnimationState& state);
+INTERNAL bool IsAnimationDone (AnimationState& state);
+
+INTERNAL const SDL_Rect* GetAnimationClip (AnimationState& state);
+
+INTERNAL int GetAnimationFrameWidth  (AnimationState& state);
+INTERNAL int GetAnimationFrameHeight (AnimationState& state);
 
 #endif /* ANIMATION_HPP */
