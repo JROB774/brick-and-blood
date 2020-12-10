@@ -1,0 +1,6 @@
+player
+{
+    spawn PlayerSpawn
+    update PlayerUpdate
+    color [ 0.81 0.77 0.72 ]
+}

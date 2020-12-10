@@ -1,19 +1,11 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-// List of all the different entity types.
-
-enum EntityType
-{
-    ENTITY_TYPE_PLAYER,
-    ENTITY_TYPE_TOTAL
-};
-
 // General-purpose entity systems and functionality.
 
 struct Entity
 {
-    EntityType type;
+    std::string base_type;
 
     struct { int x,y; } tile;
 
@@ -35,31 +27,27 @@ struct Entity
     } draw;
 };
 
-INTERNAL void SpawnEntity (EntityType type, int tilex, int tiley);
+INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley);
 
+INTERNAL void   InitEntities ();
 INTERNAL void UpdateEntities ();
 INTERNAL void RenderEntities ();
 
-// Spawn and update functions for the different entity types.
-
-INTERNAL void Entity_PlayerSpawn  (Entity& e);
-INTERNAL void Entity_PlayerUpdate (Entity& e);
-
-// Base information for each type of entity.
+// Different spawn and update behaviours that entity types can use.
 
 typedef void(*EntitySpawn)(Entity& e);
 typedef void(*EntityUpdate)(Entity& e);
 
-struct EntityBase
-{
-    EntitySpawn spawn;
-    EntityUpdate update;
-    Vec4 base_color;
-};
+INTERNAL void Entity_PlayerSpawn  (Entity& e);
+INTERNAL void Entity_PlayerUpdate (Entity& e);
 
-GLOBAL constexpr EntityBase ENTITY_BASE_LIST[ENTITY_TYPE_TOTAL]
+GLOBAL const std::map<std::string,EntitySpawn> ENTITY_SPAWN_PROC
 {
-    { Entity_PlayerSpawn, Entity_PlayerUpdate, { 0.81f,0.77f,0.72f,1.0f } } // ENTITY_TYPE_PLAYER
+    { "PlayerSpawn", Entity_PlayerSpawn },
+};
+GLOBAL const std::map<std::string,EntityUpdate> ENTITY_UPDATE_PROC
+{
+    { "PlayerUpdate", Entity_PlayerUpdate },
 };
 
 #endif // ENTITY_HPP

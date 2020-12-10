@@ -56,6 +56,15 @@ struct AssetImage: public AssetBase
     Image data;
 };
 
+struct AssetData: public AssetBase
+{
+    static inline const std::string Path = "data/";
+    static inline const std::string Ext = ".data";
+    void Load (std::string file_name) override;
+    void Free () override;
+    GonObject data;
+};
+
 struct AssetAnimation: public AssetBase
 {
     static inline const std::string Path = "anims/";

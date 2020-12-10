@@ -67,6 +67,15 @@ void AssetImage::Free ()
     FreeImage(data);
 }
 
+void AssetData::Load (std::string file_name)
+{
+    data = GonObject::Load(file_name);
+}
+void AssetData::Free ()
+{
+    // Nothing...
+}
+
 void AssetAnimation::Load (std::string file_name)
 {
     LoadAnimation(data, file_name);

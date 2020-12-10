@@ -1,6 +1,7 @@
 INTERNAL void InitGame ()
 {
-    SpawnEntity(ENTITY_TYPE_PLAYER, 0,0);
+    InitEntities();
+    SpawnEntity("player", 0,0);
 }
 
 INTERNAL void QuitGame ()
