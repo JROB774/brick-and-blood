@@ -43,6 +43,9 @@
 #define STB_IMAGE_STATIC
 #include <stb_image.h>
 
+#include <glad/glad.h>
+#include <glad/glad.c>
+
 // Header includes.
 #include "utility.hpp"
 #include "error.hpp"
