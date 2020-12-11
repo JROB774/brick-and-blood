@@ -46,7 +46,7 @@ INTERNAL void DrawFill (Rect rect, Vec4 color)
     DrawFill(rect.x, rect.y, rect.w, rect.h, color);
 }
 
-INTERNAL void DrawImage (std::string image_name, float x, float y, float angle, Flip flip, Vec4 color, const SDL_Rect* clip)
+INTERNAL void DrawImage (std::string image_name, float x, float y, Vec2 center, float angle, Flip flip, Vec4 color, const SDL_Rect* clip)
 {
     Image* image = GetAsset<AssetImage>(image_name);
     if (!image) return;
@@ -59,9 +59,8 @@ INTERNAL void DrawImage (std::string image_name, float x, float y, float angle, 
     rect.y = roundf(rect.y) - gRenderOffset.y;
     rect.w = roundf(rect.w);
     rect.h = roundf(rect.h);
-    SDL_FPoint center = { image->w/2, image->h/2 };
-    if (clip) { center.x = (float)clip->w/2, center.y = (float)clip->h/2; }
-    SDL_RenderCopyExF(gWindow.renderer, image->texture, clip, &rect, angle, &center, flip);
+    SDL_FPoint point = { center.x, center.y };
+    SDL_RenderCopyExF(gWindow.renderer, image->texture, clip, &rect, angle, &point, flip);
 }
 
 INTERNAL void DrawText (std::string font_name, std::string text, float x, float y, Vec4 color)
@@ -85,7 +84,7 @@ INTERNAL void DrawText (std::string font_name, std::string text, float x, float 
         }
         else
         {
-            DrawImage(font->image, ix, iy, 0.0f, FLIP_NONE, color, &font->bounds[static_cast<U8>(text.at(i))]);
+            DrawImage(font->image, ix, iy, {0,0}, 0.0f, FLIP_NONE, color, &font->bounds[static_cast<U8>(text.at(i))]);
             ix += font->charw;
         }
     }

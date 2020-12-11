@@ -91,7 +91,7 @@ INTERNAL void DrawParticles ()
         if (particle.visible && !particle.dead)
         {
             UpdateAnimation(particle.anim, gApplication.delta_time);
-            DrawImage("particle", particle.pos.x, particle.pos.y, particle.angle, FLIP_NONE, particle.color, GetAnimationClip(particle.anim));
+            DrawImage("particle", particle.pos.x, particle.pos.y, {0,0}, particle.angle, FLIP_NONE, particle.color, GetAnimationClip(particle.anim));
         }
     }
 }

@@ -115,7 +115,8 @@ INTERNAL void RenderEntities ()
 {
     for (auto& e: gEntitySystem.entities)
     {
-        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, e.draw.angle.current, FLIP_NONE, e.draw.color.current);
+        Vec2 center = { e.draw.clip.x+(16/2), e.draw.clip.y+(16/2) };
+        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current);
     }
 }
 
