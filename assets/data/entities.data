@@ -2,5 +2,6 @@ player
 {
     spawn PlayerSpawn
     update PlayerUpdate
+    image [ 0 0 ]
     color [ 0.81 0.77 0.72 ]
 }

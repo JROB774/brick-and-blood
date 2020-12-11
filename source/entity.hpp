@@ -3,16 +3,25 @@
 
 // General-purpose entity systems and functionality.
 
+struct Entity;
+
+typedef void(*EntitySpawn)(Entity& e);
+typedef void(*EntityUpdate)(Entity& e);
+
 struct Entity
 {
     std::string base_type;
 
-    struct { int x,y; } tile;
+    struct { int x,y; } pos;
+
+    EntitySpawn spawn;
+    EntityUpdate update;
 
     // Drawing stuff.
     struct
     {
         Vec2 pos;
+        Rect clip;
 
         struct
         {
@@ -34,9 +43,6 @@ INTERNAL void UpdateEntities ();
 INTERNAL void RenderEntities ();
 
 // Different spawn and update behaviours that entity types can use.
-
-typedef void(*EntitySpawn)(Entity& e);
-typedef void(*EntityUpdate)(Entity& e);
 
 INTERNAL void Entity_PlayerSpawn  (Entity& e);
 INTERNAL void Entity_PlayerUpdate (Entity& e);

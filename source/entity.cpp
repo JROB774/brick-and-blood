@@ -6,6 +6,7 @@ struct EntityBase
 {
     EntitySpawn spawn;
     EntityUpdate update;
+    struct { int x,y; } image;
     Vec4 color;
 };
 
@@ -31,17 +32,23 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     Entity& e = gEntitySystem.entities.back();
 
     e.base_type = base_type;
-    e.tile.x = tilex;
-    e.tile.y = tiley;
+    e.pos.x = tilex;
+    e.pos.y = tiley;
+    e.spawn = base.spawn;
+    e.update = base.update;
     e.draw.pos.x = (float)(tilex*16);
     e.draw.pos.x = (float)(tiley*16);
+    e.draw.clip.x = (float)base.image.x*16;
+    e.draw.clip.y = (float)base.image.y*16;
+    e.draw.clip.w = 16;
+    e.draw.clip.h = 16;
     e.draw.angle.current = 0.0f;
     e.draw.angle.target = 0.0f;
     e.draw.color.current = base.color;
     e.draw.color.target = base.color;
 
     // If the entity has extra spawn functionality, do it.
-    if (base.spawn) base.spawn(e);
+    if (e.spawn) e.spawn(e);
 }
 
 INTERNAL void InitEntities ()
@@ -62,6 +69,12 @@ INTERNAL void InitEntities ()
         if (ENTITY_SPAWN_PROC.count(spawn_name)) base.spawn = ENTITY_SPAWN_PROC.at(spawn_name);
         std::string update_name = data["update"].String("");
         if (ENTITY_UPDATE_PROC.count(update_name)) base.update = ENTITY_UPDATE_PROC.at(update_name);
+
+        if (data.Contains("image"))
+        {
+            base.image.x = data["image"][0].Int(0);
+            base.image.y = data["image"][1].Int(0);
+        }
 
         if (data.Contains("color"))
         {
@@ -84,8 +97,8 @@ INTERNAL void UpdateEntities ()
     for (auto& e: gEntitySystem.entities)
     {
         // Smoothly lerp the player from tile-to-tile to give a more fluid feel to the movement.
-        float target_x = (float)e.tile.x*16;
-        float target_y = (float)e.tile.y*16;
+        float target_x = (float)e.pos.x*16;
+        float target_y = (float)e.pos.y*16;
         e.draw.pos.x = Lerp(e.draw.pos.x, target_x, gApplication.delta_time*ENTITY_MOVE_SPEED);
         e.draw.pos.y = Lerp(e.draw.pos.y, target_y, gApplication.delta_time*ENTITY_MOVE_SPEED);
 
@@ -94,8 +107,7 @@ INTERNAL void UpdateEntities ()
         e.draw.color.current = Lerp(e.draw.color.current, e.draw.color.target, gApplication.delta_time*ENTITY_COLOR_SPEED);
 
         // If the entity has extra update functionality, do it.
-        EntityBase& base = gEntitySystem.entity_base.at(e.base_type);
-        if (base.update) base.update(e);
+        if (e.update) e.update(e);
     }
 }
 
@@ -121,13 +133,13 @@ INTERNAL void Entity_PlayerSpawn (Entity& e)
 INTERNAL void Entity_PlayerUpdate (Entity& e)
 {
     // Handle actual tile-to-tile movement.
-    if (IsKeyPressed(SDL_SCANCODE_A)) e.tile.x--;
-    if (IsKeyPressed(SDL_SCANCODE_D)) e.tile.x++;
-    if (IsKeyPressed(SDL_SCANCODE_W)) e.tile.y--;
-    if (IsKeyPressed(SDL_SCANCODE_S)) e.tile.y++;
+    if (IsKeyPressed(SDL_SCANCODE_A)) e.pos.x--;
+    if (IsKeyPressed(SDL_SCANCODE_D)) e.pos.x++;
+    if (IsKeyPressed(SDL_SCANCODE_W)) e.pos.y--;
+    if (IsKeyPressed(SDL_SCANCODE_S)) e.pos.y++;
 
-    float target_x = (float)e.tile.x*16;
-    float target_y = (float)e.tile.y*16;
+    float target_x = (float)e.pos.x*16;
+    float target_y = (float)e.pos.y*16;
 
     // @Improve: Handle the direction you turn based on movement a bit better.
     // Handle rotating the player slightly when they are moving for some nice visual flair.
