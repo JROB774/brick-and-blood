@@ -66,9 +66,9 @@ INTERNAL void InitEntities ()
         if (data.Contains("color"))
         {
             base.color.r = (float)data["color"][0].Number(1.0);
-            base.color.g = (float)data["color"][0].Number(1.0);
-            base.color.b = (float)data["color"][0].Number(1.0);
-            base.color.a = (float)data["color"][0].Number(1.0);
+            base.color.g = (float)data["color"][1].Number(1.0);
+            base.color.b = (float)data["color"][2].Number(1.0);
+            base.color.a = (float)data["color"][3].Number(1.0);
         }
         else
         {
