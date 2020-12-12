@@ -1,11 +1,13 @@
-GLOBAL constexpr float ENTITY_MOVE_SPEED = 20.0f;
-GLOBAL constexpr float ENTITY_COLOR_SPEED = 2.5f;
-GLOBAL constexpr float ENTITY_TURN_SPEED = 15.0f;
-GLOBAL constexpr float ENTITY_TURN_ANGLE = 10.0f;
+GLOBAL constexpr float ENTITY_MOVE_SPEED  = 20.0f;
+GLOBAL constexpr float ENTITY_COLOR_SPEED =  4.0f;
+GLOBAL constexpr float ENTITY_TURN_SPEED  = 15.0f;
+GLOBAL constexpr float ENTITY_TURN_ANGLE  = 10.0f;
+GLOBAL constexpr float ENTITY_HIT_ANGLE   = 30.0f;
 
 struct EntityBase
 {
     int initiative;
+    int health;
     EntityBehavior behavior;
     struct { int x,y; } image;
     Vec4 color;
@@ -39,6 +41,7 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.old_pos.y = tiley;
     e.initiative = base.initiative;
     e.behavior = base.behavior;
+    e.health = base.health;
     e.draw.pos.x = (float)(tilex*TILE_W);
     e.draw.pos.y = (float)(tiley*TILE_H);
     e.draw.clip.x = base.image.x*TILE_W;
@@ -75,6 +78,7 @@ INTERNAL void InitEntities ()
         EntityBase base = {};
 
         base.initiative = data["initiative"].Int(INT_MAX);
+        base.health = data["health"].Int(1);
 
         std::string behavior = data["behavior"].String("none");
         if (behavior != "none")
@@ -113,6 +117,8 @@ INTERNAL void UpdateEntities ()
     // Update all the entities.
     for (auto& e: gEntitySystem.entities)
     {
+        if (e.health <= 0) continue;
+
         e.old_pos.x = e.pos.x;
         e.old_pos.y = e.pos.y;
 
@@ -125,6 +131,8 @@ INTERNAL void RenderEntities ()
 {
     for (auto& e: gEntitySystem.entities)
     {
+        if (e.health <= 0) continue;
+
         // Smoothly lerp the entity from tile-to-tile to give a more fluid feel to the movement.
         float target_x = (float)e.pos.x*TILE_W;
         float target_y = (float)e.pos.y*TILE_H;
@@ -163,6 +171,13 @@ INTERNAL void MoveEntity (Entity& e, int x, int y)
     e.pos.y = y;
 }
 
+INTERNAL void DamageEntity (Entity& e)
+{
+    e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
+    e.draw.angle.current = ENTITY_HIT_ANGLE;
+    e.health--;
+}
+
 //
 // BEHAVIORS
 //
@@ -172,22 +187,19 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
     int targetx = e.pos.x;
     int targety = e.pos.y;
 
-    Direction dir = DIR_N;
-
-    if (IsKeyPressed(SDL_SCANCODE_W)) { targety--; dir = DIR_N; }
-    if (IsKeyPressed(SDL_SCANCODE_D)) { targetx++; dir = DIR_E; }
-    if (IsKeyPressed(SDL_SCANCODE_S)) { targety++; dir = DIR_S; }
-    if (IsKeyPressed(SDL_SCANCODE_A)) { targetx--; dir = DIR_W; }
+    if (IsKeyPressed(SDL_SCANCODE_W)) targety--;
+    if (IsKeyPressed(SDL_SCANCODE_D)) targetx++;
+    if (IsKeyPressed(SDL_SCANCODE_S)) targety++;
+    if (IsKeyPressed(SDL_SCANCODE_A)) targetx--;
 
     // If our target is not our tile handle attacking, moving, etc.
     if (targetx != e.pos.x || targety != e.pos.y)
     {
         Entity* o = GetEntityAtPos(targetx,targety);
-        if (o) // If there's an entity at our target location, carry out the appropriate action.
+        if (o && o->health > 0) // If there's an entity at our target location, carry out the appropriate action.
         {
             e.draw.angle.current = ENTITY_TURN_ANGLE;
-
-            // @Incomplete: ...
+            DamageEntity(*o);
         }
         else // Otherwise move to that tile.
         {

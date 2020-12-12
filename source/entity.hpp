@@ -15,6 +15,7 @@ struct Entity
     struct { int x,y; } pos, old_pos;
 
     int initiative; // Controls what entity acts first.
+    int health;
 
     EntityBehavior behavior;
 
