@@ -68,18 +68,29 @@ INTERNAL bool IsFullscreen ()
 
 INTERNAL int GetWindowWidth ()
 {
-    if (gWindow.fullscreen) return gWindow.width;
+    // if (gWindow.fullscreen) return gWindow.width;
     int windoww,windowh;
     SDL_GetWindowSize(gWindow.window, &windoww,&windowh);
     return windoww;
 }
-
 INTERNAL int GetWindowHeight ()
 {
-    if (gWindow.fullscreen) return gWindow.height;
+    // if (gWindow.fullscreen) return gWindow.height;
     int windoww,windowh;
     SDL_GetWindowSize(gWindow.window, &windoww,&windowh);
     return windowh;
+}
+
+// Used for saving settings data!
+INTERNAL int GetCachedWindowWidth ()
+{
+    if (gWindow.fullscreen) return gWindow.width;
+    return GetWindowWidth();
+}
+INTERNAL int GetCachedWindowHeight ()
+{
+    if (gWindow.fullscreen) return gWindow.height;
+    return GetWindowHeight();
 }
 
 INTERNAL void SetWindowSize (int width, int height)
@@ -145,8 +156,17 @@ INTERNAL int GetWindowWidth ()
 {
     return WINDOW_START_W;
 }
-
 INTERNAL int GetWindowHeight ()
+{
+    return WINDOW_START_H;
+}
+
+// Used for saving settings data!
+INTERNAL int GetCachedWindowWidth ()
+{
+    return WINDOW_START_W;
+}
+INTERNAL int GetCachedWindowHeight ()
 {
     return WINDOW_START_H;
 }
@@ -196,4 +216,5 @@ INTERNAL void SetViewport ()
 INTERNAL void UnsetViewport ()
 {
     SDL_RenderSetViewport(gWindow.renderer, NULL);
+    SDL_RenderSetScale(gWindow.renderer, 1,1);
 }

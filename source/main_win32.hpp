@@ -61,6 +61,7 @@
 #include "camera.hpp"
 #include "entity.hpp"
 #include "game.hpp"
+#include "editor.hpp"
 #include "application.hpp"
 
 // Source includes.
@@ -82,4 +83,5 @@
 #include "camera.cpp"
 #include "entity.cpp"
 #include "game.cpp"
+#include "editor.cpp"
 #include "application.cpp"

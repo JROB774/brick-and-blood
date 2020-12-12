@@ -38,8 +38,8 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.update = base.update;
     e.draw.pos.x = (float)(tilex*16);
     e.draw.pos.x = (float)(tiley*16);
-    e.draw.clip.x = (float)base.image.x*16;
-    e.draw.clip.y = (float)base.image.y*16;
+    e.draw.clip.x = base.image.x*16;
+    e.draw.clip.y = base.image.y*16;
     e.draw.clip.w = 16;
     e.draw.clip.h = 16;
     e.draw.angle.current = 0.0f;
@@ -78,10 +78,10 @@ INTERNAL void InitEntities ()
 
         if (data.Contains("color"))
         {
-            base.color.r = (float)data["color"][0].Number(1.0);
-            base.color.g = (float)data["color"][1].Number(1.0);
-            base.color.b = (float)data["color"][2].Number(1.0);
-            base.color.a = (float)data["color"][3].Number(1.0);
+            base.color.r = (float)data["color"][0].Number(255.0) / 255.0f;
+            base.color.g = (float)data["color"][1].Number(255.0) / 255.0f;
+            base.color.b = (float)data["color"][2].Number(255.0) / 255.0f;
+            base.color.a = (float)data["color"][3].Number(255.0) / 255.0f;
         }
         else
         {
@@ -115,8 +115,8 @@ INTERNAL void RenderEntities ()
 {
     for (auto& e: gEntitySystem.entities)
     {
-        Vec2 center = { e.draw.clip.x+(16/2), e.draw.clip.y+(16/2) };
-        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current);
+        Vec2 center = { (float)e.draw.clip.x+(16/2), (float)e.draw.clip.y+(16/2) };
+        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
     }
 }
 

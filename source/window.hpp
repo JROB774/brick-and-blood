@@ -17,16 +17,18 @@ GLOBAL struct Window
 
 } gWindow;
 
-INTERNAL bool InitWindow      ();
-INTERNAL void QuitWindow      ();
-INTERNAL void ClearWindow     (Vec4 color);
-INTERNAL void RefreshWindow   ();
-INTERNAL void ShowWindow      ();
-INTERNAL void HideWindow      ();
-INTERNAL void SetViewport     ();
-INTERNAL void UnsetViewport   ();
-INTERNAL void SetFullscreen   (bool enable);
-INTERNAL bool IsFullscreen    ();
-INTERNAL void SetWindowSize   (int width, int height);
-INTERNAL int  GetWindowWidth  ();
-INTERNAL int  GetWindowHeight ();
+INTERNAL bool InitWindow            ();
+INTERNAL void QuitWindow            ();
+INTERNAL void ClearWindow           (Vec4 color);
+INTERNAL void RefreshWindow         ();
+INTERNAL void ShowWindow            ();
+INTERNAL void HideWindow            ();
+INTERNAL void SetViewport           ();
+INTERNAL void UnsetViewport         ();
+INTERNAL void SetFullscreen         (bool enable);
+INTERNAL bool IsFullscreen          ();
+INTERNAL void SetWindowSize         (int width, int height);
+INTERNAL int  GetWindowWidth        ();
+INTERNAL int  GetWindowHeight       ();
+INTERNAL int  GetCachedWindowWidth  ();
+INTERNAL int  GetCachedWindowHeight ();

@@ -1,12 +1,16 @@
 INTERNAL void InitApplication ()
 {
     gApplication.state = APP_STATE_GAME;
+    gApplication.editor = false;
+
     InitParticleSystem();
     InitGame();
+    InitEditor();
 }
 
 INTERNAL void QuitApplication ()
 {
+    QuitEditor();
     QuitGame();
     QuitParticleSystem();
 }
@@ -17,24 +21,46 @@ INTERNAL void UpdateApplication (float dt)
     gApplication.total_time += dt;
     gApplication.frame++;
 
-    switch (gApplication.state)
+    if (IsKeyPressed(SDL_SCANCODE_F1))
     {
-        case (APP_STATE_GAME): UpdateGame(); break;
+        gApplication.editor = !gApplication.editor;
+        if (gApplication.editor) SDL_ShowCursor(SDL_ENABLE);
+        else SDL_ShowCursor(SDL_DISABLE);
     }
 
-    UpdateParticles();
-    UpdateCamera();
+    if (!gApplication.editor)
+    {
+        switch (gApplication.state)
+        {
+            case (APP_STATE_GAME): UpdateGame(); break;
+        }
+
+        UpdateParticles();
+        UpdateCamera();
+    }
 }
 
 INTERNAL void RenderApplication (float dt)
 {
-    constexpr Rect SCREEN = { 0,0,WINDOW_SCREEN_W,WINDOW_SCREEN_H };
-    DrawFill(SCREEN, SDLColorToColor({ 71,45,60,255 }));
-
-    switch (gApplication.state)
+    if (!gApplication.editor)
     {
-        case (APP_STATE_GAME): RenderGame(); break;
-    }
+        SetViewport();
 
-    DrawParticles();
+        constexpr Rect SCREEN = { 0,0,WINDOW_SCREEN_W,WINDOW_SCREEN_H };
+        DrawFill(SCREEN, { 0.28f,0.18f,0.24f,1.0f });
+
+        switch (gApplication.state)
+        {
+            case (APP_STATE_GAME): RenderGame(); break;
+        }
+
+        DrawParticles();
+
+        UnsetViewport();
+    }
+    else
+    {
+        // Updates and renders the editor.
+        DoEditor();
+    }
 }

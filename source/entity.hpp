@@ -20,7 +20,7 @@ struct Entity
     struct
     {
         Vec2 pos;
-        Rect clip;
+        SDL_Rect clip;
 
         struct
         {

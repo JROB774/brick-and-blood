@@ -49,10 +49,8 @@ int main (int argc, char** argv)
         }
 
         ClearWindow({ 0,0,0,1 });
-        SetViewport();
         UpdateApplication(gTimer.delta_time);
         RenderApplication(gTimer.delta_time);
-        UnsetViewport();
 
         CapFramerate();
 

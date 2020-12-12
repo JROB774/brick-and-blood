@@ -1,0 +1,22 @@
+tree
+{
+    image [ 0 0 ]
+    color [ 56 217 115 ]
+    solid true
+    hits 3
+}
+
+pebble
+{
+    image [ 1 0 ]
+    color [ 207 198 184 ]
+    solid false
+}
+
+shrub
+{
+    image [ 2 0 ]
+    color [ 191 121 88 ]
+    solid true
+    hits 1
+}

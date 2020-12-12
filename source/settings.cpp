@@ -14,8 +14,8 @@ INTERNAL void SaveSettings ()
     if (!settings) LOG_ERROR(ERR_MED, "Failed to save settings!\n");
     else
     {
-        fprintf(settings, "window_width %d\n", GetWindowWidth());
-        fprintf(settings, "window_height %d\n", GetWindowHeight());
+        fprintf(settings, "window_width %d\n", GetCachedWindowWidth());
+        fprintf(settings, "window_height %d\n", GetCachedWindowHeight());
         fprintf(settings, "fullscreen %s\n", (IsFullscreen()) ? "true" : "false");
         fprintf(settings, "sound_volume %f\n", GetSoundVolume());
         fprintf(settings, "music_volume %f\n", GetMusicVolume());

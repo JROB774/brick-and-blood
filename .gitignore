@@ -14,5 +14,3 @@ binary/**/*.data
 binary/**/*.js
 binary/**/*.wasm
 binary/**/*.html
-
-editor/
