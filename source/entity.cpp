@@ -203,12 +203,29 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
         }
         else // Otherwise move to that tile.
         {
-            MoveEntity(e,targetx,targety);
+            MoveEntity(e, targetx,targety);
         }
     }
 }
 
 INTERNAL void Entity_BehaviorWander (Entity& e)
 {
-    MoveEntity(e, RandomRange(-1,1),RandomRange(-1,1));
+    int targetx = e.pos.x;
+    int targety = e.pos.y;
+
+    Direction dir = (Direction)RandomRange(DIR_N,DIR_S);
+    switch (dir)
+    {
+        case (DIR_N): targety--; break;
+        case (DIR_E): targetx++; break;
+        case (DIR_S): targety++; break;
+        case (DIR_W): targetx--; break;
+    }
+
+    // Don't move to the location where the player is.
+    Entity* o = GetEntityAtPos(targetx,targety);
+    if (!o || o->health <= 0 || o->base_type != "player")
+    {
+        MoveEntity(e, targetx,targety);
+    }
 }
