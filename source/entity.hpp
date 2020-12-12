@@ -4,8 +4,7 @@
 
 struct Entity;
 
-typedef void(*EntitySpawn)(Entity& e);
-typedef void(*EntityUpdate)(Entity& e);
+typedef void(*EntityBehavior)(Entity& e);
 
 struct Entity
 {
@@ -13,8 +12,9 @@ struct Entity
 
     struct { int x,y; } pos;
 
-    EntitySpawn spawn;
-    EntityUpdate update;
+    float timer;
+
+    EntityBehavior behavior;
 
     // Drawing stuff.
     struct
@@ -41,16 +41,13 @@ INTERNAL void   InitEntities ();
 INTERNAL void UpdateEntities ();
 INTERNAL void RenderEntities ();
 
-// Different spawn and update behaviours that entity types can use.
+// Different spawn and update behaviors that entity types can use.
 
-INTERNAL void Entity_PlayerSpawn  (Entity& e);
-INTERNAL void Entity_PlayerUpdate (Entity& e);
+INTERNAL void Entity_BehaviorPlayer (Entity& e);
+INTERNAL void Entity_BehaviorWander (Entity& e);
 
-GLOBAL const std::map<std::string,EntitySpawn> ENTITY_SPAWN_PROC
+GLOBAL const std::map<std::string,EntityBehavior> ENTITY_BEHAVIOR
 {
-    { "PlayerSpawn", Entity_PlayerSpawn },
-};
-GLOBAL const std::map<std::string,EntityUpdate> ENTITY_UPDATE_PROC
-{
-    { "PlayerUpdate", Entity_PlayerUpdate },
+    { "BehaviorPlayer", Entity_BehaviorPlayer },
+    { "BehaviorWander", Entity_BehaviorWander },
 };

@@ -1,7 +1,13 @@
 player
 {
-    spawn PlayerSpawn
-    update PlayerUpdate
+    behavior BehaviorPlayer
     image [ 0 0 ]
+    color [ 207 198 194 ]
+}
+
+goblin
+{
+    behavior BehaviorWander
+    image [ 1 0 ]
     color [ 207 198 194 ]
 }

@@ -1,11 +1,11 @@
 GLOBAL constexpr float ENTITY_MOVE_SPEED = 20.0f;
 GLOBAL constexpr float ENTITY_COLOR_SPEED = 2.5f;
 GLOBAL constexpr float ENTITY_TURN_SPEED = 15.0f;
+GLOBAL constexpr float ENTITY_TURN_ANGLE = 10.0f;
 
 struct EntityBase
 {
-    EntitySpawn spawn;
-    EntityUpdate update;
+    EntityBehavior behavior;
     struct { int x,y; } image;
     Vec4 color;
 };
@@ -34,10 +34,10 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.base_type = base_type;
     e.pos.x = tilex;
     e.pos.y = tiley;
-    e.spawn = base.spawn;
-    e.update = base.update;
+    e.timer = 0.0f;
+    e.behavior = base.behavior;
     e.draw.pos.x = (float)(tilex*16);
-    e.draw.pos.x = (float)(tiley*16);
+    e.draw.pos.y = (float)(tiley*16);
     e.draw.clip.x = base.image.x*16;
     e.draw.clip.y = base.image.y*16;
     e.draw.clip.w = 16;
@@ -46,9 +46,6 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.draw.angle.target = 0.0f;
     e.draw.color.current = base.color;
     e.draw.color.target = base.color;
-
-    // If the entity has extra spawn functionality, do it.
-    if (e.spawn) e.spawn(e);
 }
 
 INTERNAL void InitEntities ()
@@ -65,10 +62,8 @@ INTERNAL void InitEntities ()
     {
         EntityBase base = {};
 
-        std::string spawn_name = data["spawn"].String("");
-        if (ENTITY_SPAWN_PROC.count(spawn_name)) base.spawn = ENTITY_SPAWN_PROC.at(spawn_name);
-        std::string update_name = data["update"].String("");
-        if (ENTITY_UPDATE_PROC.count(update_name)) base.update = ENTITY_UPDATE_PROC.at(update_name);
+        std::string behavior = data["behavior"].String("");
+        if (ENTITY_BEHAVIOR.count(behavior)) base.behavior = ENTITY_BEHAVIOR.at(behavior);
 
         if (data.Contains("image"))
         {
@@ -96,7 +91,10 @@ INTERNAL void UpdateEntities ()
 {
     for (auto& e: gEntitySystem.entities)
     {
-        // Smoothly lerp the player from tile-to-tile to give a more fluid feel to the movement.
+        // If the entity has a behavior then carry it out.
+        if (e.behavior) e.behavior(e);
+
+        // Smoothly lerp the entity from tile-to-tile to give a more fluid feel to the movement.
         float target_x = (float)e.pos.x*16;
         float target_y = (float)e.pos.y*16;
         e.draw.pos.x = Lerp(e.draw.pos.x, target_x, gApplication.delta_time*ENTITY_MOVE_SPEED);
@@ -106,8 +104,17 @@ INTERNAL void UpdateEntities ()
         e.draw.angle.current = Lerp(e.draw.angle.current, e.draw.angle.target, gApplication.delta_time*ENTITY_TURN_SPEED);
         e.draw.color.current = Lerp(e.draw.color.current, e.draw.color.target, gApplication.delta_time*ENTITY_COLOR_SPEED);
 
-        // If the entity has extra update functionality, do it.
-        if (e.update) e.update(e);
+        // @Improve: Handle the direction you turn based on movement a bit better.
+        // Handle rotating the entity slightly when they are moving for some nice visual flair.
+        if (roundf(target_x) != roundf(e.draw.pos.x) || roundf(target_y) != roundf(e.draw.pos.y))
+        {
+            if ((roundf(target_x) > roundf(e.draw.pos.x)) || (roundf(target_y) > roundf(e.draw.pos.y))) e.draw.angle.target = ENTITY_TURN_ANGLE;
+            else if ((roundf(target_x) < roundf(e.draw.pos.x)) || (roundf(target_y) < roundf(e.draw.pos.y))) e.draw.angle.target = -ENTITY_TURN_ANGLE;
+        }
+        else
+        {
+            e.draw.angle.target = 0.0f;
+        }
     }
 }
 
@@ -121,36 +128,32 @@ INTERNAL void RenderEntities ()
 }
 
 //
-// Spawn and Update Behaviours
+// Behaviors
 //
 
-GLOBAL constexpr float PLAYER_TURN_ANGLE = 10.0f;
-
-INTERNAL void Entity_PlayerSpawn (Entity& e)
-{
-    // Nothing...
-}
-
-INTERNAL void Entity_PlayerUpdate (Entity& e)
+INTERNAL void Entity_BehaviorPlayer (Entity& e)
 {
     // Handle actual tile-to-tile movement.
     if (IsKeyPressed(SDL_SCANCODE_A)) e.pos.x--;
     if (IsKeyPressed(SDL_SCANCODE_D)) e.pos.x++;
     if (IsKeyPressed(SDL_SCANCODE_W)) e.pos.y--;
     if (IsKeyPressed(SDL_SCANCODE_S)) e.pos.y++;
+}
 
-    float target_x = (float)e.pos.x*16;
-    float target_y = (float)e.pos.y*16;
+INTERNAL void Entity_BehaviorWander (Entity& e)
+{
+    e.timer += gApplication.delta_time;
+    if (e.timer >= 0.75f)
+    {
+        e.timer -= 0.75f;
 
-    // @Improve: Handle the direction you turn based on movement a bit better.
-    // Handle rotating the player slightly when they are moving for some nice visual flair.
-    if (roundf(target_x) != roundf(e.draw.pos.x) || roundf(target_y) != roundf(e.draw.pos.y))
-    {
-        if ((roundf(target_x) > roundf(e.draw.pos.x)) || (roundf(target_y) > roundf(e.draw.pos.y))) e.draw.angle.target = PLAYER_TURN_ANGLE;
-        else if ((roundf(target_x) < roundf(e.draw.pos.x)) || (roundf(target_y) < roundf(e.draw.pos.y))) e.draw.angle.target = -PLAYER_TURN_ANGLE;
-    }
-    else
-    {
-        e.draw.angle.target = 0.0f;
+        int dir = RandomRange(0,3);
+        switch (dir)
+        {
+            case (0): e.pos.x--;
+            case (1): e.pos.x++;
+            case (2): e.pos.y--;
+            case (3): e.pos.y++;
+        }
     }
 }
