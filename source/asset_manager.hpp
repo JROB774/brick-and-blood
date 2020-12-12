@@ -99,3 +99,12 @@ struct AssetMusic: public AssetBase
     void Free () override;
     Music data;
 };
+
+struct AssetChunk: public AssetBase
+{
+    static inline const std::string Path = "chunks/";
+    static inline const std::string Ext = ".chunk";
+    void Load (std::string file_name) override;
+    void Free () override;
+    Chunk data;
+};
