@@ -10,9 +10,9 @@ struct Entity
 {
     std::string base_type;
 
-    struct { int x,y; } pos;
+    struct { int x,y; } pos, old_pos;
 
-    float timer;
+    int initiative; // Controls what entity acts first.
 
     EntityBehavior behavior;
 
@@ -33,6 +33,12 @@ struct Entity
             Vec4 target;
         } color;
     } draw;
+
+    // For sorting entities.
+    bool operator < (const Entity& e)
+    {
+        return (initiative < e.initiative);
+    }
 };
 
 INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley);

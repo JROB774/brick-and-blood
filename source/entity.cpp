@@ -5,6 +5,7 @@ GLOBAL constexpr float ENTITY_TURN_ANGLE = 10.0f;
 
 struct EntityBase
 {
+    int initiative;
     EntityBehavior behavior;
     struct { int x,y; } image;
     Vec4 color;
@@ -34,6 +35,9 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.base_type = base_type;
     e.pos.x = tilex;
     e.pos.y = tiley;
+    e.old_pos.x = tilex;
+    e.old_pos.y = tiley;
+    e.initiative = base.initiative;
     e.behavior = base.behavior;
     e.draw.pos.x = (float)(tilex*TILE_W);
     e.draw.pos.y = (float)(tiley*TILE_H);
@@ -60,6 +64,8 @@ INTERNAL void InitEntities ()
     for (auto& data: gon.children_array)
     {
         EntityBase base = {};
+
+        base.initiative = data["initiative"].Int(INT_MAX);
 
         std::string behavior = data["behavior"].String("none");
         if (behavior != "none")
@@ -92,8 +98,15 @@ INTERNAL void InitEntities ()
 
 INTERNAL void UpdateEntities ()
 {
+    // Sort the entities based on initiative so they get updated in correct order.
+    std::sort(gEntitySystem.entities.begin(), gEntitySystem.entities.end());
+
+    // Update all the entities.
     for (auto& e: gEntitySystem.entities)
     {
+        e.old_pos.x = e.pos.x;
+        e.old_pos.y = e.pos.y;
+
         // If the entity has a behavior then carry it out.
         if (e.behavior) e.behavior(e);
     }

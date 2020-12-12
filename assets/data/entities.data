@@ -1,5 +1,6 @@
 player
 {
+    initiative 0
     behavior BehaviorPlayer
     image [ 0 0 ]
     color [ 207 198 194 ]
@@ -7,6 +8,7 @@ player
 
 goblin
 {
+    initiative 1
     behavior BehaviorWander
     image [ 1 0 ]
     color [ 207 198 194 ]
