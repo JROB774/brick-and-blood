@@ -1,5 +1,4 @@
-#ifndef MAIN_WEB_HPP
-#define MAIN_WEB_HPP
+#pragma once
 
 #define PLATFORM_WEB
 
@@ -65,5 +64,3 @@
 #include "asset_manager.cpp"
 #include "camera.cpp"
 #include "application.cpp"
-
-#endif /* MAIN_WEB_HPP */

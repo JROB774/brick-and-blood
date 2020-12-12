@@ -1,5 +1,4 @@
-#ifndef ENTITY_HPP
-#define ENTITY_HPP
+#pragma once
 
 // General-purpose entity systems and functionality.
 
@@ -55,5 +54,3 @@ GLOBAL const std::map<std::string,EntityUpdate> ENTITY_UPDATE_PROC
 {
     { "PlayerUpdate", Entity_PlayerUpdate },
 };
-
-#endif // ENTITY_HPP

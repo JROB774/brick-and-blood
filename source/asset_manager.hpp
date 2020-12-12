@@ -1,5 +1,4 @@
-#ifndef ASSET_MANAGER_HPP
-#define ASSET_MANAGER_HPP
+#pragma once
 
 //
 // ASSET MANAGER
@@ -100,5 +99,3 @@ struct AssetMusic: public AssetBase
     void Free () override;
     Music data;
 };
-
-#endif /* ASSET_MANAGER_HPP */

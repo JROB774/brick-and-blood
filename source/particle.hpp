@@ -1,5 +1,4 @@
-#ifndef PARTICLE_HPP
-#define PARTICLE_HPP
+#pragma once
 
 enum ParticleType
 {
@@ -59,5 +58,3 @@ GLOBAL const ParticleBase PARTICLE_BASE[PARTICLE_TYPE_TOTAL]
 {
 // ...
 };
-
-#endif /* PARTICLE_HPP */

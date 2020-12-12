@@ -1,5 +1,4 @@
-#ifndef APPLICATION_HPP
-#define APPLICATION_HPP
+#pragma once
 
 GLOBAL constexpr int APP_VERSION_MAJOR = 1;
 GLOBAL constexpr int APP_VERSION_MINOR = 0;
@@ -24,5 +23,3 @@ INTERNAL void   InitApplication ();
 INTERNAL void   QuitApplication ();
 INTERNAL void UpdateApplication (float dt);
 INTERNAL void RenderApplication (float dt);
-
-#endif /* APPLICATION_HPP */

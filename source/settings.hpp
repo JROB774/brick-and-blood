@@ -1,5 +1,4 @@
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#pragma once
 
 GLOBAL struct Settings
 {
@@ -14,5 +13,3 @@ GLOBAL struct Settings
 INTERNAL void  SaveSettings ();
 INTERNAL void  LoadSettings ();
 INTERNAL void ResetSettings ();
-
-#endif /* SETTINGS_HPP */

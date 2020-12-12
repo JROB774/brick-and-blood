@@ -1,5 +1,4 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#pragma once
 
 GLOBAL struct Camera
 {
@@ -27,5 +26,3 @@ INTERNAL void EndCamera   ();
 
 INTERNAL void ShakeCamera (float minx, float miny, float maxx, float maxy, float duration);
 INTERNAL void ResetCameraShake ();
-
-#endif /* CAMERA_HPP */

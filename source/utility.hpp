@@ -1,5 +1,4 @@
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#pragma once
 
 #if defined(BUILD_DEBUG)
 #include <assert.h>
@@ -111,5 +110,3 @@ INTERNAL int   RandomRange      (int min, int max); // Inclusive!
 INTERNAL int   Random           ();
 INTERNAL float RandomFloatRange (float min, float max); // Inclusive!
 INTERNAL float RandomFloat      ();
-
-#endif /* UTILITY_HPP */

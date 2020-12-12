@@ -1,5 +1,4 @@
-#ifndef MIXER_HPP
-#define MIXER_HPP
+#pragma once
 
 static struct Mixer
 {
@@ -44,5 +43,3 @@ INTERNAL bool IsSoundOn ();
 INTERNAL bool IsMusicOn ();
 
 INTERNAL bool IsMusicPlaying ();
-
-#endif /* MIXER_HPP */

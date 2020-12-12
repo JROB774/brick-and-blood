@@ -1,5 +1,4 @@
-#ifndef ERROR_HPP
-#define ERROR_HPP
+#pragma once
 
 #define LOG_ERROR(...) LogError(__FILE__, __LINE__, __VA_ARGS__)
 
@@ -12,5 +11,3 @@ enum ErrorLevel { ERR_MIN, ERR_MED, ERR_MAX };
 
 INTERNAL bool InitErrorSystem ();
 INTERNAL void QuitErrorSystem ();
-
-#endif /* ERROR_HPP */

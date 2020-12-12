@@ -1,5 +1,4 @@
-#ifndef COLLISION_HPP
-#define COLLISION_HPP
+#pragma once
 
 INTERNAL bool PointAndRectCollision    (Vec2 p, Rect r);
 INTERNAL bool RectAndRectCollision     (Rect a, Rect b);
@@ -12,5 +11,3 @@ INTERNAL bool ParticleAndMapCollision  (Vec2 pos,  Rect bounds,  Vec2& vel,  Map
 INTERNAL bool EntityAndEntityCollision (Vec2 apos, Rect abounds, Vec2  bpos, Rect bbounds);
 INTERNAL bool EntityLineOfSight        (Vec2 apos, Rect abounds, Vec2  bpos, Rect bbounds, Map& map);
 */
-
-#endif /* COLLISION_HPP */

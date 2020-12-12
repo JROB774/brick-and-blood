@@ -1,5 +1,4 @@
-#ifndef INPUT_HPP
-#define INPUT_HPP
+#pragma once
 
 INTERNAL void QuitInput ();
 
@@ -41,5 +40,3 @@ INTERNAL bool IsLeftStickUpPressed    ();
 INTERNAL bool IsLeftStickRightPressed ();
 INTERNAL bool IsLeftStickDownPressed  ();
 INTERNAL bool IsLeftStickLeftPressed  ();
-
-#endif /* INPUT_HPP */

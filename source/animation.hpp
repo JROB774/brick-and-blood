@@ -1,5 +1,4 @@
-#ifndef ANIMATION_HPP
-#define ANIMATION_HPP
+#pragma once
 
 struct AnimationFrame
 {
@@ -37,5 +36,3 @@ INTERNAL const SDL_Rect* GetAnimationClip (AnimationState& state);
 
 INTERNAL int GetAnimationFrameWidth  (AnimationState& state);
 INTERNAL int GetAnimationFrameHeight (AnimationState& state);
-
-#endif /* ANIMATION_HPP */

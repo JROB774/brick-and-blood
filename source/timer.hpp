@@ -1,5 +1,4 @@
-#ifndef TIMER_HPP
-#define TIMER_HPP
+#pragma once
 
 GLOBAL struct Timer
 {
@@ -15,5 +14,3 @@ GLOBAL struct Timer
 
 INTERNAL void InitFrameTimer ();
 INTERNAL void CapFramerate   ();
-
-#endif /* TIMER_HPP */

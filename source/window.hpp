@@ -1,5 +1,4 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#pragma once
 
 GLOBAL constexpr const char* WINDOW_TITLE    = "SANTAJAM";
 GLOBAL constexpr int         WINDOW_SCREEN_W = 160;
@@ -31,5 +30,3 @@ INTERNAL bool IsFullscreen    ();
 INTERNAL void SetWindowSize   (int width, int height);
 INTERNAL int  GetWindowWidth  ();
 INTERNAL int  GetWindowHeight ();
-
-#endif /* WINDOW_HPP */

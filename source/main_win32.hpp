@@ -1,5 +1,4 @@
-#ifndef MAIN_WIN32_HPP
-#define MAIN_WIN32_HPP
+#pragma once
 
 #define PLATFORM_WIN32
 
@@ -82,5 +81,3 @@
 #include "entity.cpp"
 #include "game.cpp"
 #include "application.cpp"
-
-#endif /* MAIN_WIN32_HPP */

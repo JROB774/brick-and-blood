@@ -1,5 +1,4 @@
-#ifndef FONT_HPP
-#define FONT_HPP
+#pragma once
 
 GLOBAL constexpr int FONT_CHAR_COUNT = 256;
 
@@ -22,5 +21,3 @@ INTERNAL void FreeFont (Font& font);
 INTERNAL float GetTextLineWidth (std::string font_name, std::string text, int line);
 INTERNAL float GetTextWidth     (std::string font_name, std::string text);
 INTERNAL float GetTextHeight    (std::string font_name, std::string text);
-
-#endif /* FONT_HPP */
