@@ -34,14 +34,13 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.base_type = base_type;
     e.pos.x = tilex;
     e.pos.y = tiley;
-    e.timer = 0.0f;
     e.behavior = base.behavior;
-    e.draw.pos.x = (float)(tilex*16);
-    e.draw.pos.y = (float)(tiley*16);
-    e.draw.clip.x = base.image.x*16;
-    e.draw.clip.y = base.image.y*16;
-    e.draw.clip.w = 16;
-    e.draw.clip.h = 16;
+    e.draw.pos.x = (float)(tilex*TILE_W);
+    e.draw.pos.y = (float)(tiley*TILE_H);
+    e.draw.clip.x = base.image.x*TILE_W;
+    e.draw.clip.y = base.image.y*TILE_H;
+    e.draw.clip.w = TILE_W;
+    e.draw.clip.h = TILE_H;
     e.draw.angle.current = 0.0f;
     e.draw.angle.target = 0.0f;
     e.draw.color.current = base.color;
@@ -62,8 +61,12 @@ INTERNAL void InitEntities ()
     {
         EntityBase base = {};
 
-        std::string behavior = data["behavior"].String("");
-        if (ENTITY_BEHAVIOR.count(behavior)) base.behavior = ENTITY_BEHAVIOR.at(behavior);
+        std::string behavior = data["behavior"].String("none");
+        if (behavior != "none")
+        {
+            if (ENTITY_BEHAVIOR.count(behavior)) base.behavior = ENTITY_BEHAVIOR.at(behavior);
+            else LOG_ERROR(ERR_MIN, "No known entity behavior: %s", behavior.c_str());
+        }
 
         if (data.Contains("image"))
         {
@@ -93,10 +96,16 @@ INTERNAL void UpdateEntities ()
     {
         // If the entity has a behavior then carry it out.
         if (e.behavior) e.behavior(e);
+    }
+}
 
+INTERNAL void RenderEntities ()
+{
+    for (auto& e: gEntitySystem.entities)
+    {
         // Smoothly lerp the entity from tile-to-tile to give a more fluid feel to the movement.
-        float target_x = (float)e.pos.x*16;
-        float target_y = (float)e.pos.y*16;
+        float target_x = (float)e.pos.x*TILE_W;
+        float target_y = (float)e.pos.y*TILE_H;
         e.draw.pos.x = Lerp(e.draw.pos.x, target_x, gApplication.delta_time*ENTITY_MOVE_SPEED);
         e.draw.pos.y = Lerp(e.draw.pos.y, target_y, gApplication.delta_time*ENTITY_MOVE_SPEED);
 
@@ -115,14 +124,8 @@ INTERNAL void UpdateEntities ()
         {
             e.draw.angle.target = 0.0f;
         }
-    }
-}
 
-INTERNAL void RenderEntities ()
-{
-    for (auto& e: gEntitySystem.entities)
-    {
-        Vec2 center = { (float)e.draw.clip.x+(16/2), (float)e.draw.clip.y+(16/2) };
+        Vec2 center = { TILE_W/2, TILE_H/2 };
         DrawImage("entity", e.draw.pos.x,e.draw.pos.y, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
     }
 }
@@ -142,18 +145,12 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
 
 INTERNAL void Entity_BehaviorWander (Entity& e)
 {
-    e.timer += gApplication.delta_time;
-    if (e.timer >= 0.75f)
+    int dir = RandomRange(0,3);
+    switch (dir)
     {
-        e.timer -= 0.75f;
-
-        int dir = RandomRange(0,3);
-        switch (dir)
-        {
-            case (0): e.pos.x--;
-            case (1): e.pos.x++;
-            case (2): e.pos.y--;
-            case (3): e.pos.y++;
-        }
+        case (0): e.pos.x--; break;
+        case (1): e.pos.x++; break;
+        case (2): e.pos.y--; break;
+        case (3): e.pos.y++; break;
     }
 }

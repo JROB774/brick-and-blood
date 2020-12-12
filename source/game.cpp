@@ -13,7 +13,11 @@ INTERNAL void QuitGame ()
 
 INTERNAL void UpdateGame ()
 {
-    UpdateEntities();
+    UpdatePlayer();
+    if (gPlayer.update)
+    {
+        UpdateEntities();
+    }
 }
 
 INTERNAL void RenderGame ()

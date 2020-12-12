@@ -4,7 +4,5 @@
 
 struct Tile
 {
-    std::string base_type;
-
-    struct { int x,y; } pos;
-}
+    // Nothing...
+};

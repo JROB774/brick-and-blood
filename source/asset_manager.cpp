@@ -111,12 +111,3 @@ void AssetMusic::Free ()
 {
     FreeMusic(data);
 }
-
-void AssetChunk::Load (std::string file_name)
-{
-    LoadChunk(data, file_name);
-}
-void AssetChunk::Free ()
-{
-    FreeChunk(data);
-}
