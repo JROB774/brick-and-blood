@@ -9,7 +9,7 @@ player
 goblin
 {
     initiative 1
-    behavior BehaviorWander
+    # behavior BehaviorWander
     image [ 1 0 ]
     color [ 207 198 194 ]
 }

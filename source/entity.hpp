@@ -2,6 +2,8 @@
 
 // General-purpose entity systems and functionality.
 
+enum Direction { DIR_N, DIR_E, DIR_S, DIR_W };
+
 struct Entity;
 
 typedef void(*EntityBehavior)(Entity& e);
@@ -41,13 +43,17 @@ struct Entity
     }
 };
 
-INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley);
+// Interface
+INTERNAL void    SpawnEntity    (std::string base_type, int tilex, int tiley);
+INTERNAL Entity* GetEntityAtPos (int x, int y); // NULL if no entity found!
 
 INTERNAL void   InitEntities ();
 INTERNAL void UpdateEntities ();
 INTERNAL void RenderEntities ();
 
-// Different spawn and update behaviors that entity types can use.
+//
+// BEHAVIORS
+//
 
 INTERNAL void Entity_BehaviorPlayer (Entity& e);
 INTERNAL void Entity_BehaviorWander (Entity& e);

@@ -51,6 +51,15 @@ INTERNAL void SpawnEntity (std::string base_type, int tilex, int tiley)
     e.draw.color.target = base.color;
 }
 
+INTERNAL Entity* GetEntityAtPos (int x, int y)
+{
+    for (auto& e: gEntitySystem.entities)
+    {
+        if (e.pos.x == x && e.pos.y == y) return &e;
+    }
+    return NULL;
+}
+
 INTERNAL void InitEntities ()
 {
     GonObject& gon = *GetAsset<AssetData>("entities");
@@ -144,26 +153,50 @@ INTERNAL void RenderEntities ()
 }
 
 //
-// Behaviors
+// HELPERS
+//
+
+INTERNAL void MoveEntity (Entity& e, int x, int y)
+{
+    // @Incomplete: Handle tile collision...
+    e.pos.x = x;
+    e.pos.y = y;
+}
+
+//
+// BEHAVIORS
 //
 
 INTERNAL void Entity_BehaviorPlayer (Entity& e)
 {
-    // Handle actual tile-to-tile movement.
-    if (IsKeyPressed(SDL_SCANCODE_A)) e.pos.x--;
-    if (IsKeyPressed(SDL_SCANCODE_D)) e.pos.x++;
-    if (IsKeyPressed(SDL_SCANCODE_W)) e.pos.y--;
-    if (IsKeyPressed(SDL_SCANCODE_S)) e.pos.y++;
+    int targetx = e.pos.x;
+    int targety = e.pos.y;
+
+    Direction dir = DIR_N;
+
+    if (IsKeyPressed(SDL_SCANCODE_W)) { targety--; dir = DIR_N; }
+    if (IsKeyPressed(SDL_SCANCODE_D)) { targetx++; dir = DIR_E; }
+    if (IsKeyPressed(SDL_SCANCODE_S)) { targety++; dir = DIR_S; }
+    if (IsKeyPressed(SDL_SCANCODE_A)) { targetx--; dir = DIR_W; }
+
+    // If our target is not our tile handle attacking, moving, etc.
+    if (targetx != e.pos.x || targety != e.pos.y)
+    {
+        Entity* o = GetEntityAtPos(targetx,targety);
+        if (o) // If there's an entity at our target location, carry out the appropriate action.
+        {
+            e.draw.angle.current = ENTITY_TURN_ANGLE;
+
+            // @Incomplete: ...
+        }
+        else // Otherwise move to that tile.
+        {
+            MoveEntity(e,targetx,targety);
+        }
+    }
 }
 
 INTERNAL void Entity_BehaviorWander (Entity& e)
 {
-    int dir = RandomRange(0,3);
-    switch (dir)
-    {
-        case (0): e.pos.x--; break;
-        case (1): e.pos.x++; break;
-        case (2): e.pos.y--; break;
-        case (3): e.pos.y++; break;
-    }
+    MoveEntity(e, RandomRange(-1,1),RandomRange(-1,1));
 }
