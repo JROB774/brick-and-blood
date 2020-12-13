@@ -45,7 +45,7 @@ struct EditorIcon
 struct EditorIconIndex
 {
     std::string type; // "tile" or "entity"
-    size_t index;
+    int index;
 
     inline bool operator== (const EditorIconIndex& o)
     {
@@ -129,6 +129,16 @@ GLOBAL struct Editor
 
 } gEditor;
 
+INTERNAL void LoadChunk ()
+{
+    // @Incomplete: ...
+}
+
+INTERNAL void SaveChunk ()
+{
+    // @Incomplete: ...
+}
+
 INTERNAL EditorIcon* GetSelectedEditorIcon ()
 {
     EditorIcon* icon = NULL;
@@ -207,7 +217,7 @@ INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon
 
     Vec2 mouse = GetMousePos();
 
-    for (size_t i=0; i<icons.size(); ++i)
+    for (int i=0; i<(int)icons.size(); ++i)
     {
         EditorIcon& t = icons.at(i);
 
@@ -290,6 +300,42 @@ INTERNAL void DoEditorPalette ()
     DoEditorPaletteIcons(cx,cy, gEditor.tile_icons, "tile");
     cx = EDITOR_PALETTE_ICON_PADDING, cy += (TILE_H*EDITOR_PALETTE_ICON_SCALE) + (EDITOR_PALETTE_ICON_PADDING*3);
     DoEditorPaletteIcons(cx,cy, gEditor.entity_icons, "entity");
+
+    // Based on the mouse scroll, change the currently selected thing.
+    int scroll = GetMouseScrollVertical();
+    if (scroll != 0)
+    {
+        if (scroll > 0) gEditor.cursor.selected.index++;
+        else if (scroll < 0) gEditor.cursor.selected.index--;
+
+        // If we have gone out of bounds then wrap around!
+        if (gEditor.cursor.selected.type == "tile")
+        {
+            if (gEditor.cursor.selected.index < 0)
+            {
+                gEditor.cursor.selected.type = "entity";
+                gEditor.cursor.selected.index = (int)gEditor.entity_icons.size()-1;
+            }
+            else if (gEditor.cursor.selected.index >= gEditor.tile_icons.size())
+            {
+                gEditor.cursor.selected.type = "entity";
+                gEditor.cursor.selected.index = 0;
+            }
+        }
+        else if (gEditor.cursor.selected.type == "entity")
+        {
+            if (gEditor.cursor.selected.index < 0)
+            {
+                gEditor.cursor.selected.type = "tile";
+                gEditor.cursor.selected.index = (int)gEditor.tile_icons.size()-1;
+            }
+            else if (gEditor.cursor.selected.index >= gEditor.entity_icons.size())
+            {
+                gEditor.cursor.selected.type = "tile";
+                gEditor.cursor.selected.index = 0;
+            }
+        }
+    }
 }
 
 INTERNAL void DoEditorCanvas ()
