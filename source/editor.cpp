@@ -6,6 +6,10 @@ GLOBAL constexpr float EDITOR_PALETTE_ICON_HOVER_SCALE =   2.4f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_SCALE   =   3.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_ANGLE   = -30.0f;
 GLOBAL constexpr float EDITOR_CURSOR_ALPHA             =   0.5f;
+GLOBAL constexpr float EDITOR_THING_PLACE_SCALE        =   1.5f;
+GLOBAL constexpr float EDITOR_THING_PLACE_ANGLE        = -30.0f;
+GLOBAL constexpr float EDITOR_THING_ERASE_SCALE        =   1.5f;
+GLOBAL constexpr float EDITOR_THING_ERASE_ANGLE        = -30.0f;
 GLOBAL constexpr Vec4  EDITOR_COLOR0                   = { 0.28f,0.18f,0.24f,1.0f };
 GLOBAL constexpr Vec4  EDITOR_COLOR1                   = { 0.81f,0.77f,0.72f,1.0f };
 GLOBAL constexpr Vec4  EDITOR_COLOR2                   = { 1.00f,1.00f,1.00f,1.0f };
@@ -42,6 +46,15 @@ struct EditorIconIndex
 {
     std::string type; // "tile" or "entity"
     size_t index;
+
+    inline bool operator== (const EditorIconIndex& o)
+    {
+        return (type == o.type && index == o.index);
+    }
+    inline bool operator!= (const EditorIconIndex& o)
+    {
+        return !(operator==(o));
+    }
 };
 
 struct EditorThing
@@ -318,12 +331,24 @@ INTERNAL void DoEditorCanvas ()
         for (int ix=0; ix<CHUNK_W; ++ix)
         {
             EditorThing& thing = gEditor.chunk.things[iy][ix];
-            if (thing.active) // @Temporary: Don't draw anything if not active...
+
+            // Lerp values for smooth effects.
+            thing.draw.color.current = Lerp(thing.draw.color.current, thing.draw.color.target, gApplication.delta_time*15);
+            thing.draw.scale.current = Lerp(thing.draw.scale.current, thing.draw.scale.target, gApplication.delta_time*30);
+            thing.draw.angle.current = Lerp(thing.draw.angle.current, thing.draw.angle.target, gApplication.delta_time*15);
+
+            if (thing.draw.scale.current != 0.0f)
             {
                 float x = gEditor.canvas.bounds.x + ((float)ix * tilew);
                 float y = gEditor.canvas.bounds.y + ((float)iy * tileh);
+
                 float scale = gEditor.canvas.scale * thing.draw.scale.current;
-                Vec2 center = { 0,0 };
+
+                // Adjust the X and Y for the current scale of the icon so it remains centered.
+                x -= ((TILE_W*scale)-(tilew)) / 2;
+                y -= ((TILE_H*scale)-(tileh)) / 2;
+
+                Vec2 center = { (TILE_W*scale)/2,(TILE_H*scale)/2 };
                 DrawImage(thing.icon_index.type, x,y, {scale,scale}, center, thing.draw.angle.current, FLIP_NONE, thing.draw.color.current, &thing.draw.clip);
             }
         }
@@ -347,31 +372,39 @@ INTERNAL void DoEditorCanvas ()
         EditorThing& thing = gEditor.chunk.things[gEditor.cursor.pos.y][gEditor.cursor.pos.x];
         if (IsMouseButtonDown(SDL_BUTTON_LEFT))
         {
-            // INSERT THING!!!
+            // PLACE THING!!!
             EditorIcon* icon = GetSelectedEditorIcon();
             if (icon)
             {
-                thing.icon_index = gEditor.cursor.selected;
-                thing.active = true;
+                // Only place something is nothing is there or the tile/entity types are different.
+                if (!thing.active || (gEditor.cursor.selected != thing.icon_index))
+                {
+                    thing.icon_index = gEditor.cursor.selected;
+                    thing.active = true;
 
-                thing.draw.clip = icon->draw.clip;
-                thing.draw.scale.current = 1.0f;
-                thing.draw.scale.target = 1.0f;
-                thing.draw.angle.current = 0.0f;
-                thing.draw.angle.target = 0.0f;
-                thing.draw.color.current = icon->draw.color.base;
-                thing.draw.color.target = icon->draw.color.base;
-                thing.draw.color.base = icon->draw.color.base;
+                    thing.draw.clip = icon->draw.clip;
+                    thing.draw.scale.current = EDITOR_THING_PLACE_SCALE;
+                    thing.draw.scale.target = 1.0f;
+                    thing.draw.angle.current = EDITOR_THING_PLACE_ANGLE;
+                    thing.draw.angle.target = 0.0f;
+                    thing.draw.color.current = EDITOR_COLOR2;
+                    thing.draw.color.target = icon->draw.color.base;
+                    thing.draw.color.base = icon->draw.color.base;
+                }
             }
         }
         else if (IsMouseButtonDown(SDL_BUTTON_RIGHT))
         {
-            //
-            // REMOVE THING
-            //
+            // REMOVE THING!!!
+            if (thing.active)
+            {
+                thing.active = false;
 
-            thing.active = false;
-            // @Incomplete: Do effects...
+                thing.draw.scale.current = EDITOR_THING_ERASE_SCALE;
+                thing.draw.scale.target = 0.0f;
+                thing.draw.angle.current = EDITOR_THING_ERASE_ANGLE;
+                thing.draw.angle.target = 0.0f;
+            }
         }
     }
     else
