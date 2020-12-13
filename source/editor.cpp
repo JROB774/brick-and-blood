@@ -1,5 +1,5 @@
 GLOBAL constexpr float EDITOR_PANEL_BORDER             =   4.0f;
-GLOBAL constexpr float EDITOR_PALETTE_WIDTH            = 320.0f;
+GLOBAL constexpr float EDITOR_PALETTE_WIDTH            = 308.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_SCALE       =   2.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_PADDING     =   5.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HOVER_SCALE =   2.4f;
@@ -226,7 +226,7 @@ INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon
     {
         EditorIcon& t = icons.at(i);
 
-        if (cx+ICON_W > GetWindowWidth())
+        if (cx+ICON_W > gEditor.palette.bounds.w)
         {
             cx = EDITOR_PALETTE_ICON_PADDING;
             cy += ICON_H + EDITOR_PALETTE_ICON_PADDING;
@@ -299,7 +299,7 @@ INTERNAL void DoEditorPalette ()
     // List all of the placeable tiles and entities.
     float cx = EDITOR_PALETTE_ICON_PADDING, cy = EDITOR_PALETTE_ICON_PADDING;
     DoEditorPaletteIcons(cx,cy, gEditor.tile_icons, "tile");
-    cx = EDITOR_PALETTE_ICON_PADDING, cy += (TILE_H*EDITOR_PALETTE_ICON_SCALE) + (EDITOR_PALETTE_ICON_PADDING*3);
+    cx = EDITOR_PALETTE_ICON_PADDING, cy += (TILE_H*EDITOR_PALETTE_ICON_SCALE) + (EDITOR_PALETTE_ICON_PADDING*5);
     DoEditorPaletteIcons(cx,cy, gEditor.entity_icons, "entity");
 
     // Based on the mouse scroll, change the currently selected thing.
