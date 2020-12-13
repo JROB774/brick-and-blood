@@ -31,7 +31,7 @@ struct Entity
         {
             float current;
             float target;
-        }  angle;
+        } angle;
         struct
         {
             Vec4 current;
