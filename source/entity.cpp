@@ -14,11 +14,7 @@ struct EntityBase
     Vec4 color;
 };
 
-GLOBAL struct EntitySystem
-{
-    std::map<std::string,EntityBase> entity_base;
-
-} gEntitySystem;
+std::map<std::string,EntityBase> gEntities;
 
 INTERNAL void InitEntities ()
 {
@@ -63,7 +59,7 @@ INTERNAL void InitEntities ()
             base.color = { 1,1,1,1 };
         }
 
-        gEntitySystem.entity_base.insert({ data.name, base });
+        gEntities.insert({ data.name, base });
     }
 }
 
