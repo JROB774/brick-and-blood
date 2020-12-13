@@ -1,13 +1,14 @@
-GLOBAL constexpr float EDITOR_PALETTE_WIDTH    = 320.0f;
-GLOBAL constexpr float EDITOR_PALETTE_BORDER   =   4.0f;
-GLOBAL constexpr float EDITOR_ICON_SCALE       =   2.0f;
-GLOBAL constexpr float EDITOR_ICON_PADDING     =   5.0f;
-GLOBAL constexpr float EDITOR_ICON_HOVER_SCALE =   2.4f;
-GLOBAL constexpr float EDITOR_ICON_HIT_SCALE   =   3.7f;
-GLOBAL constexpr float EDITOR_ICON_HIT_ANGLE   = -30.0f;
-GLOBAL constexpr Vec4  EDITOR_ICON_HOVER_COLOR = { 1.00f,1.00f,1.00f,1.0f };
-GLOBAL constexpr Vec4  EDITOR_COLOR0           = { 0.28f,0.18f,0.24f,1.0f };
-GLOBAL constexpr Vec4  EDITOR_COLOR1           = { 0.81f,0.77f,0.72f,1.0f };
+GLOBAL constexpr float EDITOR_PALETTE_WIDTH            = 320.0f;
+GLOBAL constexpr float EDITOR_PALETTE_BORDER           =   4.0f;
+GLOBAL constexpr float EDITOR_PALETTE_ICON_SCALE       =   2.0f;
+GLOBAL constexpr float EDITOR_PALETTE_ICON_PADDING     =   5.0f;
+GLOBAL constexpr float EDITOR_PALETTE_ICON_HOVER_SCALE =   2.4f;
+GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_SCALE   =   3.0f;
+GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_ANGLE   = -30.0f;
+GLOBAL constexpr float EDITOR_CURSOR_ALPHA             =   0.5f;
+GLOBAL constexpr Vec4  EDITOR_COLOR0                   = { 0.28f,0.18f,0.24f,1.0f };
+GLOBAL constexpr Vec4  EDITOR_COLOR1                   = { 0.81f,0.77f,0.72f,1.0f };
+GLOBAL constexpr Vec4  EDITOR_COLOR2                   = { 1.00f,1.00f,1.00f,1.0f };
 
 struct EditorIcon
 {
@@ -40,7 +41,7 @@ struct EditorIcon
 struct EditorIconIndex
 {
     std::string type; // "tile" or "entity"
-    int index;
+    size_t index;
 };
 
 struct EditorChunk
@@ -53,13 +54,57 @@ GLOBAL struct Editor
     std::vector<EditorIcon> tile_icons;
     std::vector<EditorIcon> entity_icons;
 
-    Rect palette_bounds;
+    struct
+    {
+        Rect bounds;
+    } palette;
+    struct
+    {
+        Rect space;
+        Rect bounds;
+        float scale;
+    } canvas;
 
-    EditorIconIndex selected;
+    struct
+    {
+        struct { int x,y; } pos;
+
+        struct
+        {
+            Vec2 pos;
+            struct
+            {
+                Vec4 current;
+                Vec4 target;
+            } color;
+        } draw;
+
+        EditorIconIndex selected;
+    } cursor;
 
     EditorChunk chunk;
 
 } gEditor;
+
+INTERNAL EditorIcon* GetSelectedEditorIcon ()
+{
+    EditorIcon* icon = NULL;
+    if (gEditor.cursor.selected.type == "tile")
+    {
+        if (!gEditor.tile_icons.empty())
+        {
+            icon = &gEditor.tile_icons.at(gEditor.cursor.selected.index);
+        }
+    }
+    else if (gEditor.cursor.selected.type == "entity")
+    {
+        if (!gEditor.entity_icons.empty())
+        {
+            icon = &gEditor.entity_icons.at(gEditor.cursor.selected.index);
+        }
+    }
+    return icon;
+}
 
 INTERNAL void InitEditor ()
 {
@@ -69,8 +114,8 @@ INTERNAL void InitEditor ()
         EditorIcon icon;
         icon.type = k;
         icon.draw.clip = { t.image.x*TILE_W, t.image.y*TILE_H, TILE_W, TILE_H };
-        icon.draw.scale.current = EDITOR_ICON_SCALE;
-        icon.draw.scale.target = EDITOR_ICON_SCALE;
+        icon.draw.scale.current = EDITOR_PALETTE_ICON_SCALE;
+        icon.draw.scale.target = EDITOR_PALETTE_ICON_SCALE;
         icon.draw.angle.current = 0.0f;
         icon.draw.angle.target = 0.0f;
         icon.draw.color.current = t.color;
@@ -83,8 +128,8 @@ INTERNAL void InitEditor ()
         EditorIcon icon;
         icon.type = k;
         icon.draw.clip = { e.image.x*TILE_W, e.image.y*TILE_H, TILE_W, TILE_H };
-        icon.draw.scale.current = EDITOR_ICON_SCALE;
-        icon.draw.scale.target = EDITOR_ICON_SCALE;
+        icon.draw.scale.current = EDITOR_PALETTE_ICON_SCALE;
+        icon.draw.scale.target = EDITOR_PALETTE_ICON_SCALE;
         icon.draw.angle.current = 0.0f;
         icon.draw.angle.target = 0.0f;
         icon.draw.color.current = e.color;
@@ -94,8 +139,17 @@ INTERNAL void InitEditor ()
     }
 
     // Set the currently selected item to be the first tile.
-    gEditor.selected.type = "tile";
-    gEditor.selected.index = 0;
+    gEditor.cursor.selected.type = "tile";
+    gEditor.cursor.selected.index = 0;
+
+    gEditor.cursor.pos.x = 0;
+    gEditor.cursor.pos.y = 0;
+    gEditor.cursor.draw.pos.x = 0.0f;
+    gEditor.cursor.draw.pos.y = 0.0f;
+    gEditor.cursor.draw.color.current = GetSelectedEditorIcon()->draw.color.base;
+    gEditor.cursor.draw.color.target = GetSelectedEditorIcon()->draw.color.base;
+    gEditor.cursor.draw.color.current.a = EDITOR_CURSOR_ALPHA;
+    gEditor.cursor.draw.color.target.a = EDITOR_CURSOR_ALPHA;
 }
 
 INTERNAL void QuitEditor ()
@@ -105,8 +159,8 @@ INTERNAL void QuitEditor ()
 
 INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon>& icons, std::string image)
 {
-    constexpr float ICON_W = TILE_W * EDITOR_ICON_SCALE;
-    constexpr float ICON_H = TILE_H * EDITOR_ICON_SCALE;
+    constexpr float ICON_W = TILE_W * EDITOR_PALETTE_ICON_SCALE;
+    constexpr float ICON_H = TILE_H * EDITOR_PALETTE_ICON_SCALE;
 
     Vec2 mouse = GetMousePos();
 
@@ -116,12 +170,12 @@ INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon
 
         if (cx+ICON_W > GetWindowWidth())
         {
-            cx = EDITOR_ICON_PADDING;
-            cy += ICON_H + EDITOR_ICON_PADDING;
+            cx = EDITOR_PALETTE_ICON_PADDING;
+            cy += ICON_H + EDITOR_PALETTE_ICON_PADDING;
         }
 
-        float x = gEditor.palette_bounds.x + cx;
-        float y = gEditor.palette_bounds.y + cy;
+        float x = gEditor.palette.bounds.x + cx;
+        float y = gEditor.palette.bounds.y + cy;
 
         Rect bounds = { x,y,ICON_W,ICON_H };
 
@@ -129,38 +183,50 @@ INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon
         // We do this before applying scale so the bounding box doesn't get messed with.
         if (PointAndRectCollision(mouse, bounds))
         {
-            if (t.draw.color.target != EDITOR_ICON_HOVER_COLOR) // Important for pressed effects to work properly!
+            if (t.draw.color.target != EDITOR_COLOR2) // Important for pressed effects to work properly!
             {
-                t.draw.color.current = EDITOR_ICON_HOVER_COLOR;
+                t.draw.color.current = EDITOR_COLOR2;
             }
-            t.draw.color.target = EDITOR_ICON_HOVER_COLOR;
-            t.draw.scale.target = EDITOR_ICON_HOVER_SCALE;
+            t.draw.color.target = EDITOR_COLOR2;
+            t.draw.scale.target = EDITOR_PALETTE_ICON_HOVER_SCALE;
 
             if (IsMouseButtonPressed(SDL_BUTTON_LEFT))
             {
-                t.draw.scale.current = EDITOR_ICON_HIT_SCALE;
-                t.draw.angle.current = EDITOR_ICON_HIT_ANGLE;
+                t.draw.scale.current = EDITOR_PALETTE_ICON_HIT_SCALE;
+                t.draw.angle.current = EDITOR_PALETTE_ICON_HIT_ANGLE;
+
+                // Set the new selected!
+                gEditor.cursor.selected.type = image;
+                gEditor.cursor.selected.index = i;
+
+                float ca = gEditor.cursor.draw.color.current.a;
+                float ta = gEditor.cursor.draw.color.target.a;
+
+                gEditor.cursor.draw.color.current = GetSelectedEditorIcon()->draw.color.base;
+                gEditor.cursor.draw.color.target = GetSelectedEditorIcon()->draw.color.base;
+                gEditor.cursor.draw.color.current.a = ca;
+                gEditor.cursor.draw.color.target.a = ta;
             }
         }
         else
         {
             t.draw.color.target = t.draw.color.base;
-            t.draw.scale.target = EDITOR_ICON_SCALE;
+            t.draw.scale.target = EDITOR_PALETTE_ICON_SCALE;
         }
 
         // Apply lerping effects.
         t.draw.color.current = Lerp(t.draw.color.current, t.draw.color.target, gApplication.delta_time*15);
         t.draw.scale.current = Lerp(t.draw.scale.current, t.draw.scale.target, gApplication.delta_time*30);
-        t.draw.angle.current = Lerp(t.draw.angle.current, t.draw.angle.target, gApplication.delta_time*20);
+        t.draw.angle.current = Lerp(t.draw.angle.current, t.draw.angle.target, gApplication.delta_time*15);
 
         // Adjust the X and Y for the current scale of the icon so it remains centered.
-        x -= (TILE_W * (t.draw.scale.current - EDITOR_ICON_SCALE)) / 2;
-        y -= (TILE_H * (t.draw.scale.current - EDITOR_ICON_SCALE)) / 2;
+        x -= (TILE_W * (t.draw.scale.current - EDITOR_PALETTE_ICON_SCALE)) / 2;
+        y -= (TILE_H * (t.draw.scale.current - EDITOR_PALETTE_ICON_SCALE)) / 2;
 
         Vec2 scale = { t.draw.scale.current, t.draw.scale.current };
         Vec2 center = { (TILE_W*scale.x)/2, (TILE_H*scale.y)/2 };
         DrawImage(image, x,y, scale, center, t.draw.angle.current, FLIP_NONE, t.draw.color.current, &t.draw.clip);
-        cx += ICON_W + EDITOR_ICON_PADDING;
+        cx += ICON_W + EDITOR_PALETTE_ICON_PADDING;
     }
 }
 
@@ -169,23 +235,81 @@ INTERNAL void DoEditorPalette ()
     float ww = (float)GetWindowWidth();
     float wh = (float)GetWindowHeight();
 
-    gEditor.palette_bounds.x = ww - (EDITOR_PALETTE_WIDTH + EDITOR_PALETTE_BORDER);
-    gEditor.palette_bounds.y = EDITOR_PALETTE_BORDER;
-    gEditor.palette_bounds.w = EDITOR_PALETTE_WIDTH;
-    gEditor.palette_bounds.h = wh - (EDITOR_PALETTE_BORDER * 2);
+    gEditor.palette.bounds.x = ww - (EDITOR_PALETTE_WIDTH + EDITOR_PALETTE_BORDER);
+    gEditor.palette.bounds.y = EDITOR_PALETTE_BORDER;
+    gEditor.palette.bounds.w = EDITOR_PALETTE_WIDTH;
+    gEditor.palette.bounds.h = wh - (EDITOR_PALETTE_BORDER * 2);
 
-    DrawFill(gEditor.palette_bounds, EDITOR_COLOR0);
+    DrawFill(gEditor.palette.bounds, EDITOR_COLOR0);
 
     // List all of the placeable tiles and entities.
-    float cx = EDITOR_ICON_PADDING, cy = EDITOR_ICON_PADDING;
+    float cx = EDITOR_PALETTE_ICON_PADDING, cy = EDITOR_PALETTE_ICON_PADDING;
     DoEditorPaletteIcons(cx,cy, gEditor.tile_icons, "tile");
-    cx = EDITOR_ICON_PADDING, cy += (TILE_H*EDITOR_ICON_SCALE) + (EDITOR_ICON_PADDING*3);
+    cx = EDITOR_PALETTE_ICON_PADDING, cy += (TILE_H*EDITOR_PALETTE_ICON_SCALE) + (EDITOR_PALETTE_ICON_PADDING*3);
     DoEditorPaletteIcons(cx,cy, gEditor.entity_icons, "entity");
 }
 
 INTERNAL void DoEditorCanvas ()
 {
-    // Nothing...
+    float ww = (float)GetWindowWidth();
+    float wh = (float)GetWindowHeight();
+
+    // Calculate how large we can make the chunk editor canvas within the available space.
+
+    gEditor.canvas.space.x = 0.0f;
+    gEditor.canvas.space.y = 0.0f;
+    gEditor.canvas.space.w = ww - (ww - gEditor.palette.bounds.x);
+    gEditor.canvas.space.h = wh;
+
+    gEditor.canvas.bounds.w = (CHUNK_W * TILE_W);
+    gEditor.canvas.bounds.h = (CHUNK_H * TILE_H);
+
+    gEditor.canvas.scale = 1.0f;
+    while (gEditor.canvas.bounds.w*(gEditor.canvas.scale+1) < gEditor.canvas.space.w &&
+           gEditor.canvas.bounds.h*(gEditor.canvas.scale+1) < gEditor.canvas.space.h)
+    {
+        gEditor.canvas.scale++;
+    }
+
+    gEditor.canvas.bounds.w *= gEditor.canvas.scale;
+    gEditor.canvas.bounds.h *= gEditor.canvas.scale;
+    gEditor.canvas.bounds.x  = (gEditor.canvas.space.w-gEditor.canvas.bounds.w) / 2;
+    gEditor.canvas.bounds.y  = (gEditor.canvas.space.h-gEditor.canvas.bounds.h) / 2;
+
+    DrawFill(gEditor.canvas.bounds, EDITOR_COLOR0);
+
+    // Handle the mouse cursor drawing and functionality.
+
+    Vec2 mouse = GetMousePos();
+
+    if (PointAndRectCollision(mouse,gEditor.canvas.bounds)) gEditor.cursor.draw.color.target.a = EDITOR_CURSOR_ALPHA;
+    else gEditor.cursor.draw.color.target.a = 0.0f;
+
+    float tilew = (TILE_W*gEditor.canvas.scale);
+    float tileh = (TILE_H*gEditor.canvas.scale);
+
+    int tilex = (int)floorf((mouse.x-gEditor.canvas.bounds.x) / tilew);
+    int tiley = (int)floorf((mouse.y-gEditor.canvas.bounds.y) / tileh);
+
+    gEditor.cursor.pos.x = tilex;
+    gEditor.cursor.pos.y = tiley;
+
+    // Lerp values for smooth effects.
+    gEditor.cursor.draw.pos.x = Lerp(gEditor.cursor.draw.pos.x, ((float)tilex*tilew), gApplication.delta_time*20);
+    gEditor.cursor.draw.pos.y = Lerp(gEditor.cursor.draw.pos.y, ((float)tiley*tileh), gApplication.delta_time*20);
+    gEditor.cursor.draw.color.current.a = Lerp(gEditor.cursor.draw.color.current.a, gEditor.cursor.draw.color.target.a, gApplication.delta_time*40);
+
+    EditorIcon* icon = GetSelectedEditorIcon();
+    if (icon)
+    {
+        float x = gEditor.canvas.bounds.x + gEditor.cursor.draw.pos.x;
+        float y = gEditor.canvas.bounds.y + gEditor.cursor.draw.pos.y;
+
+        Vec2 scale = { gEditor.canvas.scale, gEditor.canvas.scale };
+        Vec2 center = { 0,0 };
+
+        DrawImage(gEditor.cursor.selected.type, x,y, scale, center, 0.0f, FLIP_NONE, gEditor.cursor.draw.color.current, &icon->draw.clip);
+    }
 }
 
 INTERNAL void DoEditor ()
