@@ -1,26 +1,28 @@
 INTERNAL void InitGame ()
 {
     InitEntities();
+    InitTiles();
+    InitMap();
 
-    SpawnEntity("player", 0,6);
-    SpawnEntity("goblin", 4,5);
+    MapSpawnEntity("player", 0,0);
+    for (int i=0; i<25; ++i)
+    {
+        MapSpawnEntity("chicken", RandomRange(0,19),RandomRange(0,14));
+    }
 }
 
 INTERNAL void QuitGame ()
 {
-    // Nothing...
+    QuitMap();
 }
 
 INTERNAL void UpdateGame ()
 {
     UpdatePlayer();
-    if (gPlayer.update)
-    {
-        UpdateEntities();
-    }
+    UpdateMap();
 }
 
 INTERNAL void RenderGame ()
 {
-    RenderEntities();
+    RenderMap();
 }

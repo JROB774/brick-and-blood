@@ -10,14 +10,16 @@ typedef void(*EntityBehavior)(Entity& e);
 
 struct Entity
 {
-    std::string base_type;
+    std::string type;
 
-    struct { int x,y; } pos, old_pos;
+    std::string faction;
 
     int initiative; // Controls what entity acts first.
     int health;
 
     EntityBehavior behavior;
+
+    struct { int x,y; } pos, old_pos;
 
     // Drawing stuff.
     struct
@@ -40,17 +42,11 @@ struct Entity
     // For sorting entities.
     bool operator < (const Entity& e)
     {
-        return (initiative < e.initiative);
+        return (initiative >= e.initiative); // Inverted so lower initiative goes first!
     }
 };
 
-// Interface
-INTERNAL void    SpawnEntity    (std::string base_type, int tilex, int tiley);
-INTERNAL Entity* GetEntityAtPos (int x, int y); // NULL if no entity found!
-
-INTERNAL void   InitEntities ();
-INTERNAL void UpdateEntities ();
-INTERNAL void RenderEntities ();
+INTERNAL void InitEntities ();
 
 //
 // BEHAVIORS

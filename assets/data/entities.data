@@ -1,5 +1,6 @@
 player
 {
+    faction player
     initiative 0
     health 10
     behavior BehaviorPlayer
@@ -9,9 +10,20 @@ player
 
 goblin
 {
+    faction monster
     initiative 1
     health 3
     behavior BehaviorWander
     image [ 1 0 ]
+    color [ 207 198 194 ]
+}
+
+chicken
+{
+    faction animal
+    initiative 2
+    health 1
+    behavior BehaviorWander
+    image [ 2 0 ]
     color [ 207 198 194 ]
 }
