@@ -1,11 +1,12 @@
-#if defined(PLATFORM_WIN32) // =================================================
-
 GLOBAL constexpr S16 INPUT_GAMEPAD_STICK_DEADZONE = 12000;
 
 GLOBAL struct InputState
 {
     U8 previous_key_state[SDL_NUM_SCANCODES];
     U8 current_key_state[SDL_NUM_SCANCODES];
+
+    U32 previous_mouse_button_state[SDL_BUTTON_X2+1]; // There is no SDL_BUTTON_MAX...
+    U32 current_mouse_button_state[SDL_BUTTON_X2+1];
 
     SDL_GameController* gamepad;
 
@@ -56,10 +57,19 @@ INTERNAL void UpdateInputState ()
     memcpy(gInput.previous_key_state, gInput.current_key_state, SDL_NUM_SCANCODES * sizeof(U8));
     memcpy(gInput.current_key_state, SDL_GetKeyboardState(NULL), SDL_NUM_SCANCODES * sizeof(U8));
 
+    // Update the mouse button state.
+    U32 mouse = SDL_GetMouseState(NULL,NULL);
+    memcpy(gInput.previous_mouse_button_state, gInput.current_mouse_button_state, sizeof(gInput.previous_mouse_button_state));
+    gInput.current_mouse_button_state[SDL_BUTTON_LEFT] = mouse & SDL_BUTTON_LMASK;
+    gInput.current_mouse_button_state[SDL_BUTTON_MIDDLE] = mouse & SDL_BUTTON_MMASK;
+    gInput.current_mouse_button_state[SDL_BUTTON_RIGHT] = mouse & SDL_BUTTON_RMASK;
+    gInput.current_mouse_button_state[SDL_BUTTON_X1] = mouse & SDL_BUTTON_X1MASK;
+    gInput.current_mouse_button_state[SDL_BUTTON_X2] = mouse & SDL_BUTTON_X2MASK;
+
     // Update the gamepad button state.
     if (gInput.gamepad)
     {
-        memcpy(gInput.previous_button_state, gInput.current_button_state, SDL_CONTROLLER_BUTTON_MAX * sizeof(U8));
+        memcpy(gInput.previous_button_state, gInput.current_button_state, sizeof(gInput.previous_button_state));
         for (int i=0; i<SDL_CONTROLLER_BUTTON_MAX; ++i)
         {
             gInput.current_button_state[i] = SDL_GameControllerGetButton(gInput.gamepad, (SDL_GameControllerButton)i);
@@ -89,6 +99,62 @@ INTERNAL void HandleInputEvents (SDL_Event event)
         case (SDL_CONTROLLERDEVICEADDED): AddGamepad(); break;
         case (SDL_CONTROLLERDEVICEREMOVED): RemoveGamepad(); break;
     }
+}
+
+// KEYBOARD
+
+INTERNAL bool IsKeyDown (SDL_Scancode code)
+{
+    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
+    return (gInput.current_key_state[code] != 0);
+}
+
+INTERNAL bool IsKeyUp (SDL_Scancode code)
+{
+    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
+    return (gInput.current_key_state[code] == 0);
+}
+
+INTERNAL bool IsKeyPressed (SDL_Scancode code)
+{
+    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
+    return (gInput.current_key_state[code] == 1 && gInput.previous_key_state[code] == 0);
+}
+
+INTERNAL bool IsKeyReleased (SDL_Scancode code)
+{
+    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
+    return (gInput.current_key_state[code] == 0 && gInput.previous_key_state[code] == 1);
+}
+
+// MOUSE
+
+INTERNAL Vec2 GetMousePos ()
+{
+    int mousex,mousey;
+    SDL_GetMouseState(&mousex,&mousey);
+    return { (float)mousex, (float)mousey };
+}
+
+INTERNAL bool IsMouseButtonDown (int button)
+{
+    if (button < SDL_BUTTON_LEFT || button > SDL_BUTTON_X2) return false;
+    return (gInput.current_mouse_button_state[button] != 0);
+}
+INTERNAL bool IsMouseButtonUp (int button)
+{
+    if (button < SDL_BUTTON_LEFT || button > SDL_BUTTON_X2) return false;
+    return (gInput.current_mouse_button_state[button] == 0);
+}
+INTERNAL bool IsMouseButtonPressed (int button)
+{
+    if (button < SDL_BUTTON_LEFT || button > SDL_BUTTON_X2) return false;
+    return (gInput.current_mouse_button_state[button] == 1 && gInput.previous_mouse_button_state[button] == 0);
+}
+INTERNAL bool IsMouseButtonReleased (int button)
+{
+    if (button < SDL_BUTTON_LEFT || button > SDL_BUTTON_X2) return false;
+    return (gInput.current_mouse_button_state[button] == 0 && gInput.previous_mouse_button_state[button] == 1);
 }
 
 // GAMEPAD
@@ -231,152 +297,4 @@ INTERNAL bool IsLeftStickLeftPressed ()
     if (!gInput.gamepad) return false;
     return (gInput.previous_left_stick_x >= -INPUT_GAMEPAD_STICK_DEADZONE &&
             gInput.current_left_stick_x < -INPUT_GAMEPAD_STICK_DEADZONE);
-}
-
-#endif // PLATFORM_WIN32 =======================================================
-
-#if defined(PLATFORM_WEB) // ===================================================
-
-GLOBAL struct InputState
-{
-    U8 previous_key_state[SDL_NUM_SCANCODES];
-    U8 current_key_state[SDL_NUM_SCANCODES];
-
-} gInput;
-
-INTERNAL void QuitInput ()
-{
-    // Nothing...
-}
-
-INTERNAL void UpdateInputState ()
-{
-    // Update the keyboard state.
-    memcpy(gInput.previous_key_state, gInput.current_key_state, SDL_NUM_SCANCODES * sizeof(U8));
-    memcpy(gInput.current_key_state, SDL_GetKeyboardState(NULL), SDL_NUM_SCANCODES * sizeof(U8));
-}
-
-INTERNAL void HandleInputEvents (SDL_Event event)
-{
-    // Nothing...
-}
-
-// GAMEPAD
-
-INTERNAL bool IsButtonDown (SDL_GameControllerButton button)
-{
-    return false;
-}
-INTERNAL bool IsButtonUp (SDL_GameControllerButton button)
-{
-    return false;
-}
-INTERNAL bool IsButtonPressed (SDL_GameControllerButton button)
-{
-    return false;
-}
-INTERNAL bool IsButtonReleased (SDL_GameControllerButton button)
-{
-    return false;
-}
-
-INTERNAL S16 GetAxis (SDL_GameControllerAxis axis)
-{
-    return 0;
-}
-
-INTERNAL bool IsRightStickUp ()
-{
-    return false;
-}
-INTERNAL bool IsRightStickRight ()
-{
-    return false;
-}
-INTERNAL bool IsRightStickDown ()
-{
-    return false;
-}
-INTERNAL bool IsRightStickLeft ()
-{
-    return false;
-}
-
-INTERNAL bool IsRightStickUpPressed ()
-{
-    return false;
-}
-INTERNAL bool IsRightStickRightPressed ()
-{
-    return false;
-}
-INTERNAL bool IsRightStickDownPressed ()
-{
-    return false;
-}
-INTERNAL bool IsRightStickLeftPressed ()
-{
-    return false;
-}
-
-INTERNAL bool IsLeftStickUp ()
-{
-    return false;
-}
-INTERNAL bool IsLeftStickRight ()
-{
-    return false;
-}
-INTERNAL bool IsLeftStickDown ()
-{
-    return false;
-}
-INTERNAL bool IsLeftStickLeft ()
-{
-    return false;
-}
-
-INTERNAL bool IsLeftStickUpPressed ()
-{
-    return false;
-}
-INTERNAL bool IsLeftStickRightPressed ()
-{
-    return false;
-}
-INTERNAL bool IsLeftStickDownPressed ()
-{
-    return false;
-}
-INTERNAL bool IsLeftStickLeftPressed ()
-{
-    return false;
-}
-
-#endif // PLATFORM_WEB =========================================================
-
-// KEYBOARD
-
-INTERNAL bool IsKeyDown (SDL_Scancode code)
-{
-    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
-    return (gInput.current_key_state[code] != 0);
-}
-
-INTERNAL bool IsKeyUp (SDL_Scancode code)
-{
-    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
-    return (gInput.current_key_state[code] == 0);
-}
-
-INTERNAL bool IsKeyPressed (SDL_Scancode code)
-{
-    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
-    return (gInput.current_key_state[code] == 1 && gInput.previous_key_state[code] == 0);
-}
-
-INTERNAL bool IsKeyReleased (SDL_Scancode code)
-{
-    if (code < 0 || code > SDL_NUM_SCANCODES) return false;
-    return (gInput.current_key_state[code] == 0 && gInput.previous_key_state[code] == 1);
 }

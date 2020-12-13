@@ -12,6 +12,15 @@ INTERNAL bool IsKeyUp       (SDL_Scancode code);
 INTERNAL bool IsKeyPressed  (SDL_Scancode code);
 INTERNAL bool IsKeyReleased (SDL_Scancode code);
 
+// MOUSE
+
+INTERNAL Vec2 GetMousePos ();
+
+INTERNAL bool IsMouseButtonDown     (int button);
+INTERNAL bool IsMouseButtonUp       (int button);
+INTERNAL bool IsMouseButtonPressed  (int button);
+INTERNAL bool IsMouseButtonReleased (int button);
+
 // GAMEPAD
 
 INTERNAL bool IsButtonDown     (SDL_GameControllerButton button);
