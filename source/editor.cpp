@@ -44,9 +44,39 @@ struct EditorIconIndex
     size_t index;
 };
 
+struct EditorThing
+{
+    EditorIconIndex icon_index;
+
+    bool active;
+
+    // Drawing stuff.
+    struct
+    {
+        SDL_Rect clip;
+
+        struct
+        {
+            float current;
+            float target;
+        } scale;
+        struct
+        {
+            float current;
+            float target;
+        } angle;
+        struct
+        {
+            Vec4 current;
+            Vec4 target;
+            Vec4 base;
+        } color;
+    } draw;
+};
+
 struct EditorChunk
 {
-    EditorIconIndex things[CHUNK_W][CHUNK_H];
+    EditorThing things[CHUNK_H][CHUNK_W];
 };
 
 GLOBAL struct Editor
@@ -271,28 +301,83 @@ INTERNAL void DoEditorCanvas ()
         gEditor.canvas.scale++;
     }
 
-    gEditor.canvas.bounds.w *= gEditor.canvas.scale;
-    gEditor.canvas.bounds.h *= gEditor.canvas.scale;
+    gEditor.canvas.bounds.w *=  gEditor.canvas.scale;
+    gEditor.canvas.bounds.h *=  gEditor.canvas.scale;
     gEditor.canvas.bounds.x  = (gEditor.canvas.space.w-gEditor.canvas.bounds.w) / 2;
     gEditor.canvas.bounds.y  = (gEditor.canvas.space.h-gEditor.canvas.bounds.h) / 2;
 
     DrawFill(gEditor.canvas.bounds, EDITOR_COLOR0);
 
-    // Handle the mouse cursor drawing and functionality.
-
-    Vec2 mouse = GetMousePos();
-
-    if (PointAndRectCollision(mouse,gEditor.canvas.bounds)) gEditor.cursor.draw.color.target.a = EDITOR_CURSOR_ALPHA;
-    else gEditor.cursor.draw.color.target.a = 0.0f;
+    // Handle and draw the tiles and entities in the current chunk.
 
     float tilew = (TILE_W*gEditor.canvas.scale);
     float tileh = (TILE_H*gEditor.canvas.scale);
+
+    for (int iy=0; iy<CHUNK_H; ++iy)
+    {
+        for (int ix=0; ix<CHUNK_W; ++ix)
+        {
+            EditorThing& thing = gEditor.chunk.things[iy][ix];
+            if (thing.active) // @Temporary: Don't draw anything if not active...
+            {
+                float x = gEditor.canvas.bounds.x + ((float)ix * tilew);
+                float y = gEditor.canvas.bounds.y + ((float)iy * tileh);
+                float scale = gEditor.canvas.scale * thing.draw.scale.current;
+                Vec2 center = { 0,0 };
+                DrawImage(thing.icon_index.type, x,y, {scale,scale}, center, thing.draw.angle.current, FLIP_NONE, thing.draw.color.current, &thing.draw.clip);
+            }
+        }
+    }
+
+    // Handle the mouse cursor drawing and functionality.
+
+    Vec2 mouse = GetMousePos();
 
     int tilex = (int)floorf((mouse.x-gEditor.canvas.bounds.x) / tilew);
     int tiley = (int)floorf((mouse.y-gEditor.canvas.bounds.y) / tileh);
 
     gEditor.cursor.pos.x = tilex;
     gEditor.cursor.pos.y = tiley;
+
+    if (PointAndRectCollision(mouse,gEditor.canvas.bounds))
+    {
+        gEditor.cursor.draw.color.target.a = EDITOR_CURSOR_ALPHA;
+
+        // Handle adding and removing things from the current chunk.
+        EditorThing& thing = gEditor.chunk.things[gEditor.cursor.pos.y][gEditor.cursor.pos.x];
+        if (IsMouseButtonDown(SDL_BUTTON_LEFT))
+        {
+            // INSERT THING!!!
+            EditorIcon* icon = GetSelectedEditorIcon();
+            if (icon)
+            {
+                thing.icon_index = gEditor.cursor.selected;
+                thing.active = true;
+
+                thing.draw.clip = icon->draw.clip;
+                thing.draw.scale.current = 1.0f;
+                thing.draw.scale.target = 1.0f;
+                thing.draw.angle.current = 0.0f;
+                thing.draw.angle.target = 0.0f;
+                thing.draw.color.current = icon->draw.color.base;
+                thing.draw.color.target = icon->draw.color.base;
+                thing.draw.color.base = icon->draw.color.base;
+            }
+        }
+        else if (IsMouseButtonDown(SDL_BUTTON_RIGHT))
+        {
+            //
+            // REMOVE THING
+            //
+
+            thing.active = false;
+            // @Incomplete: Do effects...
+        }
+    }
+    else
+    {
+        gEditor.cursor.draw.color.target.a = 0.0f;
+    }
 
     // Lerp values for smooth effects.
     gEditor.cursor.draw.pos.x = Lerp(gEditor.cursor.draw.pos.x, ((float)tilex*tilew), gApplication.delta_time*20);
