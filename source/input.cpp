@@ -5,6 +5,8 @@ GLOBAL struct InputState
     U8 previous_key_state[SDL_NUM_SCANCODES];
     U8 current_key_state[SDL_NUM_SCANCODES];
 
+    struct { int x,y; } mouse_wheel;
+
     U32 previous_mouse_button_state[SDL_BUTTON_X2+1]; // There is no SDL_BUTTON_MAX...
     U32 current_mouse_button_state[SDL_BUTTON_X2+1];
 
@@ -98,6 +100,12 @@ INTERNAL void HandleInputEvents (SDL_Event event)
     {
         case (SDL_CONTROLLERDEVICEADDED): AddGamepad(); break;
         case (SDL_CONTROLLERDEVICEREMOVED): RemoveGamepad(); break;
+
+        case (SDL_MOUSEWHEEL):
+        {
+            gInput.mouse_wheel.x = event.wheel.x;
+            gInput.mouse_wheel.y = event.wheel.y;
+        } break;
     }
 }
 
@@ -128,6 +136,16 @@ INTERNAL bool IsKeyReleased (SDL_Scancode code)
 }
 
 // MOUSE
+
+INTERNAL int GetMouseScrollVertical ()
+{
+    return gInput.mouse_wheel.y;
+}
+
+INTERNAL int GetMouseScrollHorizontal ()
+{
+    return gInput.mouse_wheel.x;
+}
 
 INTERNAL Vec2 GetMousePos ()
 {
