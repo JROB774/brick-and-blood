@@ -5,7 +5,7 @@ INTERNAL void InitGame ()
     InitMap();
 
     MapSpawnEntity("player", 0,0);
-    for (int i=0; i<25; ++i)
+    for (int i=0; i<30; ++i)
     {
         MapSpawnEntity("chicken", RandomRange(0,19),RandomRange(0,14));
     }

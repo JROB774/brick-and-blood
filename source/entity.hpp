@@ -42,7 +42,7 @@ struct Entity
     // For sorting entities.
     bool operator < (const Entity& e)
     {
-        return (initiative >= e.initiative); // Inverted so lower initiative goes first!
+        return (initiative < e.initiative);
     }
 };
 
