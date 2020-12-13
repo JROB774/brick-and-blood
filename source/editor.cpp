@@ -1,10 +1,11 @@
+GLOBAL constexpr float EDITOR_PANEL_BORDER             =   4.0f;
 GLOBAL constexpr float EDITOR_PALETTE_WIDTH            = 320.0f;
-GLOBAL constexpr float EDITOR_PALETTE_BORDER           =   4.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_SCALE       =   2.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_PADDING     =   5.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HOVER_SCALE =   2.4f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_SCALE   =   3.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_ANGLE   = -30.0f;
+GLOBAL constexpr float EDITOR_CONTROLS_HEIGHT          =  32.0f;
 GLOBAL constexpr float EDITOR_CURSOR_ALPHA             =   0.5f;
 GLOBAL constexpr float EDITOR_THING_PLACE_SCALE        =   1.5f;
 GLOBAL constexpr float EDITOR_THING_PLACE_ANGLE        = -30.0f;
@@ -101,6 +102,10 @@ GLOBAL struct Editor
     {
         Rect bounds;
     } palette;
+    struct
+    {
+        Rect bounds;
+    } controls;
     struct
     {
         Rect space;
@@ -236,17 +241,13 @@ INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon
         // We do this before applying scale so the bounding box doesn't get messed with.
         if (PointAndRectCollision(mouse, bounds))
         {
-            if (t.draw.color.target != EDITOR_COLOR2) // Important for pressed effects to work properly!
-            {
-                t.draw.color.current = EDITOR_COLOR2;
-            }
-            t.draw.color.target = EDITOR_COLOR2;
             t.draw.scale.target = EDITOR_PALETTE_ICON_HOVER_SCALE;
 
             if (IsMouseButtonPressed(SDL_BUTTON_LEFT))
             {
                 t.draw.scale.current = EDITOR_PALETTE_ICON_HIT_SCALE;
                 t.draw.angle.current = EDITOR_PALETTE_ICON_HIT_ANGLE;
+                t.draw.color.current = EDITOR_COLOR2;
 
                 // Set the new selected!
                 gEditor.cursor.selected.type = image;
@@ -288,12 +289,12 @@ INTERNAL void DoEditorPalette ()
     float ww = (float)GetWindowWidth();
     float wh = (float)GetWindowHeight();
 
-    gEditor.palette.bounds.x = ww - (EDITOR_PALETTE_WIDTH + EDITOR_PALETTE_BORDER);
-    gEditor.palette.bounds.y = EDITOR_PALETTE_BORDER;
+    gEditor.palette.bounds.x = ww - (EDITOR_PALETTE_WIDTH + EDITOR_PANEL_BORDER);
+    gEditor.palette.bounds.y = EDITOR_PANEL_BORDER;
     gEditor.palette.bounds.w = EDITOR_PALETTE_WIDTH;
-    gEditor.palette.bounds.h = wh - (EDITOR_PALETTE_BORDER * 2);
+    gEditor.palette.bounds.h = wh - (EDITOR_PANEL_BORDER * 2);
 
-    DrawFill(gEditor.palette.bounds, EDITOR_COLOR0);
+    DrawRect(gEditor.palette.bounds, EDITOR_COLOR1);
 
     // List all of the placeable tiles and entities.
     float cx = EDITOR_PALETTE_ICON_PADDING, cy = EDITOR_PALETTE_ICON_PADDING;
@@ -346,6 +347,19 @@ INTERNAL void DoEditorPalette ()
     }
 }
 
+INTERNAL void DoEditorControls ()
+{
+    float ww = (float)GetWindowWidth();
+    float wh = (float)GetWindowHeight();
+
+    gEditor.controls.bounds.x = EDITOR_PANEL_BORDER;
+    gEditor.controls.bounds.y = EDITOR_PANEL_BORDER;
+    gEditor.controls.bounds.w = ww - (ww - gEditor.palette.bounds.x) - (EDITOR_PANEL_BORDER*2);
+    gEditor.controls.bounds.h = EDITOR_CONTROLS_HEIGHT;
+
+    DrawRect(gEditor.controls.bounds, EDITOR_COLOR1);
+}
+
 INTERNAL void DoEditorCanvas ()
 {
     float ww = (float)GetWindowWidth();
@@ -353,10 +367,10 @@ INTERNAL void DoEditorCanvas ()
 
     // Calculate how large we can make the chunk editor canvas within the available space.
 
-    gEditor.canvas.space.x = 0.0f;
-    gEditor.canvas.space.y = 0.0f;
-    gEditor.canvas.space.w = ww - (ww - gEditor.palette.bounds.x);
-    gEditor.canvas.space.h = wh;
+    gEditor.canvas.space.x = EDITOR_PANEL_BORDER;
+    gEditor.canvas.space.y = (EDITOR_PANEL_BORDER * 2) + gEditor.controls.bounds.h + 32;
+    gEditor.canvas.space.w = ww - (ww - gEditor.palette.bounds.x - EDITOR_PANEL_BORDER);
+    gEditor.canvas.space.h = wh - gEditor.canvas.space.y - 32;
 
     gEditor.canvas.bounds.w = (CHUNK_W * TILE_W);
     gEditor.canvas.bounds.h = (CHUNK_H * TILE_H);
@@ -368,10 +382,10 @@ INTERNAL void DoEditorCanvas ()
         gEditor.canvas.scale++;
     }
 
-    gEditor.canvas.bounds.w *=  gEditor.canvas.scale;
-    gEditor.canvas.bounds.h *=  gEditor.canvas.scale;
-    gEditor.canvas.bounds.x  = (gEditor.canvas.space.w-gEditor.canvas.bounds.w) / 2;
-    gEditor.canvas.bounds.y  = (gEditor.canvas.space.h-gEditor.canvas.bounds.h) / 2;
+    gEditor.canvas.bounds.w *= gEditor.canvas.scale;
+    gEditor.canvas.bounds.h *= gEditor.canvas.scale;
+    gEditor.canvas.bounds.x  = gEditor.canvas.space.x + ((gEditor.canvas.space.w-gEditor.canvas.bounds.w) / 2);
+    gEditor.canvas.bounds.y  = gEditor.canvas.space.y + ((gEditor.canvas.space.h-gEditor.canvas.bounds.h) / 2);
 
     DrawFill(gEditor.canvas.bounds, EDITOR_COLOR0);
 
@@ -487,5 +501,6 @@ INTERNAL void DoEditorCanvas ()
 INTERNAL void DoEditor ()
 {
     DoEditorPalette();
+    DoEditorControls();
     DoEditorCanvas();
 }
