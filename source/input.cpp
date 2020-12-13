@@ -69,6 +69,8 @@ INTERNAL void UpdateInputState ()
     SDL_GetRelativeMouseState(&mousex,&mousey);
     gInput.relative_mouse_pos = { (float)mousex, (float)mousey };
 
+    gInput.mouse_wheel = { 0,0 };
+
     U32 mouse = SDL_GetMouseState(NULL,NULL);
     memcpy(gInput.previous_mouse_button_state, gInput.current_mouse_button_state, sizeof(gInput.previous_mouse_button_state));
     gInput.current_mouse_button_state[SDL_BUTTON_LEFT] = mouse & SDL_BUTTON_LMASK;
