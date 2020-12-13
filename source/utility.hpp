@@ -92,6 +92,8 @@ INTERNAL std::string FormatStringV  (const char* format, va_list args);
 INTERNAL std::string FormatTime     (const char* format);
 
 INTERNAL float Lerp (float a, float b, float t);
+INTERNAL Vec2  Lerp (Vec2  a, Vec2  b, float t);
+INTERNAL Vec3  Lerp (Vec3  a, Vec3  b, float t);
 INTERNAL Vec4  Lerp (Vec4  a, Vec4  b, float t);
 
 INTERNAL float DegToRad (float deg);
