@@ -17,7 +17,8 @@ INTERNAL bool IsKeyReleased (SDL_Scancode code);
 INTERNAL int GetMouseScrollVertical   ();
 INTERNAL int GetMouseScrollHorizontal ();
 
-INTERNAL Vec2 GetMousePos ();
+INTERNAL Vec2 GetMousePos         ();
+INTERNAL Vec2 GetRelativeMousePos ();
 
 INTERNAL bool IsMouseButtonDown     (int button);
 INTERNAL bool IsMouseButtonUp       (int button);

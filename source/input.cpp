@@ -7,6 +7,9 @@ GLOBAL struct InputState
 
     struct { int x,y; } mouse_wheel;
 
+    Vec2 mouse_pos;
+    Vec2 relative_mouse_pos;
+
     U32 previous_mouse_button_state[SDL_BUTTON_X2+1]; // There is no SDL_BUTTON_MAX...
     U32 current_mouse_button_state[SDL_BUTTON_X2+1];
 
@@ -59,7 +62,13 @@ INTERNAL void UpdateInputState ()
     memcpy(gInput.previous_key_state, gInput.current_key_state, SDL_NUM_SCANCODES * sizeof(U8));
     memcpy(gInput.current_key_state, SDL_GetKeyboardState(NULL), SDL_NUM_SCANCODES * sizeof(U8));
 
-    // Update the mouse button state.
+    // Update the mouse state.
+    int mousex,mousey;
+    SDL_GetMouseState(&mousex,&mousey);
+    gInput.mouse_pos = { (float)mousex, (float)mousey };
+    SDL_GetRelativeMouseState(&mousex,&mousey);
+    gInput.relative_mouse_pos = { (float)mousex, (float)mousey };
+
     U32 mouse = SDL_GetMouseState(NULL,NULL);
     memcpy(gInput.previous_mouse_button_state, gInput.current_mouse_button_state, sizeof(gInput.previous_mouse_button_state));
     gInput.current_mouse_button_state[SDL_BUTTON_LEFT] = mouse & SDL_BUTTON_LMASK;
@@ -149,9 +158,12 @@ INTERNAL int GetMouseScrollHorizontal ()
 
 INTERNAL Vec2 GetMousePos ()
 {
-    int mousex,mousey;
-    SDL_GetMouseState(&mousex,&mousey);
-    return { (float)mousex, (float)mousey };
+    return gInput.mouse_pos;
+}
+
+INTERNAL Vec2 GetRelativeMousePos ()
+{
+    return gInput.relative_mouse_pos;
 }
 
 INTERNAL bool IsMouseButtonDown (int button)
