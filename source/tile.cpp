@@ -5,11 +5,7 @@ struct TileBase
     Vec4 color;
 };
 
-GLOBAL struct TileSystem
-{
-    std::map<std::string,TileBase> tile_base;
-
-} gTileSystem;
+std::map<std::string,TileBase> gTiles;
 
 INTERNAL void InitTiles ()
 {
@@ -45,6 +41,6 @@ INTERNAL void InitTiles ()
             base.color = { 1,1,1,1 };
         }
 
-        gTileSystem.tile_base.insert({ data.name, base });
+        gTiles.insert({ data.name, base });
     }
 }

@@ -1,12 +1,12 @@
 INTERNAL void MapSpawnEntity (std::string type, int x, int y)
 {
     // If the specified base type can't be found then we don't create an entity.
-    if (!gEntitySystem.entity_base.count(type))
+    if (!gEntities.count(type))
     {
         LOG_ERROR(ERR_MIN, "Could not create entity of unknown type: %s", type.c_str());
         return;
     }
-    EntityBase& base = gEntitySystem.entity_base.at(type);
+    EntityBase& base = gEntities.at(type);
 
     // Create the actual entity and add it to the manager.
     gMap.entities.push_back(Entity());
@@ -108,6 +108,6 @@ INTERNAL void RenderMap ()
         }
 
         Vec2 center = { TILE_W/2, TILE_H/2 };
-        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
+        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, {1,1}, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
     }
 }

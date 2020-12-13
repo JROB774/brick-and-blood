@@ -22,6 +22,7 @@ struct Chunk
 GLOBAL struct Map
 {
     std::vector<Entity> entities;
+
 } gMap;
 
 INTERNAL void   InitMap ();
