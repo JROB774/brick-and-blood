@@ -26,6 +26,9 @@ union Vec2
     struct { float r, g; };
     struct { float s, t; };
     float raw[2];
+
+    inline bool operator== (const Vec2& v) { return (x == v.x && y == v.y); }
+    inline bool operator!= (const Vec2& v) { return !(operator==(v)); }
 };
 union Vec3
 {
@@ -33,6 +36,9 @@ union Vec3
     struct { float r, g, b; };
     struct { float s, t, p; };
     float raw[3];
+
+    inline bool operator== (const Vec3& v) { return (x == v.x && y == v.y && z == v.z); }
+    inline bool operator!= (const Vec3& v) { return !(operator==(v)); }
 };
 union Vec4
 {
@@ -40,6 +46,9 @@ union Vec4
     struct { float r, g, b, a; };
     struct { float s, t, p, q; };
     float raw[4];
+
+    inline bool operator== (const Vec4& v) { return (x == v.x && y == v.y && z == v.z && w == v.w); }
+    inline bool operator!= (const Vec4& v) { return !(operator==(v)); }
 };
 
 struct Rect
