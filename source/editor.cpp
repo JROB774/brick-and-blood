@@ -335,6 +335,14 @@ INTERNAL void DoEditorPalette ()
                 gEditor.cursor.selected.index = 0;
             }
         }
+
+        // We need to update the color!
+        float ca = gEditor.cursor.draw.color.current.a;
+        float ta = gEditor.cursor.draw.color.target.a;
+        gEditor.cursor.draw.color.current = GetSelectedEditorIcon()->draw.color.base;
+        gEditor.cursor.draw.color.target = GetSelectedEditorIcon()->draw.color.base;
+        gEditor.cursor.draw.color.current.a = ca;
+        gEditor.cursor.draw.color.target.a = ta;
     }
 }
 
