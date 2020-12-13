@@ -8,22 +8,57 @@ player
     color [ 207 198 194 ]
 }
 
-goblin
-{
-    faction monster
-    initiative 1
-    health 3
-    behavior BehaviorWander
-    image [ 1 0 ]
-    color [ 207 198 194 ]
-}
-
 chicken
 {
     faction animal
     initiative 2
     health 1
     behavior BehaviorWander
+    image [ 1 0 ]
+    color [ 207 198 194 ]
+}
+cow
+{
+    faction animal
+    initiative 2
+    health 3
+    behavior BehaviorWander
     image [ 2 0 ]
+    color [ 207 198 194 ]
+}
+horse
+{
+    faction animal
+    initiative 2
+    health 4
+    behavior BehaviorWander
+    image [ 3 0 ]
+    color [ 207 198 194 ]
+}
+pig
+{
+    faction animal
+    initiative 2
+    health 3
+    behavior BehaviorWander
+    image [ 4 0 ]
+    color [ 207 198 194 ]
+}
+cat
+{
+    faction animal
+    initiative 2
+    health 2
+    behavior BehaviorWander
+    image [ 5 0 ]
+    color [ 207 198 194 ]
+}
+dog
+{
+    faction animal
+    initiative 2
+    health 2
+    behavior BehaviorWander
+    image [ 6 0 ]
     color [ 207 198 194 ]
 }

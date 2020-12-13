@@ -1,20 +1,113 @@
-tree
+tree0
 {
     hits 3
     image [ 0 0 ]
     color [ 56 217 115 ]
+    solid true
+}
+tree1
+{
+    hits 3
+    image [ 1 0 ]
+    color [ 56 217 115 ]
+    solid true
+}
+tree2
+{
+    hits 3
+    image [ 2 0 ]
+    color [ 56 217 115 ]
+    solid true
+}
+tree3
+{
+    hits 3
+    image [ 3 0 ]
+    color [ 56 217 115 ]
+    solid true
+}
+tree4
+{
+    hits 3
+    image [ 4 0 ]
+    color [ 56 217 115 ]
+    solid true
+}
+tree5
+{
+    hits 3
+    image [ 5 0 ]
+    color [ 56 217 115 ]
+    solid true
+}
+tree6
+{
+    hits 3
+    image [ 6 0 ]
+    color [ 56 217 115 ]
+    solid true
+}
+tree7
+{
+    hits 3
+    image [ 7 0 ]
+    color [ 56 217 115 ]
+    solid true
 }
 
-pebble
+foliage0
+{
+    image [ 0 1 ]
+    color [ 122 68 74 ]
+    solid false
+}
+foliage1
+{
+    image [ 1 1 ]
+    color [ 56 217 115 ]
+    solid false
+}
+foliage2
+{
+    image [ 2 1 ]
+    color [ 56 217 115 ]
+    solid false
+}
+foliage3
+{
+    image [ 3 1 ]
+    color [ 56 217 115 ]
+    solid false
+}
+
+rocks
 {
     hits 1
-    image [ 1 0 ]
+    image [ 4 1 ]
     color [ 207 198 184 ]
+    solid true
 }
 
 shrub
 {
     hits 1
-    image [ 2 0 ]
+    image [ 5 1 ]
     color [ 191 121 88 ]
+    solid true
+}
+
+grass
+{
+    hits 1
+    image [ 6 1 ]
+    color [ 56 217 115 ]
+    solid true
+}
+
+cactus
+{
+    hits 2
+    image [ 7 1 ]
+    color [ 56 217 115 ]
+    solid true
 }
