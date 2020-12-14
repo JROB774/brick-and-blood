@@ -23,12 +23,7 @@ INTERNAL void UpdateApplication (float dt)
 
     if (IsKeyPressed(SDL_SCANCODE_F1))
     {
-        gApplication.editor = !gApplication.editor;
-        if (IsFullscreen())
-        {
-            if (gApplication.editor) SDL_ShowCursor(SDL_ENABLE);
-            else SDL_ShowCursor(SDL_DISABLE);
-        }
+        ToggleEditor();
     }
 
     if (!gApplication.editor)

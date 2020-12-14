@@ -5,7 +5,8 @@ GLOBAL constexpr float EDITOR_PALETTE_ICON_PADDING     =   5.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HOVER_SCALE =   2.4f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_SCALE   =   3.0f;
 GLOBAL constexpr float EDITOR_PALETTE_ICON_HIT_ANGLE   = -30.0f;
-GLOBAL constexpr float EDITOR_CONTROLS_HEIGHT          =  32.0f;
+GLOBAL constexpr float EDITOR_CONTROLS_HEIGHT          =  40.0f;
+GLOBAL constexpr float EDITOR_CONTROLS_PADDING         =   4.0f;
 GLOBAL constexpr float EDITOR_CURSOR_ALPHA             =   0.5f;
 GLOBAL constexpr float EDITOR_THING_PLACE_SCALE        =   1.5f;
 GLOBAL constexpr float EDITOR_THING_PLACE_ANGLE        = -30.0f;
@@ -100,6 +101,13 @@ GLOBAL struct Editor
 
     struct
     {
+        std::string name;
+        std::vector<EditorChunk> chunks;
+        size_t current;
+    } zone;
+
+    struct
+    {
         Rect bounds;
     } palette;
     struct
@@ -130,16 +138,46 @@ GLOBAL struct Editor
         EditorIconIndex selected;
     } cursor;
 
-    EditorChunk chunk;
-
 } gEditor;
 
-INTERNAL void LoadChunk ()
+INTERNAL void EditorLoadZoneChunks ()
 {
+    gEditor.zone.chunks.clear();
+    GonObject& gon = *GetAsset<AssetData>("chunks/" + gEditor.zone.name);
+    if (gon.type == GonObject::FieldType::OBJECT)
+    {
+        // Go through and load each chunk.
+        for (auto& chunk: gon.children_array)
+        {
+            // Tiles
+            // @Incomplete: ...
+
+            // Entities
+            // @Incomplete: ...
+        }
+    }
+
+    // If there were no chunks found, just add an empty chunk to the end.
+    if (gEditor.zone.chunks.empty()) gEditor.zone.chunks.push_back({});
+
+    gEditor.zone.current = gEditor.zone.chunks.size()-1;
+}
+
+INTERNAL void EditorSaveZoneChunks ()
+{
+    std::string data;
+
+    // Go through and convert each chunk to GON data for saving.
+    for (auto& chunk: gEditor.zone.chunks)
+    {
+        // @Incomplete: ...
+    }
+
+    // Save the chunk data to disk
     // @Incomplete: ...
 }
 
-INTERNAL void SaveChunk ()
+INTERNAL void EditorNewZoneChunk ()
 {
     // @Incomplete: ...
 }
@@ -162,6 +200,11 @@ INTERNAL EditorIcon* GetSelectedEditorIcon ()
         }
     }
     return icon;
+}
+
+INTERNAL EditorChunk& GetCurrentEditorChunk ()
+{
+    return gEditor.zone.chunks.at(gEditor.zone.current);
 }
 
 INTERNAL void InitEditor ()
@@ -196,6 +239,10 @@ INTERNAL void InitEditor ()
         gEditor.entity_icons.push_back(icon);
     }
 
+    // Load all the chunks for the current zone into the editor.
+    gEditor.zone.name = "forest";
+    EditorLoadZoneChunks();
+
     // Set the currently selected item to be the first tile.
     gEditor.cursor.selected.type = "tile";
     gEditor.cursor.selected.index = 0;
@@ -212,7 +259,7 @@ INTERNAL void InitEditor ()
 
 INTERNAL void QuitEditor ()
 {
-    // Nothing...
+    EditorSaveZoneChunks();
 }
 
 INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon>& icons, std::string image)
@@ -358,6 +405,13 @@ INTERNAL void DoEditorControls ()
     gEditor.controls.bounds.h = EDITOR_CONTROLS_HEIGHT;
 
     DrawRect(gEditor.controls.bounds, EDITOR_COLOR1);
+
+    // @Improve: Add more zone types to the game...
+
+    float x = gEditor.controls.bounds.x + EDITOR_CONTROLS_PADDING;
+    float y = gEditor.controls.bounds.y + EDITOR_CONTROLS_PADDING;
+    SDL_Rect clip = { 0,0,TILE_W,TILE_H };
+    DrawImage("editor", x,y, {2,2}, {0,0}, 0.0f, FLIP_NONE, { 1,1,1,1 }, &clip);
 }
 
 INTERNAL void DoEditorCanvas ()
@@ -398,7 +452,7 @@ INTERNAL void DoEditorCanvas ()
     {
         for (int ix=0; ix<CHUNK_W; ++ix)
         {
-            EditorThing& thing = gEditor.chunk.things[iy][ix];
+            EditorThing& thing = GetCurrentEditorChunk().things[iy][ix];
 
             // Lerp values for smooth effects.
             thing.draw.color.current = Lerp(thing.draw.color.current, thing.draw.color.target, gApplication.delta_time*15);
@@ -437,7 +491,7 @@ INTERNAL void DoEditorCanvas ()
         gEditor.cursor.draw.color.target.a = EDITOR_CURSOR_ALPHA;
 
         // Handle adding and removing things from the current chunk.
-        EditorThing& thing = gEditor.chunk.things[gEditor.cursor.pos.y][gEditor.cursor.pos.x];
+        EditorThing& thing = GetCurrentEditorChunk().things[gEditor.cursor.pos.y][gEditor.cursor.pos.x];
         if (IsMouseButtonDown(SDL_BUTTON_LEFT))
         {
             // PLACE THING!!!
@@ -503,4 +557,18 @@ INTERNAL void DoEditor ()
     DoEditorPalette();
     DoEditorControls();
     DoEditorCanvas();
+}
+
+INTERNAL void ToggleEditor ()
+{
+    gApplication.editor = !gApplication.editor;
+    if (IsFullscreen())
+    {
+        if (gApplication.editor) SDL_ShowCursor(SDL_ENABLE);
+        else SDL_ShowCursor(SDL_DISABLE);
+    }
+    if (!gApplication.editor)
+    {
+        EditorSaveZoneChunks();
+    }
 }
