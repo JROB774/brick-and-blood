@@ -21,10 +21,13 @@ INTERNAL void UpdateApplication (float dt)
     gApplication.total_time += dt;
     gApplication.frame++;
 
+    // We do not want the editor to be enabled in release builds!
+    #if defined(BUILD_DEBUG)
     if (IsKeyPressed(SDL_SCANCODE_F1))
     {
         ToggleEditor();
     }
+    #endif
 
     if (!gApplication.editor)
     {
