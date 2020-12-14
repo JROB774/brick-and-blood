@@ -64,19 +64,19 @@ foliage0
 foliage1
 {
     image [ 1 1 ]
-    color [ 56 217 115 ]
+    color [ 122 68 74 ]
     solid false
 }
 foliage2
 {
     image [ 2 1 ]
-    color [ 56 217 115 ]
+    color [ 122 68 74 ]
     solid false
 }
 foliage3
 {
     image [ 3 1 ]
-    color [ 56 217 115 ]
+    color [ 122 68 74 ]
     solid false
 }
 
