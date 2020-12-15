@@ -3,6 +3,13 @@ INTERNAL void InitGame ()
     InitEntities();
     InitTiles();
     InitMap();
+
+    for (int i=0; i<150; ++i)
+    {
+        int x = RandomRange(0,WORLD_W_IN_TILES-1);
+        int y = RandomRange(0,WORLD_H_IN_TILES-1);
+        MapSpawnEntity("chicken",x,y);
+    }
 }
 
 INTERNAL void QuitGame ()

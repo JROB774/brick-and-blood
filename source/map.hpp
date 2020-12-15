@@ -16,7 +16,7 @@ GLOBAL constexpr int WORLD_H_IN_TILES = WORLD_H*CHUNK_H;
 
 INTERNAL void MapPlaceTile (std::string type, int chunkx, int chunky, int x, int y);
 INTERNAL void MapSpawnEntity (std::string type, int x, int y);
-
+INTERNAL Tile* MapGetTileAtPos (int x, int y); // NULL if pos is out of bounds!
 INTERNAL Entity* MapGetEntityAtPos (int x, int y); // NULL if no entity found!
 
 //
@@ -30,7 +30,7 @@ struct Chunk
 
 GLOBAL struct Map
 {
-std::vector<Entity> entities;
+    std::vector<Entity> entities;
     Chunk chunks[WORLD_H][WORLD_W];
 
 } gMap;

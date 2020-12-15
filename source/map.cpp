@@ -35,6 +35,14 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y)
     }
     EntityBase& base = gEntities.at(type);
 
+    // Check if the position contains a solid tile, if it does then do not spawn an entity.
+    Tile* tile = MapGetTileAtPos(x,y);
+    if (tile && tile->solid)
+    {
+        LOG_ERROR(ERR_MIN, "Could not place entity at (%d,%d), solid tile present!", x,y);
+        return;
+    }
+
     // Create the actual entity and add it to the manager.
     gMap.entities.push_back(Entity());
     Entity& e = gMap.entities.back();
@@ -58,6 +66,18 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y)
     e.draw.angle.target = 0.0f;
     e.draw.color.current = base.color;
     e.draw.color.target = base.color;
+}
+
+INTERNAL Tile* MapGetTileAtPos (int x, int y)
+{
+    if (x < 0 || y < 0 || x >= WORLD_W_IN_TILES || y >= WORLD_H_IN_TILES) return NULL;
+
+    int cx = x / CHUNK_W;
+    int cy = y / CHUNK_H;
+    Chunk& chunk = gMap.chunks[cy][cx];
+    int tx = x % CHUNK_W;
+    int ty = y % CHUNK_H;
+    return &chunk.tiles[ty][tx];
 }
 
 INTERNAL Entity* MapGetEntityAtPos (int x, int y)
