@@ -140,71 +140,235 @@ GLOBAL struct Editor
 
 } gEditor;
 
-INTERNAL void EditorLoadZoneChunks ()
-{
-    gEditor.zone.chunks.clear();
-    GonObject& gon = *GetAsset<AssetData>("chunks/" + gEditor.zone.name);
-    if (gon.type == GonObject::FieldType::OBJECT)
-    {
-        // Go through and load each chunk.
-        for (auto& chunk: gon.children_array)
-        {
-            // Tiles
-            // @Incomplete: ...
-
-            // Entities
-            // @Incomplete: ...
-        }
-    }
-
-    // If there were no chunks found, just add an empty chunk to the end.
-    if (gEditor.zone.chunks.empty()) gEditor.zone.chunks.push_back({});
-
-    gEditor.zone.current = gEditor.zone.chunks.size()-1;
-}
-
-INTERNAL void EditorSaveZoneChunks ()
-{
-    std::string data;
-
-    // Go through and convert each chunk to GON data for saving.
-    for (auto& chunk: gEditor.zone.chunks)
-    {
-        // @Incomplete: ...
-    }
-
-    // Save the chunk data to disk
-    // @Incomplete: ...
-}
-
-INTERNAL void EditorNewZoneChunk ()
-{
-    // @Incomplete: ...
-}
-
-INTERNAL EditorIcon* GetSelectedEditorIcon ()
+INTERNAL EditorIcon* GetEditorIconFromIndex (EditorIconIndex index)
 {
     EditorIcon* icon = NULL;
-    if (gEditor.cursor.selected.type == "tile")
+    if (index.type == "tile")
     {
         if (!gEditor.tile_icons.empty())
         {
-            icon = &gEditor.tile_icons.at(gEditor.cursor.selected.index);
+            icon = &gEditor.tile_icons.at(index.index);
         }
     }
-    else if (gEditor.cursor.selected.type == "entity")
+    else if (index.type == "entity")
     {
         if (!gEditor.entity_icons.empty())
         {
-            icon = &gEditor.entity_icons.at(gEditor.cursor.selected.index);
+            icon = &gEditor.entity_icons.at(index.index);
         }
     }
     return icon;
 }
 
+INTERNAL EditorIcon* GetSelectedEditorIcon ()
+{
+    return GetEditorIconFromIndex(gEditor.cursor.selected);
+}
+
 INTERNAL EditorChunk& GetCurrentEditorChunk ()
 {
     return gEditor.zone.chunks.at(gEditor.zone.current);
+}
+
+INTERNAL EditorIconIndex GetEditorIconIndex (std::string type, std::string name)
+{
+    EditorIconIndex index;
+    index.type = type;
+
+    if (type == "tile")
+    {
+        for (int i=0; i<gEditor.tile_icons.size(); ++i)
+        {
+            if (name == gEditor.tile_icons.at(i).type)
+            {
+                index.index = i;
+                break;
+            }
+        }
+    }
+    else if (type == "entity")
+    {
+        for (int i=0; i<gEditor.entity_icons.size(); ++i)
+        {
+            if (name == gEditor.entity_icons.at(i).type)
+            {
+                index.index = i;
+                break;
+            }
+        }
+    }
+
+    return index;
+}
+
+INTERNAL void EditorPlaceThing (EditorThing& thing, EditorIconIndex index)
+{
+    EditorIcon* icon = GetEditorIconFromIndex(index);
+    if (icon)
+    {
+        // Only place something is nothing is there or the tile/entity types are different.
+        if (!thing.active || (gEditor.cursor.selected != thing.icon_index))
+        {
+            thing.icon_index = index;
+            thing.active = true;
+
+            thing.draw.clip = icon->draw.clip;
+            thing.draw.scale.current = EDITOR_THING_PLACE_SCALE;
+            thing.draw.scale.target = 1.0f;
+            thing.draw.angle.current = EDITOR_THING_PLACE_ANGLE;
+            thing.draw.angle.target = 0.0f;
+            thing.draw.color.current = EDITOR_COLOR2;
+            thing.draw.color.target = icon->draw.color.base;
+            thing.draw.color.base = icon->draw.color.base;
+        }
+    }
+}
+
+INTERNAL void EditorEraseThing (EditorThing& thing)
+{
+    if (thing.active)
+    {
+        thing.active = false;
+
+        thing.draw.scale.current = EDITOR_THING_ERASE_SCALE;
+        thing.draw.scale.target = 0.0f;
+        thing.draw.angle.current = EDITOR_THING_ERASE_ANGLE;
+        thing.draw.angle.target = 0.0f;
+    }
+}
+
+INTERNAL void EditorIncrementZoneChunk ()
+{
+    if (gEditor.zone.current < gEditor.zone.chunks.size()-1) gEditor.zone.current++;
+}
+
+INTERNAL void EditorDecrementZoneChunk ()
+{
+    if (gEditor.zone.current > 0) gEditor.zone.current--;
+}
+
+INTERNAL void EditorNewZoneChunk ()
+{
+    gEditor.zone.chunks.push_back({});
+    gEditor.zone.current = gEditor.zone.chunks.size()-1;
+}
+
+INTERNAL void EditorClearZoneChunk ()
+{
+    EditorChunk& chunk = GetCurrentEditorChunk();
+    for (int iy=0; iy<CHUNK_H; ++iy)
+    {
+        for (int ix=0; ix<CHUNK_W; ++ix)
+        {
+            EditorEraseThing(GetCurrentEditorChunk().things[iy][ix]);
+        }
+    }
+}
+
+INTERNAL void EditorLoadZoneChunks ()
+{
+    gEditor.zone.chunks.clear();
+
+    std::string file_name = gAssetManager.asset_base_path + AssetData::Path + "chunks/" + gEditor.zone.name + AssetData::Ext;
+    if (std::filesystem::exists(file_name))
+    {
+        GonObject gon = GonObject::Load(file_name);
+        if (gon.type == GonObject::FieldType::OBJECT)
+        {
+            if (gon.Contains("chunks"))
+            {
+                // Go through and load each chunk.
+                for (auto& data: gon["chunks"].children_array)
+                {
+                    gEditor.zone.chunks.push_back({});
+                    EditorChunk& chunk = gEditor.zone.chunks.back();
+
+                    // Tiles
+                    if (data.Contains("tiles"))
+                    {
+                        for (auto& tile: data["tiles"].children_array)
+                        {
+                            int x = tile[0].Int(), y = tile[1].Int();
+                            std::string name = tile[2].String();
+                            EditorThing& thing = chunk.things[y][x];
+                            EditorPlaceThing(thing, GetEditorIconIndex("tile", name));
+                        }
+                    }
+                    // Entities
+                    if (data.Contains("entities"))
+                    {
+                        for (auto& entity: data["entities"].children_array)
+                        {
+                            int x = entity[0].Int(), y = entity[1].Int();
+                            std::string name = entity[2].String();
+                            EditorThing& thing = chunk.things[y][x];
+                            EditorPlaceThing(thing, GetEditorIconIndex("entity", name));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // If there were no chunks found or loaded, just add an empty chunk to the end.
+    // Otherwise just set our current chunk to the last one that was loaded from disk.
+    if (gEditor.zone.chunks.empty()) EditorNewZoneChunk();
+    else gEditor.zone.current = gEditor.zone.chunks.size()-1;
+}
+
+INTERNAL void EditorSaveZoneChunks ()
+{
+    std::string file_name = gAssetManager.asset_base_path + AssetData::Path + "chunks/" + gEditor.zone.name + AssetData::Ext;
+
+    std::ofstream file(file_name);
+    if (!file.is_open())
+    {
+        LOG_ERROR(ERR_MED, "Failed to save editor chunks!");
+    }
+    else
+    {
+        // Go through and convert each chunk to GON data for saving.
+        std::string data;
+        data += "chunks\n[";
+        for (auto& chunk: gEditor.zone.chunks)
+        {
+            data += "\n";
+
+            std::string tiles;
+            std::string entities;
+
+            for (int iy=0; iy<CHUNK_H; ++iy)
+            {
+                for (int ix=0; ix<CHUNK_W; ++ix)
+                {
+                    EditorThing& thing = chunk.things[iy][ix];
+                    if (thing.active)
+                    {
+                        EditorIcon* icon = GetEditorIconFromIndex(thing.icon_index);
+                        if (icon)
+                        {
+                            if (thing.icon_index.type == "tile")
+                            {
+                                tiles += "            [ " + std::to_string(ix) + " " + std::to_string(iy) + " " + icon->type + " ]\n";
+                            }
+                            else if (thing.icon_index.type == "entity")
+                            {
+                                entities += "            [ " + std::to_string(ix) + " " + std::to_string(iy) + " " + icon->type + " ]\n";
+                            }
+                        }
+                    }
+                }
+            }
+
+            data += "    {\n";
+            data += "        tiles\n        [\n" + tiles +  "        ]\n";
+            data += "        entities\n        [\n" + entities +  "        ]\n";
+            data += "    }\n";
+        }
+        data += "]\n";
+
+        file << data;
+    }
 }
 
 INTERNAL void InitEditor ()
@@ -240,7 +404,7 @@ INTERNAL void InitEditor ()
     }
 
     // Load all the chunks for the current zone into the editor.
-    gEditor.zone.name = "forest";
+    gEditor.zone.name = "overworld";
     EditorLoadZoneChunks();
 
     // Set the currently selected item to be the first tile.
@@ -259,7 +423,7 @@ INTERNAL void InitEditor ()
 
 INTERNAL void QuitEditor ()
 {
-    EditorSaveZoneChunks();
+    if (gApplication.editor) EditorSaveZoneChunks();
 }
 
 INTERNAL void DoEditorPaletteIcons (float& cx, float& cy, std::vector<EditorIcon>& icons, std::string image)
@@ -494,39 +658,11 @@ INTERNAL void DoEditorCanvas ()
         EditorThing& thing = GetCurrentEditorChunk().things[gEditor.cursor.pos.y][gEditor.cursor.pos.x];
         if (IsMouseButtonDown(SDL_BUTTON_LEFT))
         {
-            // PLACE THING!!!
-            EditorIcon* icon = GetSelectedEditorIcon();
-            if (icon)
-            {
-                // Only place something is nothing is there or the tile/entity types are different.
-                if (!thing.active || (gEditor.cursor.selected != thing.icon_index))
-                {
-                    thing.icon_index = gEditor.cursor.selected;
-                    thing.active = true;
-
-                    thing.draw.clip = icon->draw.clip;
-                    thing.draw.scale.current = EDITOR_THING_PLACE_SCALE;
-                    thing.draw.scale.target = 1.0f;
-                    thing.draw.angle.current = EDITOR_THING_PLACE_ANGLE;
-                    thing.draw.angle.target = 0.0f;
-                    thing.draw.color.current = EDITOR_COLOR2;
-                    thing.draw.color.target = icon->draw.color.base;
-                    thing.draw.color.base = icon->draw.color.base;
-                }
-            }
+            EditorPlaceThing(thing, gEditor.cursor.selected);
         }
         else if (IsMouseButtonDown(SDL_BUTTON_RIGHT))
         {
-            // REMOVE THING!!!
-            if (thing.active)
-            {
-                thing.active = false;
-
-                thing.draw.scale.current = EDITOR_THING_ERASE_SCALE;
-                thing.draw.scale.target = 0.0f;
-                thing.draw.angle.current = EDITOR_THING_ERASE_ANGLE;
-                thing.draw.angle.target = 0.0f;
-            }
+            EditorEraseThing(thing);
         }
     }
     else
@@ -554,6 +690,18 @@ INTERNAL void DoEditorCanvas ()
 
 INTERNAL void DoEditor ()
 {
+    // Handle hotkeys.
+    if (IsKeyPressed(SDL_SCANCODE_EQUALS)) EditorIncrementZoneChunk();
+    if (IsKeyPressed(SDL_SCANCODE_MINUS)) EditorDecrementZoneChunk();
+
+    if (IsKeyDown(SDL_SCANCODE_LCTRL) || IsKeyDown(SDL_SCANCODE_RCTRL))
+    {
+        if (IsKeyPressed(SDL_SCANCODE_D)) EditorClearZoneChunk();
+        if (IsKeyPressed(SDL_SCANCODE_N)) EditorNewZoneChunk();
+        if (IsKeyPressed(SDL_SCANCODE_S)) EditorSaveZoneChunks();
+    }
+
+    // Update and render editor.
     DoEditorPalette();
     DoEditorControls();
     DoEditorCanvas();
