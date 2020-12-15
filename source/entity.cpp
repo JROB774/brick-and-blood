@@ -120,7 +120,7 @@ INTERNAL void Entity_BehaviorWander (Entity& e)
     int targetx = e.pos.x;
     int targety = e.pos.y;
 
-    Direction dir = (Direction)RandomRange(DIR_N,DIR_S);
+    Direction dir = (Direction)RandomRange(DIR_N,DIR_W);
     switch (dir)
     {
         case (DIR_N): targety--; break;
