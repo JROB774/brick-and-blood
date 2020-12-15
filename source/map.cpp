@@ -1,4 +1,4 @@
-INTERNAL void MapPlaceTile (std::string type, int chunkx, int chunky, int x, int y)
+INTERNAL void MapPlaceTile (std::string type, int x, int y)
 {
     // If the specified base type can't be found then we don't create a tile.
     if (!gTiles.count(type))
@@ -8,21 +8,21 @@ INTERNAL void MapPlaceTile (std::string type, int chunkx, int chunky, int x, int
     }
     TileBase& base = gTiles.at(type);
 
-    Chunk& chunk = gMap.chunks[chunky][chunkx];
-    Tile& t = chunk.tiles[y][x];
+    Tile* t = MapGetTileAtPos(x,y);
+    if (!t) return;
 
-    t.type = type;
-    t.hits = base.hits;
-    t.solid = base.solid;
-    t.active = true;
-    t.draw.clip.x = base.image.x*TILE_W;
-    t.draw.clip.y = base.image.y*TILE_H;
-    t.draw.clip.w = TILE_W;
-    t.draw.clip.h = TILE_H;
-    t.draw.angle.current = 0.0f;
-    t.draw.angle.target = 0.0f;
-    t.draw.color.current = base.color;
-    t.draw.color.target = base.color;
+    t->type = type;
+    t->hits = base.hits;
+    t->solid = base.solid;
+    t->active = true;
+    t->draw.clip.x = base.image.x*TILE_W;
+    t->draw.clip.y = base.image.y*TILE_H;
+    t->draw.clip.w = TILE_W;
+    t->draw.clip.h = TILE_H;
+    t->draw.angle.current = 0.0f;
+    t->draw.angle.target = 0.0f;
+    t->draw.color.current = base.color;
+    t->draw.color.target = base.color;
 }
 
 INTERNAL void MapSpawnEntity (std::string type, int x, int y)
@@ -93,6 +93,20 @@ INTERNAL Entity* MapGetEntityAtPos (int x, int y)
     return NULL;
 }
 
+INTERNAL Entity* MapGetFirstEntityOfType (std::string type)
+{
+    Entity* entity = NULL;
+    for (auto& e: gMap.entities)
+    {
+        if (e.type == type)
+        {
+            entity = &e;
+            break;
+        }
+    }
+    return entity;
+}
+
 INTERNAL void InitMap ()
 {
     // @Incomplete: In the future we want to load a map if there is one present. For now we just always generate.
@@ -119,7 +133,7 @@ INTERNAL void InitMap ()
                 {
                     int x = tile[0].Int(), y = tile[1].Int();
                     std::string name = tile[2].String();
-                    MapPlaceTile(name, ix,iy, x,y);
+                    MapPlaceTile(name, (ix*CHUNK_W)+x,(iy*CHUNK_H)+y);
                 }
             }
             // Load entites.

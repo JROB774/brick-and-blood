@@ -30,5 +30,7 @@ INTERNAL void UpdateGame ()
 
 INTERNAL void RenderGame ()
 {
+    BeginCamera();
     RenderMap();
+    EndCamera();
 }

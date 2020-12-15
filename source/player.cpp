@@ -11,4 +11,13 @@ INTERNAL void UpdatePlayer ()
     {
         gPlayer.update = true;
     }
+
+    // The camera tracks the player's current position!
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p)
+    {
+        float cx = roundf(p->draw.pos.x + (TILE_W/2) - (WINDOW_SCREEN_W/2));
+        float cy = roundf(p->draw.pos.y + (TILE_H/2) - (WINDOW_SCREEN_H/2));
+        SetCameraTarget(cx,cy);
+    }
 }
