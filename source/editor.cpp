@@ -201,6 +201,21 @@ INTERNAL EditorIconIndex GetEditorIconIndex (std::string type, std::string name)
     return index;
 }
 
+INTERNAL bool IsEditorChunkEmpty (EditorChunk& chunk)
+{
+    for (int iy=0; iy<CHUNK_H; ++iy)
+    {
+        for (int ix=0; ix<CHUNK_W; ++ix)
+        {
+            if (chunk.things[iy][ix].active)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 INTERNAL void EditorPlaceThing (EditorThing& thing, EditorIconIndex index)
 {
     EditorIcon* icon = GetEditorIconFromIndex(index);
@@ -332,38 +347,41 @@ INTERNAL void EditorSaveZoneChunks ()
         data += "chunks\n[";
         for (auto& chunk: gEditor.zone.chunks)
         {
-            data += "\n";
-
-            std::string tiles;
-            std::string entities;
-
-            for (int iy=0; iy<CHUNK_H; ++iy)
+            if (!IsEditorChunkEmpty(chunk)) // Only save non-empty chunks.
             {
-                for (int ix=0; ix<CHUNK_W; ++ix)
+                data += "\n";
+
+                std::string tiles;
+                std::string entities;
+
+                for (int iy=0; iy<CHUNK_H; ++iy)
                 {
-                    EditorThing& thing = chunk.things[iy][ix];
-                    if (thing.active)
+                    for (int ix=0; ix<CHUNK_W; ++ix)
                     {
-                        EditorIcon* icon = GetEditorIconFromIndex(thing.icon_index);
-                        if (icon)
+                        EditorThing& thing = chunk.things[iy][ix];
+                        if (thing.active)
                         {
-                            if (thing.icon_index.type == "tile")
+                            EditorIcon* icon = GetEditorIconFromIndex(thing.icon_index);
+                            if (icon)
                             {
-                                tiles += "            [ " + std::to_string(ix) + " " + std::to_string(iy) + " " + icon->type + " ]\n";
-                            }
-                            else if (thing.icon_index.type == "entity")
-                            {
-                                entities += "            [ " + std::to_string(ix) + " " + std::to_string(iy) + " " + icon->type + " ]\n";
+                                if (thing.icon_index.type == "tile")
+                                {
+                                    tiles += "            [ " + std::to_string(ix) + " " + std::to_string(iy) + " " + icon->type + " ]\n";
+                                }
+                                else if (thing.icon_index.type == "entity")
+                                {
+                                    entities += "            [ " + std::to_string(ix) + " " + std::to_string(iy) + " " + icon->type + " ]\n";
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            data += "    {\n";
-            data += "        tiles\n        [\n" + tiles +  "        ]\n";
-            data += "        entities\n        [\n" + entities +  "        ]\n";
-            data += "    }\n";
+                data += "    {\n";
+                data += "        tiles\n        [\n" + tiles +  "        ]\n";
+                data += "        entities\n        [\n" + entities +  "        ]\n";
+                data += "    }\n";
+            }
         }
         data += "]\n";
 
