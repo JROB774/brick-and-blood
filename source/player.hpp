@@ -2,6 +2,7 @@
 
 GLOBAL struct Player
 {
+    float input_timer;
     bool update;
 
 } gPlayer;

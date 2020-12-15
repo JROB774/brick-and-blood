@@ -3,6 +3,7 @@ INTERNAL void InitGame ()
     InitEntities();
     InitTiles();
     InitMap();
+    InitPlayer();
 
     for (int i=0; i<150; ++i)
     {

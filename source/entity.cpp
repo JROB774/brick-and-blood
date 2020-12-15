@@ -94,10 +94,10 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
     int targetx = e.pos.x;
     int targety = e.pos.y;
 
-    if (IsKeyPressed(SDL_SCANCODE_W)) targety--;
-    if (IsKeyPressed(SDL_SCANCODE_D)) targetx++;
-    if (IsKeyPressed(SDL_SCANCODE_S)) targety++;
-    if (IsKeyPressed(SDL_SCANCODE_A)) targetx--;
+    if (IsKeyDown(SDL_SCANCODE_W)) targety--;
+    if (IsKeyDown(SDL_SCANCODE_D)) targetx++;
+    if (IsKeyDown(SDL_SCANCODE_S)) targety++;
+    if (IsKeyDown(SDL_SCANCODE_A)) targetx--;
 
     // If our target is not our tile handle attacking, moving, etc.
     if (targetx != e.pos.x || targety != e.pos.y)
