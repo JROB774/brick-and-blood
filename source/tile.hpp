@@ -8,6 +8,9 @@ struct Tile
 
     int hits;
 
+    bool solid;
+    bool active;
+
     struct
     {
         SDL_Rect clip;

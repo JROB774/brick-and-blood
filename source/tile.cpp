@@ -1,8 +1,12 @@
+GLOBAL constexpr float TILE_COLOR_SPEED =  4.0f;
+GLOBAL constexpr float TILE_TURN_SPEED  = 15.0f;
+
 struct TileBase
 {
     int hits;
     struct { int x,y; } image;
     Vec4 color;
+    bool solid;
 };
 
 std::map<std::string,TileBase> gTiles;
@@ -40,6 +44,8 @@ INTERNAL void InitTiles ()
         {
             base.color = { 1,1,1,1 };
         }
+
+        base.solid = data["solid"].Bool(true);
 
         gTiles.insert({ data.name, base });
     }
