@@ -85,7 +85,7 @@ rocks
     hits 1
     image [ 4 1 ]
     color [ 207 198 184 ]
-    solid true
+    solid false
 }
 
 shrub
@@ -101,7 +101,7 @@ grass
     hits 1
     image [ 6 1 ]
     color [ 56 217 115 ]
-    solid true
+    solid false
 }
 
 cactus
