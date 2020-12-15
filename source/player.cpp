@@ -3,6 +3,16 @@ GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
 INTERNAL void InitPlayer ()
 {
     gPlayer.input_timer = 0.0f;
+    gPlayer.update = false;
+
+    // Set the inital position of the camera.
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p)
+    {
+        float cx = roundf(p->draw.pos.x + (TILE_W/2) - (WINDOW_SCREEN_W/2));
+        float cy = roundf(p->draw.pos.y + (TILE_H/2) - (WINDOW_SCREEN_H/2));
+        SetCamera(cx,cy);
+    }
 }
 
 INTERNAL void UpdatePlayer ()
