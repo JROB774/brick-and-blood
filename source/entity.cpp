@@ -69,9 +69,28 @@ INTERNAL void InitEntities ()
 
 INTERNAL void MoveEntity (Entity& e, int x, int y)
 {
-    // @Incomplete: Handle tile collision...
-    e.pos.x = x;
-    e.pos.y = y;
+    // If the target is outside the map just allow the movement because there won't be tiles to do collision.
+    if (x < 0 || y < 0 || x >= WORLD_W_IN_TILES || y >= WORLD_H_IN_TILES)
+    {
+        e.pos.x = x;
+        e.pos.y = y;
+        return;
+    }
+
+    // Get the current chunk the target is in.
+    int cx = x / CHUNK_W;
+    int cy = y / CHUNK_H;
+    Chunk& chunk = gMap.chunks[cy][cx];
+
+    // Get the target tile and check if the move is valid.
+    int tx = x % CHUNK_W;
+    int ty = y % CHUNK_H;
+    Tile& tile = chunk.tiles[ty][tx];
+    if (!tile.solid)
+    {
+        e.pos.x = x;
+        e.pos.y = y;
+    }
 }
 
 INTERNAL void DamageEntity (Entity& e)

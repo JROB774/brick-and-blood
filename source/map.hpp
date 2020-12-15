@@ -7,6 +7,9 @@ GLOBAL constexpr int CHUNK_H =  9;
 GLOBAL constexpr int WORLD_W =  5; // In chunks!
 GLOBAL constexpr int WORLD_H =  5;
 
+GLOBAL constexpr int WORLD_W_IN_TILES = WORLD_W*CHUNK_W;
+GLOBAL constexpr int WORLD_H_IN_TILES = WORLD_H*CHUNK_H;
+
 //
 // INTERFACE
 //

@@ -77,6 +77,10 @@ INTERNAL void InitMap ()
 {
     // @Incomplete: In the future we want to load a map if there is one present. For now we just always generate.
 
+    // Reset all of the map data.
+    gMap.entities.clear();
+    memset(gMap.chunks, 0, sizeof(gMap.chunks));
+
     // Load in all of the available chunks that can be used to generate a map.
     GonObject& gon = (*GetAsset<AssetData>("chunks/overworld"))["chunks"];
 
