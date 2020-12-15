@@ -3,8 +3,8 @@
 GLOBAL constexpr int TILE_W = 16;
 GLOBAL constexpr int TILE_H = 16;
 
-GLOBAL constexpr int CHUNK_W = (WINDOW_SCREEN_W/2) / TILE_W;
-GLOBAL constexpr int CHUNK_H = (WINDOW_SCREEN_H/2) / TILE_H;
+GLOBAL constexpr int CHUNK_W = WINDOW_SCREEN_W / TILE_W;
+GLOBAL constexpr int CHUNK_H = WINDOW_SCREEN_H / TILE_H;
 
 //
 // INTERFACE

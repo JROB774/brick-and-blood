@@ -1,10 +1,10 @@
 #pragma once
 
 GLOBAL constexpr const char* WINDOW_TITLE    = "SANTAJAM";
-GLOBAL constexpr int         WINDOW_SCREEN_W = 256;
-GLOBAL constexpr int         WINDOW_SCREEN_H = 240;
-GLOBAL constexpr int         WINDOW_START_W  = 512;
-GLOBAL constexpr int         WINDOW_START_H  = 480;
+GLOBAL constexpr int         WINDOW_SCREEN_W = 160;
+GLOBAL constexpr int         WINDOW_SCREEN_H = 144;
+GLOBAL constexpr int         WINDOW_START_W  = WINDOW_SCREEN_W*3;
+GLOBAL constexpr int         WINDOW_START_H  = WINDOW_SCREEN_H*3;
 
 GLOBAL struct Window
 {
