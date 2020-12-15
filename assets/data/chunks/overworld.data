@@ -1,2 +1,134 @@
 chunks
-[]
+[
+    {
+        tiles
+        [
+            [ 3 0 foliage1 ]
+            [ 0 1 foliage0 ]
+            [ 3 1 grass ]
+            [ 8 1 foliage1 ]
+            [ 5 2 foliage1 ]
+            [ 8 2 grass ]
+            [ 5 3 grass ]
+            [ 1 4 foliage1 ]
+            [ 8 4 foliage0 ]
+            [ 4 5 foliage0 ]
+            [ 7 5 foliage1 ]
+            [ 2 6 grass ]
+            [ 3 7 foliage1 ]
+            [ 6 7 grass ]
+            [ 7 7 foliage0 ]
+            [ 6 8 foliage1 ]
+        ]
+        entities
+        [
+        ]
+    }
+
+    {
+        tiles
+        [
+            [ 4 0 foliage1 ]
+            [ 1 1 foliage0 ]
+            [ 7 1 grass ]
+            [ 8 1 foliage1 ]
+            [ 5 2 foliage1 ]
+            [ 6 2 grass ]
+            [ 7 2 grass ]
+            [ 8 2 foliage0 ]
+            [ 6 3 foliage0 ]
+            [ 7 3 grass ]
+            [ 8 3 grass ]
+            [ 1 4 grass ]
+            [ 3 4 foliage1 ]
+            [ 6 4 grass ]
+            [ 7 4 foliage0 ]
+            [ 9 5 foliage0 ]
+            [ 2 6 foliage0 ]
+            [ 3 6 grass ]
+            [ 6 6 foliage1 ]
+            [ 0 8 foliage1 ]
+            [ 8 8 foliage1 ]
+        ]
+        entities
+        [
+        ]
+    }
+
+    {
+        tiles
+        [
+            [ 6 0 foliage1 ]
+            [ 1 1 foliage0 ]
+            [ 5 1 grass ]
+            [ 8 1 foliage0 ]
+            [ 2 2 grass ]
+            [ 4 2 foliage1 ]
+            [ 5 3 shrub ]
+            [ 8 3 grass ]
+            [ 1 4 foliage1 ]
+            [ 6 5 rocks ]
+            [ 7 5 foliage1 ]
+            [ 2 6 rocks ]
+            [ 6 6 foliage1 ]
+            [ 2 7 foliage1 ]
+            [ 3 7 grass ]
+            [ 9 7 foliage0 ]
+            [ 4 8 foliage0 ]
+        ]
+        entities
+        [
+        ]
+    }
+
+    {
+        tiles
+        [
+            [ 1 0 foliage3 ]
+            [ 5 1 foliage0 ]
+            [ 8 1 shrub ]
+            [ 2 2 shrub ]
+            [ 1 3 rocks ]
+            [ 4 3 foliage3 ]
+            [ 7 3 foliage1 ]
+            [ 0 4 foliage3 ]
+            [ 7 4 rocks ]
+            [ 2 5 foliage0 ]
+            [ 6 5 rocks ]
+            [ 8 5 foliage0 ]
+            [ 4 6 shrub ]
+            [ 6 7 foliage1 ]
+            [ 1 8 foliage1 ]
+        ]
+        entities
+        [
+        ]
+    }
+
+    {
+        tiles
+        [
+            [ 2 0 foliage0 ]
+            [ 6 0 shrub ]
+            [ 7 0 foliage0 ]
+            [ 3 1 rocks ]
+            [ 4 1 rocks ]
+            [ 8 1 shrub ]
+            [ 2 2 rocks ]
+            [ 3 2 rocks ]
+            [ 4 2 rocks ]
+            [ 1 3 foliage3 ]
+            [ 3 3 rocks ]
+            [ 6 3 rocks ]
+            [ 8 3 foliage0 ]
+            [ 4 5 foliage1 ]
+            [ 7 5 rocks ]
+            [ 1 6 foliage1 ]
+            [ 4 7 rocks ]
+            [ 7 7 foliage0 ]
+        ]
+        entities
+        [
+        ]
+    }
+]
