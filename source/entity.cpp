@@ -1,9 +1,3 @@
-GLOBAL constexpr float ENTITY_MOVE_SPEED  = 20.0f;
-GLOBAL constexpr float ENTITY_COLOR_SPEED =  4.0f;
-GLOBAL constexpr float ENTITY_TURN_SPEED  = 15.0f;
-GLOBAL constexpr float ENTITY_TURN_ANGLE  = 10.0f;
-GLOBAL constexpr float ENTITY_HIT_ANGLE   = 30.0f;
-
 struct EntityBase
 {
     std::string faction;
@@ -67,14 +61,30 @@ INTERNAL void InitEntities ()
 // HELPERS
 //
 
-INTERNAL void MoveEntity (Entity& e, int x, int y)
+INTERNAL bool MoveEntity (Entity& e, int x, int y)
 {
     // Get the target tile and check if the move is valid.
     Tile* tile = MapGetTileAtPos(x,y);
-    if (!tile || !tile->solid) // If there's no tile or it's not solid then move!
+    if (!tile || !tile->active || !tile->solid) // If there's no tile or it's not solid then move!
     {
         e.pos.x = x;
         e.pos.y = y;
+        return true;
+    }
+    return false;
+}
+
+INTERNAL void DamageTile (Tile& t)
+{
+    if (t.hits != TILE_INDESTRUCTIBLE)
+    {
+        t.draw.angle.current = TILE_HIT_ANGLE;
+        t.hits--;
+        if (t.hits <= 0)
+        {
+            t.active = false;
+            // @Incomplete: ...
+        }
     }
 }
 
@@ -83,6 +93,10 @@ INTERNAL void DamageEntity (Entity& e)
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
     e.draw.angle.current = ENTITY_HIT_ANGLE;
     e.health--;
+    if (e.health <= 0)
+    {
+        // @Incomplete: ...
+    }
 }
 
 //
@@ -108,9 +122,19 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
             e.draw.angle.current = ENTITY_TURN_ANGLE;
             DamageEntity(*o);
         }
-        else // Otherwise move to that tile.
+        else // Othewise handle the case of tiles.
         {
-            MoveEntity(e, targetx,targety);
+            // If there is a tile in the space the player wants to move to we attack it, otherwise we move.
+            Tile* t = MapGetTileAtPos(targetx,targety);
+            if (t && t->active && t->hits > 0)
+            {
+                e.draw.angle.current = ENTITY_TURN_ANGLE;
+                DamageTile(*t);
+            }
+            else
+            {
+                MoveEntity(e, targetx,targety);
+            }
         }
     }
 }

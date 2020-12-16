@@ -1,6 +1,3 @@
-GLOBAL constexpr float TILE_COLOR_SPEED =  4.0f;
-GLOBAL constexpr float TILE_TURN_SPEED  = 15.0f;
-
 struct TileBase
 {
     int hits;
@@ -25,7 +22,7 @@ INTERNAL void InitTiles ()
     {
         TileBase base = {};
 
-        base.hits = data["hits"].Int(1);
+        base.hits = data["hits"].Int(TILE_INDESTRUCTIBLE);
 
         if (data.Contains("image"))
         {

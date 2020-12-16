@@ -2,6 +2,12 @@
 
 // General-purpose entity systems and functionality.
 
+GLOBAL constexpr float ENTITY_MOVE_SPEED  = 20.0f;
+GLOBAL constexpr float ENTITY_COLOR_SPEED =  4.0f;
+GLOBAL constexpr float ENTITY_TURN_SPEED  = 15.0f;
+GLOBAL constexpr float ENTITY_TURN_ANGLE  = 10.0f;
+GLOBAL constexpr float ENTITY_HIT_ANGLE   = 30.0f;
+
 enum Direction { DIR_N, DIR_E, DIR_S, DIR_W };
 
 struct Entity;
