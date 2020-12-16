@@ -150,11 +150,9 @@ INTERNAL void InitMap ()
     }
 
     // Spawn the player in the center of the map.
-    // int px = (WORLD_W*CHUNK_W) / 2;
-    // int py = (WORLD_H*CHUNK_H) / 2;
-    // MapSpawnEntity("player",px,py);
-
-    MapSpawnEntity("player",0,0);
+    int px = (WORLD_W*CHUNK_W) / 2;
+    int py = (WORLD_H*CHUNK_H) / 2;
+    MapSpawnEntity("player",px,py);
 }
 
 INTERNAL void QuitMap ()
