@@ -242,4 +242,19 @@ INTERNAL void RenderMap ()
         Vec2 center = { TILE_W/2, TILE_H/2 };
         DrawImage("entity", e.draw.pos.x,e.draw.pos.y, {1,1}, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
     }
+
+    // If in debug mode show chunk boudaries.
+    if (gApplication.debug)
+    {
+        float w = (CHUNK_W*TILE_W);
+        float h = (CHUNK_H*TILE_H);
+
+        for (int iy=0; iy<WORLD_H; ++iy)
+        {
+            for (int ix=0; ix<WORLD_W; ++ix)
+            {
+                DrawRect(ix*w,iy*h,w,h, { 1,0,0,0.5f });
+            }
+        }
+    }
 }

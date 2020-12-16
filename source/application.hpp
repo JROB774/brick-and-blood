@@ -16,6 +16,7 @@ GLOBAL struct Application
     int frame;
     float total_time;
     float delta_time;
+    bool debug;
     bool editor;
 
 } gApplication;

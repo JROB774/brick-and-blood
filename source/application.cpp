@@ -1,6 +1,8 @@
 INTERNAL void InitApplication ()
 {
     gApplication.state = APP_STATE_GAME;
+
+    gApplication.debug = false;
     gApplication.editor = false;
 
     InitParticleSystem();
@@ -21,13 +23,11 @@ INTERNAL void UpdateApplication (float dt)
     gApplication.total_time += dt;
     gApplication.frame++;
 
-    // We do not want the editor to be enabled in release builds!
+    // We do not want these debug keys enabled in release builds!
     #if defined(BUILD_DEBUG)
-    if (IsKeyPressed(SDL_SCANCODE_F1))
-    {
-        ToggleEditor();
-    }
-    #endif
+    if (IsKeyPressed(SDL_SCANCODE_F1)) ToggleEditor();
+    if (IsKeyPressed(SDL_SCANCODE_F2)) gApplication.debug = !gApplication.debug;
+    #endif // BUILD_DEBUG
 
     if (!gApplication.editor)
     {
