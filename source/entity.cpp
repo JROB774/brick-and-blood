@@ -117,19 +117,22 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
 
 INTERNAL void Entity_BehaviorWander (Entity& e)
 {
-    int targetx = e.pos.x;
-    int targety = e.pos.y;
-
-    Direction dir = (Direction)RandomRange(DIR_N,DIR_W);
-    switch (dir)
+    if (Random() % 2 == 0) // 50/50 chance of moving.
     {
-        case (DIR_N): targety--; break;
-        case (DIR_E): targetx++; break;
-        case (DIR_S): targety++; break;
-        case (DIR_W): targetx--; break;
-    }
+        int targetx = e.pos.x;
+        int targety = e.pos.y;
 
-    // Don't move to the location where an entity is.
-    Entity* o = MapGetEntityAtPos(targetx,targety);
-    if (!o) MoveEntity(e, targetx,targety);
+        Direction dir = (Direction)RandomRange(DIR_N,DIR_W);
+        switch (dir)
+        {
+            case (DIR_N): targety--; break;
+            case (DIR_E): targetx++; break;
+            case (DIR_S): targety++; break;
+            case (DIR_W): targetx--; break;
+        }
+
+        // Don't move to the location where an entity is.
+        Entity* o = MapGetEntityAtPos(targetx,targety);
+        if (!o) MoveEntity(e, targetx,targety);
+    }
 }
