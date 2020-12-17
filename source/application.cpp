@@ -38,7 +38,6 @@ INTERNAL void UpdateApplication (float dt)
             case (APP_STATE_GAME): UpdateGame(); break;
         }
 
-        UpdateParticles();
         UpdateCamera();
     }
 }
