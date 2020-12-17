@@ -1,5 +1,22 @@
 GLOBAL Vec2 gRenderOffset = { 0,0 };
 
+INTERNAL void ScissorOn (float x, float y, float w, float h)
+{
+    SDL_Rect region = { (int)x, (int)y, (int)w, (int)h };
+    SDL_RenderSetClipRect(gWindow.renderer, &region);
+}
+
+INTERNAL void ScissorOn (Rect rect)
+{
+    SDL_Rect region = { (int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h };
+    SDL_RenderSetClipRect(gWindow.renderer, &region);
+}
+
+INTERNAL void ScissorOff ()
+{
+    SDL_RenderSetClipRect(gWindow.renderer, NULL);
+}
+
 INTERNAL void DrawPoint (float x, float y, Vec4 color)
 {
     SDL_Color c = ColorToSDLColor(color);
