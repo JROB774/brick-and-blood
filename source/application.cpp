@@ -5,7 +5,10 @@ INTERNAL void InitApplication ()
     gApplication.debug = false;
     gApplication.editor = false;
 
-    InitParticleSystem();
+    InitParticles();
+    InitEntities();
+    InitTiles();
+
     InitGame();
     InitEditor();
 }
@@ -14,7 +17,6 @@ INTERNAL void QuitApplication ()
 {
     QuitEditor();
     QuitGame();
-    QuitParticleSystem();
 }
 
 INTERNAL void UpdateApplication (float dt)

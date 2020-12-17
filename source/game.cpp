@@ -1,7 +1,5 @@
 INTERNAL void InitGame ()
 {
-    InitEntities();
-    InitTiles();
     InitMap();
     InitPlayer();
 
