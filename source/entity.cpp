@@ -12,6 +12,8 @@ std::map<std::string,EntityBase> gEntities;
 
 INTERNAL void InitEntities ()
 {
+    gEntities.clear();
+
     GonObject& gon = *GetAsset<AssetData>("entities");
     if (gon.type != GonObject::FieldType::OBJECT)
     {

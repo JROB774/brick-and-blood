@@ -724,17 +724,3 @@ INTERNAL void DoEditor ()
     DoEditorControls();
     DoEditorCanvas();
 }
-
-INTERNAL void ToggleEditor ()
-{
-    gApplication.editor = !gApplication.editor;
-    if (IsFullscreen())
-    {
-        if (gApplication.editor) SDL_ShowCursor(SDL_ENABLE);
-        else SDL_ShowCursor(SDL_DISABLE);
-    }
-    if (!gApplication.editor)
-    {
-        EditorSaveZoneChunks();
-    }
-}

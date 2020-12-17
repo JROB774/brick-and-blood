@@ -20,7 +20,7 @@ INTERNAL void UpdateGame ()
 {
     // Generate a whole new world map.
     #if defined(BUILD_DEBUG)
-    if (IsKeyPressed(SDL_SCANCODE_F5)) InitMap();
+    if (IsKeyPressed(SDL_SCANCODE_R)) InitMap();
     #endif
 
     UpdatePlayer();

@@ -10,6 +10,8 @@ std::map<std::string,TileBase> gTiles;
 
 INTERNAL void InitTiles ()
 {
+    gTiles.clear();
+
     GonObject& gon = *GetAsset<AssetData>("tiles");
     if (gon.type != GonObject::FieldType::OBJECT)
     {

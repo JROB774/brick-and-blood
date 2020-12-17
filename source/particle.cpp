@@ -7,6 +7,8 @@ std::map<std::string,ParticleBase> gParticles;
 
 INTERNAL void InitParticles ()
 {
+    gParticles.clear();
+
     // @Incomplete; ...
 }
 
