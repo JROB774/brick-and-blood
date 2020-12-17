@@ -57,6 +57,57 @@ INTERNAL void InitEntities ()
     }
 }
 
+INTERNAL void UpdateEntities (std::vector<Entity>& entities)
+{
+    // Sort the entities based on initiative so they get updated in correct order.
+    std::sort(entities.begin(), entities.end());
+
+    // Update all the entities.
+    for (auto& e: entities)
+    {
+        if (e.health <= 0) continue;
+
+        e.old_pos.x = e.pos.x;
+        e.old_pos.y = e.pos.y;
+
+        // If the entity has a behavior then carry it out.
+        if (e.behavior) e.behavior(e);
+    }
+}
+
+INTERNAL void RenderEntities (std::vector<Entity>& entities)
+{
+    for (auto& e: entities)
+    {
+        if (e.health <= 0) continue;
+
+        // Smoothly lerp the entity from tile-to-tile to give a more fluid feel to the movement.
+        float target_x = (float)e.pos.x*TILE_W;
+        float target_y = (float)e.pos.y*TILE_H;
+        e.draw.pos.x = Lerp(e.draw.pos.x, target_x, gApplication.delta_time*ENTITY_MOVE_SPEED);
+        e.draw.pos.y = Lerp(e.draw.pos.y, target_y, gApplication.delta_time*ENTITY_MOVE_SPEED);
+
+        // Smoothly lerp other values that have a current and a target for smoother visuals.
+        e.draw.angle.current = Lerp(e.draw.angle.current, e.draw.angle.target, gApplication.delta_time*ENTITY_TURN_SPEED);
+        e.draw.color.current = Lerp(e.draw.color.current, e.draw.color.target, gApplication.delta_time*ENTITY_COLOR_SPEED);
+
+        // @Improve: Handle the direction you turn based on movement a bit better.
+        // Handle rotating the entity slightly when they are moving for some nice visual flair.
+        if (roundf(target_x) != roundf(e.draw.pos.x) || roundf(target_y) != roundf(e.draw.pos.y))
+        {
+            if ((roundf(target_x) > roundf(e.draw.pos.x)) || (roundf(target_y) > roundf(e.draw.pos.y))) e.draw.angle.target = ENTITY_TURN_ANGLE;
+            else if ((roundf(target_x) < roundf(e.draw.pos.x)) || (roundf(target_y) < roundf(e.draw.pos.y))) e.draw.angle.target = -ENTITY_TURN_ANGLE;
+        }
+        else
+        {
+            e.draw.angle.target = 0.0f;
+        }
+
+        Vec2 center = { TILE_W/2, TILE_H/2 };
+        DrawImage("entity", e.draw.pos.x,e.draw.pos.y, {1,1}, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
+    }
+}
+
 //
 // HELPERS
 //

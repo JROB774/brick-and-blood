@@ -57,8 +57,6 @@ INTERNAL void RenderApplication (float dt)
             case (APP_STATE_GAME): RenderGame(); break;
         }
 
-        DrawParticles();
-
         UnsetViewport();
     }
     else

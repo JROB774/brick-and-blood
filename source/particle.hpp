@@ -27,9 +27,6 @@ struct Particle
     Vec4 color;
 };
 
-INTERNAL void CreateParticles (std::string type, Rect region);
-
 INTERNAL void   InitParticles ();
-INTERNAL void UpdateParticles ();
-INTERNAL void RenderParticles ();
-INTERNAL void  ClearParticles ();
+INTERNAL void UpdateParticles (std::vector<Particle>& particles);
+INTERNAL void RenderParticles (std::vector<Particle>& particles);

@@ -52,7 +52,9 @@ struct Entity
     }
 };
 
-INTERNAL void InitEntities ();
+INTERNAL void   InitEntities ();
+INTERNAL void UpdateEntities (std::vector<Entity>& entities);
+INTERNAL void RenderEntities (std::vector<Entity>& entities);
 
 //
 // BEHAVIORS
