@@ -35,6 +35,12 @@ INTERNAL void CapFramerate ()
 
     gTimer.current_fps = (float)gTimer.performance_frequency / (float)elapsed_counter;
     gTimer.last_counter = SDL_GetPerformanceCounter();
+
+    // Display the current FPS in the window title in debug builds.
+    #if defined(BUILD_DEBUG)
+    std::string window_title = std::string(WINDOW_TITLE) + " (FPS: " + std::to_string(gTimer.current_fps) + ")";
+    SDL_SetWindowTitle(gWindow.window, window_title.c_str());
+    #endif // BUILD_DEBUG
 }
 
 #endif // PLATFORM_WIN32 =======================================================
