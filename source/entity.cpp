@@ -24,6 +24,12 @@ INTERNAL void InitEntities ()
     // Go through each base entity type and cache the data.
     for (auto& data: gon.children_array)
     {
+        // Warn of entities with duplicate names.
+        if (gEntities.count(data.name))
+        {
+            LOG_ERROR(ERR_MIN, "Warning duplicate entity with the name %s!", data.name.c_str());
+        }
+
         EntityBase base = {};
 
         base.faction = data["faction"].String();

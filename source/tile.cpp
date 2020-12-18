@@ -22,6 +22,12 @@ INTERNAL void InitTiles ()
     // Go through each base tile type and cache the data.
     for (auto& data: gon.children_array)
     {
+        // Warn of tiles with duplicate names.
+        if (gTiles.count(data.name))
+        {
+            LOG_ERROR(ERR_MIN, "Warning duplicate tile with the name %s!", data.name.c_str());
+        }
+
         TileBase base = {};
 
         base.hits = data["hits"].Int(TILE_INDESTRUCTIBLE);
