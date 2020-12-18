@@ -16,6 +16,7 @@ GLOBAL constexpr int WORLD_H_IN_TILES = WORLD_H*CHUNK_H;
 
 INTERNAL void    MapPlaceTile (std::string type, int x, int y);
 INTERNAL void    MapSpawnEntity (std::string type, int x, int y);
+INTERNAL void    MapSpawnParticles (std::string type, Rect region);
 INTERNAL Tile*   MapGetTileAtPos (int x, int y);             // NULL if pos is out of bounds!
 INTERNAL Entity* MapGetEntityAtPos (int x, int y);           // NULL if no entity found!
 INTERNAL Entity* MapGetFirstEntityOfType (std::string type); // NULL if no entity found!

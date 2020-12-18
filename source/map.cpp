@@ -68,6 +68,40 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y)
     e.draw.color.target = base.color;
 }
 
+INTERNAL void MapSpawnParticles (std::string type, Rect region)
+{
+    // If the specified base type can't be found then we don't create particles.
+    if (!gParticles.count(type))
+    {
+        LOG_ERROR(ERR_MIN, "Could not create particles of unknown type: %s", type.c_str());
+        return;
+    }
+    ParticleBase& base = gParticles.at(type);
+
+    int count = RandomRange(base.spawn_count_min, base.spawn_count_max);
+    for (int i=0; i<count; ++i)
+    {
+        // Create the actual particle and add it to the manager.
+        gMap.particles.push_back(Particle());
+        Particle& p = gMap.particles.back();
+
+        p.type = type;
+        p.pos.x = RandomFloatRange(region.x, region.x+region.w);
+        p.pos.y = RandomFloatRange(region.y, region.y+region.h);
+        p.lifetime = RandomFloatRange(base.lifetime_min, base.lifetime_max);
+        p.direction = RandomFloatRange(base.spawn_angle_min, base.spawn_angle_max);
+        p.speed = RandomFloatRange(base.speed_min, base.speed_max);
+        p.friction = RandomFloatRange(base.friction_min, base.friction_max);
+        p.angle = RandomFloatRange(base.angle_min, base.angle_max);
+        p.rotate_speed = RandomFloatRange(base.rotate_speed_min, base.rotate_speed_max);
+        p.draw.clip = base.clips.at(RandomRange(0, (int)base.clips.size()-1));
+        p.draw.scale.current = RandomFloatRange(base.start_scale_min, base.start_scale_max);
+        p.draw.scale.end = RandomFloatRange(base.end_scale_min, base.end_scale_max);
+        p.draw.color.current = base.start_color;
+        p.draw.color.end = base.end_color;
+    }
+}
+
 INTERNAL Tile* MapGetTileAtPos (int x, int y)
 {
     if (x < 0 || y < 0 || x >= WORLD_W_IN_TILES || y >= WORLD_H_IN_TILES) return NULL;

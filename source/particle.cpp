@@ -1,7 +1,6 @@
 struct ParticleBase
 {
-    struct { int x,y; } image_start;
-    int   image_count;
+    std::vector<SDL_Rect> clips;
     float lifetime_min, lifetime_max;
     float speed_min, speed_max;
     float friction_min, friction_max;
@@ -39,11 +38,32 @@ INTERNAL void InitParticles ()
 
         ParticleBase base = {};
 
-        base.image_start.x = data["image_start"][0].Int(0);
-        base.image_start.y = data["image_start"][1].Int(0);
+        // Cache all the clips that this particle type can have.
+        int image_start_x = data["image_start"][0].Int(0);
+        int image_start_y = data["image_start"][1].Int(0);
+        int image_count   = data["image_count"   ].Int(1);
 
-        base.image_count = data["image_count"].Int(1);
+        Image* image = GetAsset<AssetImage>("particle");
 
+        ASSERT(image_count > 0);
+        ASSERT(image);
+
+        int ix = image_start_x * TILE_W;
+        int iy = image_start_y * TILE_H;
+
+        for (int i=0; i<image_count; ++i)
+        {
+            base.clips.push_back({ ix,iy,TILE_W,TILE_H });
+
+            ix += TILE_W;
+            if (ix >= image->w)
+            {
+                ix = 0;
+                iy += TILE_H;
+            }
+        }
+
+        // Store all the particle base data.
         if (data["lifetime"].type == GonObject::FieldType::ARRAY)
         {
             base.lifetime_min = (float)data["lifetime"][0].Number();
