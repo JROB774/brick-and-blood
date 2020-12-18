@@ -52,9 +52,28 @@ struct Entity
     }
 };
 
+struct EntityBase
+{
+    std::string faction;
+    int initiative;
+    int health;
+    EntityBehavior behavior;
+    struct { int x,y; } image;
+    Vec4 color;
+    std::vector<std::string> particle_hit;
+    std::vector<std::string> particle_dead;
+};
+
 INTERNAL void   InitEntities ();
 INTERNAL void UpdateEntities (std::vector<Entity>& entities);
 INTERNAL void RenderEntities (std::vector<Entity>& entities);
+
+//
+// HELPERS
+//
+
+INTERNAL bool MoveEntity (Entity& e, int x, int y);
+INTERNAL void DamageEntity (Entity& e);
 
 //
 // BEHAVIORS

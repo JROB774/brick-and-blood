@@ -1,11 +1,3 @@
-struct TileBase
-{
-    int hits;
-    struct { int x,y; } image;
-    Vec4 color;
-    bool solid;
-};
-
 std::map<std::string,TileBase> gTiles;
 
 INTERNAL void InitTiles ()
@@ -52,6 +44,59 @@ INTERNAL void InitTiles ()
 
         base.solid = data["solid"].Bool(true);
 
+        if (data.Contains("particle_hit"))
+        {
+            if (data["particle_hit"].type == GonObject::FieldType::ARRAY)
+            {
+                for (int i=0; i<data["particle_hit"].size(); ++i)
+                {
+                    base.particle_hit.push_back(data["particle_hit"][i].String());
+                }
+            }
+            else
+            {
+                base.particle_hit.push_back(data["particle_hit"].String());
+            }
+        }
+        if (data.Contains("particle_break"))
+        {
+            if (data["particle_break"].type == GonObject::FieldType::ARRAY)
+            {
+                for (int i=0; i<data["particle_break"].size(); ++i)
+                {
+                    base.particle_break.push_back(data["particle_break"][i].String());
+                }
+            }
+            else
+            {
+                base.particle_break.push_back(data["particle_break"].String());
+            }
+        }
+
         gTiles.insert({ data.name, base });
     }
+}
+
+//
+// HELPERS
+//
+
+INTERNAL void DamageTile (int x, int y)
+{
+    Tile* tile = MapGetTileAtPos(x,y);
+    if (!tile) return;
+
+    Tile& t = *tile;
+
+    if (t.hits == TILE_INDESTRUCTIBLE) return;
+
+    t.draw.angle.current = TILE_HIT_ANGLE;
+    t.hits--;
+    if (t.hits <= 0) t.active = false;
+
+    // Handle either hit or death visual and sound effects.
+    TileBase& base = gTiles.at(t.type);
+    Rect particle_region = { (float)(x*TILE_W)+(TILE_W/2),(float)(y*TILE_H)+(TILE_H/2),0,0 };
+    if (t.hits > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
+    else for (auto& p: base.particle_break) MapSpawnParticles(p, particle_region);
 }

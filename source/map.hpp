@@ -27,7 +27,13 @@ INTERNAL Entity* MapGetFirstEntityOfType (std::string type); // NULL if no entit
 
 struct Chunk
 {
-    Tile tiles[CHUNK_H][CHUNK_W];
+    std::vector<std::vector<Tile>> tiles;
+
+    Chunk ()
+    {
+        tiles.resize(CHUNK_H);
+        for (auto& row: tiles) row.resize(CHUNK_W);
+    }
 };
 
 GLOBAL struct Map
@@ -35,7 +41,7 @@ GLOBAL struct Map
     std::vector<Entity> entities;
     std::vector<Particle> particles;
 
-    Chunk chunks[WORLD_H][WORLD_W];
+    std::vector<std::vector<Chunk>> chunks;
 
 } gMap;
 

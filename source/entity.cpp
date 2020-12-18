@@ -1,15 +1,3 @@
-struct EntityBase
-{
-    std::string faction;
-    int initiative;
-    int health;
-    EntityBehavior behavior;
-    struct { int x,y; } image;
-    Vec4 color;
-    std::vector<std::string> particles_hit;
-    std::vector<std::string> particles_dead;
-};
-
 std::map<std::string,EntityBase> gEntities;
 
 INTERNAL void InitEntities ()
@@ -63,32 +51,32 @@ INTERNAL void InitEntities ()
             base.color = { 1,1,1,1 };
         }
 
-        if (data.Contains("particles_hit"))
+        if (data.Contains("particle_hit"))
         {
-            if (data["particles_hit"].type == GonObject::FieldType::ARRAY)
+            if (data["particle_hit"].type == GonObject::FieldType::ARRAY)
             {
-                for (int i=0; i<data["particles_hit"].size(); ++i)
+                for (int i=0; i<data["particle_hit"].size(); ++i)
                 {
-                    base.particles_hit.push_back(data["particles_hit"][i].String());
+                    base.particle_hit.push_back(data["particle_hit"][i].String());
                 }
             }
             else
             {
-                base.particles_hit.push_back(data["particles_hit"].String());
+                base.particle_hit.push_back(data["particle_hit"].String());
             }
         }
-        if (data.Contains("particles_dead"))
+        if (data.Contains("particle_dead"))
         {
-            if (data["particles_dead"].type == GonObject::FieldType::ARRAY)
+            if (data["particle_dead"].type == GonObject::FieldType::ARRAY)
             {
-                for (int i=0; i<data["particles_dead"].size(); ++i)
+                for (int i=0; i<data["particle_dead"].size(); ++i)
                 {
-                    base.particles_dead.push_back(data["particles_dead"][i].String());
+                    base.particle_dead.push_back(data["particle_dead"][i].String());
                 }
             }
             else
             {
-                base.particles_dead.push_back(data["particles_dead"].String());
+                base.particle_dead.push_back(data["particle_dead"].String());
             }
         }
 
@@ -164,20 +152,6 @@ INTERNAL bool MoveEntity (Entity& e, int x, int y)
     return false;
 }
 
-INTERNAL void DamageTile (Tile& t)
-{
-    if (t.hits != TILE_INDESTRUCTIBLE)
-    {
-        t.draw.angle.current = TILE_HIT_ANGLE;
-        t.hits--;
-        if (t.hits <= 0)
-        {
-            t.active = false;
-            // @Incomplete: ...
-        }
-    }
-}
-
 INTERNAL void DamageEntity (Entity& e)
 {
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
@@ -187,8 +161,8 @@ INTERNAL void DamageEntity (Entity& e)
     // Handle either hit or death visual and sound effects.
     EntityBase& base = gEntities.at(e.type);
     Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
-    if (e.health > 0) for (auto& p: base.particles_hit) MapSpawnParticles(p, particle_region);
-    else for (auto& p: base.particles_dead) MapSpawnParticles(p, particle_region);
+    if (e.health > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
+    else for (auto& p: base.particle_dead) MapSpawnParticles(p, particle_region);
 }
 
 //
@@ -221,7 +195,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
             if (t && t->active && t->hits > 0)
             {
                 e.draw.angle.current = ENTITY_TURN_ANGLE;
-                DamageTile(*t);
+                DamageTile(targetx,targety);
             }
             else
             {

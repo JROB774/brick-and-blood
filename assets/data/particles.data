@@ -1,6 +1,6 @@
 blood0_hit
 {
-    image_start [ 2 0 ]
+    image_start [ 0 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -12,11 +12,27 @@ blood0_hit
     start_color [ 230 72 46 ]
     end_color [ 230 72 46 ]
     spawn_count [ 1 3 ]
+    spawn_angle [ 0 360 ]
+}
+blood0_dead
+{
+    image_start [ 0 0 ]
+    image_count 3
+    lifetime [ 0.1 0.3 ]
+    speed [ 30 50 ]
+    friction [ 3 8 ]
+    angle [ 0 360 ]
+    rotate_speed 10
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 230 72 46 ]
+    end_color [ 230 72 46 ]
+    spawn_count [ 5 10 ]
     spawn_angle [ 0 360 ]
 }
 blood1_hit
 {
-    image_start [ 2 0 ]
+    image_start [ 0 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -30,27 +46,9 @@ blood1_hit
     spawn_count [ 1 3 ]
     spawn_angle [ 0 360 ]
 }
-
-
-blood0_dead
-{
-    image_start [ 2 0 ]
-    image_count 3
-    lifetime [ 0.1 0.3 ]
-    speed [ 30 50 ]
-    friction [ 3 8 ]
-    angle [ 0 360 ]
-    rotate_speed 10
-    start_scale [ 1 1.5 ]
-    end_scale 0
-    start_color [ 230 72 46 ]
-    end_color [ 230 72 46 ]
-    spawn_count [ 5 10 ]
-    spawn_angle [ 0 360 ]
-}
 blood1_dead
 {
-    image_start [ 2 0 ]
+    image_start [ 0 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -62,5 +60,38 @@ blood1_dead
     start_color [ 158 37 51 ]
     end_color [ 158 37 51 ]
     spawn_count [ 5 10 ]
+    spawn_angle [ 0 360 ]
+}
+
+tree_hit
+{
+    image_start [ 3 0 ]
+    image_count 3
+    lifetime [ 0.1 0.3 ]
+    speed [ 30 50 ]
+    friction [ 3 8 ]
+    angle [ 0 360 ]
+    rotate_speed 10
+    start_scale [ 1 1.25 ]
+    end_scale 0
+    start_color [ 56 217 115 ]
+    end_color [ 56 217 115 ]
+    spawn_count [ 2 5 ]
+    spawn_angle [ 0 360 ]
+}
+tree_break
+{
+    image_start [ 3 0 ]
+    image_count 3
+    lifetime [ 0.1 0.3 ]
+    speed [ 30 50 ]
+    friction [ 3 8 ]
+    angle [ 0 360 ]
+    rotate_speed 10
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 56 217 115 ]
+    end_color [ 56 217 115 ]
+    spawn_count [ 6 12 ]
     spawn_angle [ 0 360 ]
 }

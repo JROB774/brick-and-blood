@@ -148,6 +148,9 @@ INTERNAL void InitMap ()
     // Reset all of the map data.
     QuitMap();
 
+    gMap.chunks.resize(WORLD_H);
+    for (auto& row: gMap.chunks) row.resize(WORLD_W);
+
     // Load in all of the available chunks that can be used to generate a map.
     GonObject& gon = (*GetAsset<AssetData>("chunks/overworld"))["chunks"];
 
@@ -190,10 +193,9 @@ INTERNAL void InitMap ()
 
 INTERNAL void QuitMap ()
 {
+    gMap.chunks.clear();
     gMap.entities.clear();
     gMap.particles.clear();
-
-    memset(gMap.chunks, 0, sizeof(gMap.chunks));
 }
 
 INTERNAL void UpdateMap ()

@@ -4,6 +4,8 @@ tree0
     image [ 0 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree1
 {
@@ -11,6 +13,8 @@ tree1
     image [ 1 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree2
 {
@@ -18,6 +22,8 @@ tree2
     image [ 2 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree3
 {
@@ -25,6 +31,8 @@ tree3
     image [ 3 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree4
 {
@@ -32,6 +40,8 @@ tree4
     image [ 4 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree5
 {
@@ -39,6 +49,8 @@ tree5
     image [ 5 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree6
 {
@@ -46,6 +58,8 @@ tree6
     image [ 6 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 tree7
 {
@@ -53,6 +67,8 @@ tree7
     image [ 7 0 ]
     color [ 56 217 115 ]
     solid true
+    particle_hit tree_hit
+    particle_break tree_break
 }
 
 foliage0
@@ -86,6 +102,7 @@ rocks
     image [ 4 1 ]
     color [ 207 198 184 ]
     solid false
+    particle_break rocks_break
 }
 
 shrub
@@ -94,6 +111,7 @@ shrub
     image [ 5 1 ]
     color [ 191 121 88 ]
     solid true
+    particle_break shrub_break
 }
 
 grass
@@ -102,12 +120,5 @@ grass
     image [ 6 1 ]
     color [ 56 217 115 ]
     solid false
-}
-
-cactus
-{
-    hits 2
-    image [ 7 1 ]
-    color [ 56 217 115 ]
-    solid true
+    particle_break grass_break
 }

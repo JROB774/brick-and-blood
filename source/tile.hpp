@@ -34,4 +34,20 @@ struct Tile
     } draw;
 };
 
+struct TileBase
+{
+    int hits;
+    struct { int x,y; } image;
+    Vec4 color;
+    bool solid;
+    std::vector<std::string> particle_hit;
+    std::vector<std::string> particle_break;
+};
+
 INTERNAL void InitTiles ();
+
+//
+// HELPERS
+//
+
+INTERNAL void DamageTile (int x, int y);
