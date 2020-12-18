@@ -6,6 +6,8 @@ struct EntityBase
     EntityBehavior behavior;
     struct { int x,y; } image;
     Vec4 color;
+    std::vector<std::string> particles_hit;
+    std::vector<std::string> particles_dead;
 };
 
 std::map<std::string,EntityBase> gEntities;
@@ -59,6 +61,35 @@ INTERNAL void InitEntities ()
         else
         {
             base.color = { 1,1,1,1 };
+        }
+
+        if (data.Contains("particles_hit"))
+        {
+            if (data["particles_hit"].type == GonObject::FieldType::ARRAY)
+            {
+                for (int i=0; i<data["particles_hit"].size(); ++i)
+                {
+                    base.particles_hit.push_back(data["particles_hit"][i].String());
+                }
+            }
+            else
+            {
+                base.particles_hit.push_back(data["particles_hit"].String());
+            }
+        }
+        if (data.Contains("particles_dead"))
+        {
+            if (data["particles_dead"].type == GonObject::FieldType::ARRAY)
+            {
+                for (int i=0; i<data["particles_dead"].size(); ++i)
+                {
+                    base.particles_dead.push_back(data["particles_dead"][i].String());
+                }
+            }
+            else
+            {
+                base.particles_dead.push_back(data["particles_dead"].String());
+            }
         }
 
         gEntities.insert({ data.name, base });
@@ -152,12 +183,12 @@ INTERNAL void DamageEntity (Entity& e)
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
     e.draw.angle.current = ENTITY_HIT_ANGLE;
     e.health--;
-    if (e.health <= 0)
-    {
-        Rect region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
-        MapSpawnParticles("blood1", region);
-        MapSpawnParticles("blood0", region);
-    }
+
+    // Handle either hit or death visual and sound effects.
+    EntityBase& base = gEntities.at(e.type);
+    Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
+    if (e.health > 0) for (auto& p: base.particles_hit) MapSpawnParticles(p, particle_region);
+    else for (auto& p: base.particles_dead) MapSpawnParticles(p, particle_region);
 }
 
 //

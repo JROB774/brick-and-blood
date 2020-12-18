@@ -16,6 +16,8 @@ chicken
     behavior BehaviorWander
     image [ 1 0 ]
     color [ 207 198 194 ]
+    particles_hit [ blood0_hit blood1_hit ]
+    particles_dead [ blood0_dead blood1_dead ]
 }
 cow
 {
@@ -25,6 +27,8 @@ cow
     behavior BehaviorWander
     image [ 2 0 ]
     color [ 207 198 194 ]
+    particles_hit [ blood0_hit blood1_hit ]
+    particles_dead [ blood0_dead blood1_dead ]
 }
 horse
 {
@@ -34,6 +38,8 @@ horse
     behavior BehaviorWander
     image [ 3 0 ]
     color [ 207 198 194 ]
+    particles_hit [ blood0_hit blood1_hit ]
+    particles_dead [ blood0_dead blood1_dead ]
 }
 pig
 {
@@ -43,6 +49,8 @@ pig
     behavior BehaviorWander
     image [ 4 0 ]
     color [ 207 198 194 ]
+    particles_hit [ blood0_hit blood1_hit ]
+    particles_dead [ blood0_dead blood1_dead ]
 }
 cat
 {
@@ -52,6 +60,8 @@ cat
     behavior BehaviorWander
     image [ 5 0 ]
     color [ 207 198 194 ]
+    particles_hit [ blood0_hit blood1_hit ]
+    particles_dead [ blood0_dead blood1_dead ]
 }
 dog
 {
@@ -61,4 +71,6 @@ dog
     behavior BehaviorWander
     image [ 6 0 ]
     color [ 207 198 194 ]
+    particles_hit [ blood0_hit blood1_hit ]
+    particles_dead [ blood0_dead blood1_dead ]
 }
