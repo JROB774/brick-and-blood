@@ -1,6 +1,7 @@
 struct ParticleBase
 {
-    // Particle
+    struct { int x,y; } image_start;
+    int   image_count;
     float lifetime_min, lifetime_max;
     float speed_min, speed_max;
     float friction_min, friction_max;
@@ -10,7 +11,6 @@ struct ParticleBase
     float end_scale_min, end_scale_max;
     Vec4  start_color;
     Vec4  end_color;
-    // Spawn
     int   spawn_count_min, spawn_count_max;
     float spawn_angle_min, spawn_angle_max;
 };
@@ -38,6 +38,11 @@ INTERNAL void InitParticles ()
         }
 
         ParticleBase base = {};
+
+        base.image_start.x = data["image_start"][0].Int(0);
+        base.image_start.y = data["image_start"][1].Int(0);
+
+        base.image_count = data["image_count"].Int(1);
 
         if (data["lifetime"].type == GonObject::FieldType::ARRAY)
         {

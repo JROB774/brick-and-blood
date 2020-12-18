@@ -1,6 +1,7 @@
 test0
 {
-    # particle
+    image_start [ 0 0 ]
+    image_count 1
     lifetime 1
     speed 1
     friction 0
@@ -10,14 +11,14 @@ test0
     end_scale 1
     start_color [ 255 255 255 ]
     end_color [ 255 255 255 ]
-    # spawn
     spawn_count 1
     spawn_angle 0
 }
 
 test1
 {
-    # particle
+    image_start [ 1 0 ]
+    image_count 2
     lifetime [ 0.5 1 ]
     speed [ 1 2 ]
     friction [ 0 10 ]
@@ -27,7 +28,6 @@ test1
     end_scale [ 1 2 ]
     start_color [ 255 255 255 ]
     end_color [ 255 255 255 ]
-    # spawn
     spawn_count [ 1 10 ]
     spawn_angle [ 0 360 ]
 }
