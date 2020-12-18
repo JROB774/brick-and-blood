@@ -1,33 +1,33 @@
-test0
+blood0
 {
-    image_start [ 0 0 ]
-    image_count 1
-    lifetime 1
-    speed 1
-    friction 0
-    angle 0
-    rotate_speed 0
-    start_scale 1
-    end_scale 1
-    start_color [ 255 255 255 ]
-    end_color [ 255 255 255 ]
-    spawn_count 1
-    spawn_angle 0
+    image_start [ 2 0 ]
+    image_count 3
+    lifetime [ 0.1 0.3 ]
+    speed [ 30 50 ]
+    friction [ 3 8 ]
+    angle [ 0 360 ]
+    rotate_speed 10
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 230 72 46 ]
+    end_color [ 230 72 46 ]
+    spawn_count [ 5 10 ]
+    spawn_angle [ 0 360 ]
 }
 
-test1
+blood1
 {
-    image_start [ 1 0 ]
-    image_count 2
-    lifetime [ 0.5 1 ]
-    speed [ 1 2 ]
-    friction [ 0 10 ]
+    image_start [ 2 0 ]
+    image_count 3
+    lifetime [ 0.1 0.3 ]
+    speed [ 30 50 ]
+    friction [ 3 8 ]
     angle [ 0 360 ]
-    rotate_speed [ 0 10 ]
-    start_scale [ 1 2 ]
-    end_scale [ 1 2 ]
-    start_color [ 255 255 255 ]
-    end_color [ 255 255 255 ]
-    spawn_count [ 1 10 ]
+    rotate_speed 10
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 158 37 51 ]
+    end_color [ 158 37 51 ]
+    spawn_count [ 5 10 ]
     spawn_angle [ 0 360 ]
 }

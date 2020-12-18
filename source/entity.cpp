@@ -154,7 +154,9 @@ INTERNAL void DamageEntity (Entity& e)
     e.health--;
     if (e.health <= 0)
     {
-        // @Incomplete: ...
+        Rect region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
+        MapSpawnParticles("blood1", region);
+        MapSpawnParticles("blood0", region);
     }
 }
 

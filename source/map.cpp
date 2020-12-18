@@ -86,8 +86,8 @@ INTERNAL void MapSpawnParticles (std::string type, Rect region)
         Particle& p = gMap.particles.back();
 
         p.type = type;
-        p.pos.x = RandomFloatRange(region.x, region.x+region.w);
-        p.pos.y = RandomFloatRange(region.y, region.y+region.h);
+        p.pos.x = RandomFloatRange(region.x, region.x+region.w) - (TILE_W/2);
+        p.pos.y = RandomFloatRange(region.y, region.y+region.h) - (TILE_H/2);
         p.lifetime = RandomFloatRange(base.lifetime_min, base.lifetime_max);
         p.direction = RandomFloatRange(base.spawn_angle_min, base.spawn_angle_max);
         p.speed = RandomFloatRange(base.speed_min, base.speed_max);
