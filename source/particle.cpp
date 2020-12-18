@@ -152,10 +152,38 @@ INTERNAL void InitParticles ()
 
 INTERNAL void UpdateParticles (std::vector<Particle>& particles)
 {
+    // Remove any particles that are no longer alive.
     // @Incomplete: ...
+
+    for (auto& p: particles)
+    {
+        p.lifetime -= gApplication.delta_time;
+        if (p.lifetime < 0.0f) continue;
+
+        // Lerp some visual values based on the lifetime of the particle.
+        p.draw.scale.current = Lerp(p.draw.scale.current, p.draw.scale.end, p.lifetime);
+        p.draw.color.current = Lerp(p.draw.color.current, p.draw.color.end, p.lifetime);
+
+        p.angle += p.rotate_speed * gApplication.delta_time;
+        p.speed -= p.friction * gApplication.delta_time;
+
+        if (p.speed < 0.0f) p.speed = 0.0f;
+
+        Vec2 vel = RotateVec2({ p.speed, 0.0f, }, DegToRad(p.direction));
+
+        p.pos.x += vel.x * gApplication.delta_time;
+        p.pos.y += vel.y * gApplication.delta_time;
+    }
 }
 
 INTERNAL void RenderParticles (std::vector<Particle>& particles)
 {
-    // @Incomplete: ...
+    for (auto& p: particles)
+    {
+        if (p.lifetime <= 0.0f) continue;
+
+        Vec2 scale = { p.draw.scale.current, p.draw.scale.current };
+        Vec2 center = { TILE_W/2, TILE_H/2 };
+        DrawImage("particle", p.pos.x,p.pos.y, scale, center, p.angle, FLIP_NONE, p.draw.color.current, &p.draw.clip);
+    }
 }

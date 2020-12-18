@@ -7,24 +7,31 @@ struct Particle
     std::string type;
 
     Vec2 pos;
-    Vec2 vel;
 
     float lifetime;
+
+    float direction;
+    float speed;
+    float friction;
+    float angle;
+    float rotate_speed;
 
     // Drawing stuff.
     struct
     {
         SDL_Rect clip;
 
-        Vec4 color;
-
-        float angle;
-        float scale;
+        struct
+        {
+            float current;
+            float end;
+        } scale;
+        struct
+        {
+            Vec4 current;
+            Vec4 end;
+        } color;
     } draw;
-
-    float angle;
-    float scale;
-    Vec4 color;
 };
 
 INTERNAL void   InitParticles ();
