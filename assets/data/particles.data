@@ -68,15 +68,15 @@ tree_hit
     image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
-    speed [ 30 50 ]
-    friction [ 3 8 ]
-    angle [ 0 360 ]
-    rotate_speed 10
+    speed [ 45 65 ]
+    friction [ 3 6 ]
+    angle [ -30 30 ]
+    rotate_speed 0
     start_scale [ 1 1.25 ]
     end_scale 0
     start_color [ 56 217 115 ]
     end_color [ 56 217 115 ]
-    spawn_count [ 2 5 ]
+    spawn_count [ 3 5 ]
     spawn_angle [ 0 360 ]
 }
 tree_break
@@ -84,14 +84,65 @@ tree_break
     image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
-    speed [ 30 50 ]
-    friction [ 3 8 ]
-    angle [ 0 360 ]
-    rotate_speed 10
+    speed [ 55 75 ]
+    friction [ 3 6 ]
+    angle [ -30 30 ]
+    rotate_speed 0
     start_scale [ 1 1.5 ]
     end_scale 0
     start_color [ 56 217 115 ]
     end_color [ 56 217 115 ]
-    spawn_count [ 6 12 ]
+    spawn_count [ 7 13 ]
+    spawn_angle [ 0 360 ]
+}
+
+rocks_break
+{
+    image_start [ 1 0 ]
+    image_count 2
+    lifetime [ 0.1 0.3 ]
+    speed [ 55 75 ]
+    friction [ 3 6 ]
+    angle [ -30 30 ]
+    rotate_speed 0
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 207 198 184 ]
+    end_color [ 207 198 184 ]
+    spawn_count [ 7 13 ]
+    spawn_angle [ 0 360 ]
+}
+
+shrub_break
+{
+    image_start [ 6 0 ]
+    image_count 2
+    lifetime [ 0.1 0.3 ]
+    speed [ 55 75 ]
+    friction [ 3 6 ]
+    angle [ -30 30 ]
+    rotate_speed 0
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 191 121 88 ]
+    end_color [ 191 121 88 ]
+    spawn_count [ 7 13 ]
+    spawn_angle [ 0 360 ]
+}
+
+grass_break
+{
+    image_start [ 0 1 ]
+    image_count 2
+    lifetime [ 0.1 0.3 ]
+    speed [ 55 75 ]
+    friction [ 3 6 ]
+    angle [ -30 30 ]
+    rotate_speed 0
+    start_scale [ 1 1.5 ]
+    end_scale 0
+    start_color [ 191 121 88 ]
+    end_color [ 191 121 88 ]
+    spawn_count [ 7 13 ]
     spawn_angle [ 0 360 ]
 }
