@@ -186,8 +186,11 @@ INTERNAL void RenderParticles (std::vector<Particle>& particles)
     {
         if (p.lifetime <= 0.0f) continue;
 
+        // Adjust the X and Y for the current scale of the particle so it remains centered.
+        float x = p.pos.x - (TILE_W * (p.draw.scale.current - 1.0f)) / 2;
+        float y = p.pos.y - (TILE_H * (p.draw.scale.current - 1.0f)) / 2;
         Vec2 scale = { p.draw.scale.current, p.draw.scale.current };
-        Vec2 center = { TILE_W/2, TILE_H/2 };
-        DrawImage("particle", p.pos.x,p.pos.y, scale, center, p.angle, FLIP_NONE, p.draw.color.current, &p.draw.clip);
+        Vec2 center = { (TILE_W*scale.x)/2, (TILE_H*scale.y)/2 };
+        DrawImage("particle", x,y, scale, center, p.angle, FLIP_NONE, p.draw.color.current, &p.draw.clip);
     }
 }
