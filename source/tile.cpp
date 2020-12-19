@@ -73,6 +73,21 @@ INTERNAL void InitTiles ()
             }
         }
 
+        if (data.Contains("sound_hit"))
+        {
+            if (data["sound_hit"].type == GonObject::FieldType::ARRAY)
+            {
+                for (int i=0; i<data["sound_hit"].size(); ++i)
+                {
+                    base.sound_hit.push_back(data["sound_hit"][i].String());
+                }
+            }
+            else
+            {
+                base.sound_hit.push_back(data["sound_hit"].String());
+            }
+        }
+
         gTiles.insert({ data.name, base });
     }
 }
@@ -96,7 +111,10 @@ INTERNAL void DamageTile (int x, int y)
 
     // Handle either hit or death visual and sound effects.
     TileBase& base = gTiles.at(t.type);
+
     Rect particle_region = { (float)(x*TILE_W)+(TILE_W/2),(float)(y*TILE_H)+(TILE_H/2),0,0 };
     if (t.hits > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
     else for (auto& p: base.particle_break) MapSpawnParticles(p, particle_region);
+
+    PlaySound(base.sound_hit.at(RandomRange(0,(int)base.sound_hit.size()-1)));
 }

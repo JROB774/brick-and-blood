@@ -42,6 +42,7 @@ struct TileBase
     bool solid;
     std::vector<std::string> particle_hit;
     std::vector<std::string> particle_break;
+    std::vector<std::string> sound_hit;
 };
 
 INTERNAL void InitTiles ();

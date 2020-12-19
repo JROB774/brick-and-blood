@@ -6,6 +6,7 @@ tree0
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree1
 {
@@ -15,6 +16,7 @@ tree1
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree2
 {
@@ -24,6 +26,7 @@ tree2
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree3
 {
@@ -33,6 +36,7 @@ tree3
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree4
 {
@@ -42,6 +46,7 @@ tree4
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree5
 {
@@ -51,6 +56,7 @@ tree5
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree6
 {
@@ -60,6 +66,7 @@ tree6
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 tree7
 {
@@ -69,6 +76,7 @@ tree7
     solid true
     particle_hit tree_hit
     particle_break tree_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 
 foliage0
@@ -103,6 +111,7 @@ rocks
     color [ 207 198 184 ]
     solid false
     particle_break rocks_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 
 shrub
@@ -112,6 +121,7 @@ shrub
     color [ 191 121 88 ]
     solid true
     particle_break shrub_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
 
 grass
@@ -121,4 +131,5 @@ grass
     color [ 56 217 115 ]
     solid false
     particle_break grass_break
+    sound_hit [ grass0 grass1 grass2 grass3 grass4 ]
 }
