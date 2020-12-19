@@ -231,7 +231,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
         Entity* o = MapGetEntityAtPos(targetx,targety);
         if (o) // If there's an entity at our target location, carry out the appropriate action.
         {
-            e.draw.angle.current = ENTITY_TURN_ANGLE;
+            e.draw.angle.current = ENTITY_TURN_ANGLE*3;
             DamageEntity(*o);
         }
         else // Othewise handle the case of tiles.
@@ -240,7 +240,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
             Tile* t = MapGetTileAtPos(targetx,targety);
             if (t && t->active && t->hits > 0)
             {
-                e.draw.angle.current = ENTITY_TURN_ANGLE;
+                e.draw.angle.current = ENTITY_TURN_ANGLE*3;
                 DamageTile(targetx,targety);
             }
             else
