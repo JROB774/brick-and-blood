@@ -85,7 +85,7 @@ struct AssetFont: public AssetBase
 struct AssetSound: public AssetBase
 {
     static inline const std::string Path = "sounds/";
-    static inline const std::string Ext = ".wav";
+    static inline const std::string Ext = ".ogg";
     void Load (std::string file_name) override;
     void Free () override;
     Sound data;
