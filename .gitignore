@@ -14,3 +14,6 @@ binary/**/*.data
 binary/**/*.js
 binary/**/*.wasm
 binary/**/*.html
+
+dev/graphics/
+dev/sounds/
