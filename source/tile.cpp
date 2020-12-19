@@ -116,5 +116,8 @@ INTERNAL void DamageTile (int x, int y)
     if (t.hits > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
     else for (auto& p: base.particle_break) MapSpawnParticles(p, particle_region);
 
-    PlaySound(base.sound_hit.at(RandomRange(0,(int)base.sound_hit.size()-1)));
+    if (!base.sound_hit.empty())
+    {
+        PlaySound(base.sound_hit.at(RandomRange(0,(int)base.sound_hit.size()-1)));
+    }
 }
