@@ -6,7 +6,7 @@ tree0
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree1
 {
@@ -16,7 +16,7 @@ tree1
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree2
 {
@@ -26,7 +26,7 @@ tree2
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree3
 {
@@ -36,7 +36,7 @@ tree3
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree4
 {
@@ -46,7 +46,7 @@ tree4
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree5
 {
@@ -56,7 +56,7 @@ tree5
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree6
 {
@@ -66,7 +66,7 @@ tree6
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree7
 {
@@ -76,7 +76,7 @@ tree7
     solid true
     particle_hit tree_hit
     particle_break tree_break
-    drops [ [ wood 3 6 ] ]
+    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 
 foliage0

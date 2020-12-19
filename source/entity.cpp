@@ -80,6 +80,33 @@ INTERNAL void InitEntities ()
             }
         }
 
+        if (data.Contains("sound_hit"))
+        {
+            if (data["sound_hit"].type == GonObject::FieldType::ARRAY)
+            {
+                for (int i=0; i<data["sound_hit"].size(); ++i)
+                {
+                    base.sound_hit.push_back(data["sound_hit"][i].String());
+                }
+            }
+            else
+            {
+                base.sound_hit.push_back(data["sound_hit"].String());
+            }
+        }
+
+        if (data.Contains("drops"))
+        {
+            for (int i=0; i<data["drops"].size(); ++i)
+            {
+                EntityDrops drops;
+                drops.type = data["drops"][i][0].String();
+                drops.min  = data["drops"][i][1].Int();
+                drops.max  = data["drops"][i][2].Int();
+                base.drops.push_back(drops);
+            }
+        }
+
         gEntities.insert({ data.name, base });
     }
 }
@@ -160,9 +187,28 @@ INTERNAL void DamageEntity (Entity& e)
 
     // Handle either hit or death visual and sound effects.
     EntityBase& base = gEntities.at(e.type);
+
     Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
     if (e.health > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
     else for (auto& p: base.particle_dead) MapSpawnParticles(p, particle_region);
+
+    if (!base.sound_hit.empty())
+    {
+        PlaySound(base.sound_hit.at(RandomRange(0,(int)base.sound_hit.size()-1)));
+    }
+
+    // Handle picking up the drops on break.
+    if (e.health <= 0)
+    {
+        if (!base.drops.empty())
+        {
+            for (auto& drop: base.drops)
+            {
+                int quantity = RandomRange(drop.min,drop.max);
+                PlayerPickUp(drop.type, quantity);
+            }
+        }
+    }
 }
 
 //

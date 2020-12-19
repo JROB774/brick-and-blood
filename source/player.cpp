@@ -51,7 +51,7 @@ INTERNAL void UpdatePlayer ()
         printf("INVENTORY:\n");
         for (auto [item,amount]: gPlayer.inventory)
         {
-            printf("    %d %s\n", amount, item.c_str());
+            printf("  %d %s\n", amount, item.c_str());
         }
     }
     #endif // BUILD_DEBUG

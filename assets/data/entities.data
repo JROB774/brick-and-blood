@@ -18,6 +18,7 @@ chicken
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
+    drops [ [ meat 1 1 ] ]
 }
 cow
 {
@@ -29,6 +30,7 @@ cow
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
+    drops [ [ meat 2 3 ] ]
 }
 horse
 {
@@ -40,6 +42,7 @@ horse
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
+    drops [ [ meat 3 3 ] ]
 }
 pig
 {
@@ -51,6 +54,7 @@ pig
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
+    drops [ [ meat 2 2 ] ]
 }
 cat
 {
@@ -62,6 +66,7 @@ cat
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
+    drops [ [ meat 1 2 ] ]
 }
 dog
 {
@@ -73,4 +78,5 @@ dog
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
+    drops [ [ meat 1 2 ] ]
 }

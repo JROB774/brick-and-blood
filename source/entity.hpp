@@ -52,6 +52,12 @@ struct Entity
     }
 };
 
+struct EntityDrops
+{
+    std::string type;
+    int min, max;
+};
+
 struct EntityBase
 {
     std::string faction;
@@ -62,6 +68,8 @@ struct EntityBase
     Vec4 color;
     std::vector<std::string> particle_hit;
     std::vector<std::string> particle_dead;
+    std::vector<std::string> sound_hit;
+    std::vector<EntityDrops> drops;
 };
 
 INTERNAL void   InitEntities ();
