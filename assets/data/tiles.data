@@ -111,6 +111,7 @@ rocks
     color [ 207 198 184 ]
     solid false
     particle_break rocks_break
+    drops [ [ rocks 1 1 ] ]
 }
 
 shrub
@@ -120,6 +121,7 @@ shrub
     color [ 191 121 88 ]
     solid true
     particle_break shrub_break
+    drops [ [ sticks 1 3 ] ]
 }
 
 grass
@@ -129,4 +131,5 @@ grass
     color [ 56 217 115 ]
     solid false
     particle_break grass_break
+    drops [ [ grass 1 1 ] ]
 }
