@@ -65,12 +65,12 @@ blood1_dead
 
 tree_hit
 {
-    image_start [ 3 0 ]
+    image_start [ 0 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 45 65 ]
     friction [ 3 6 ]
-    angle [ -30 30 ]
+    angle [ 0 360 ]
     rotate_speed 0
     start_scale [ 1 1.25 ]
     end_scale 0
@@ -81,12 +81,12 @@ tree_hit
 }
 tree_break
 {
-    image_start [ 3 0 ]
+    image_start [ 0 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 55 75 ]
     friction [ 3 6 ]
-    angle [ -30 30 ]
+    angle [ 0 360 ]
     rotate_speed 0
     start_scale [ 1 1.5 ]
     end_scale 0
@@ -98,12 +98,12 @@ tree_break
 
 rocks_break
 {
-    image_start [ 1 0 ]
-    image_count 2
+    image_start [ 0 0 ]
+    image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 55 75 ]
     friction [ 3 6 ]
-    angle [ -30 30 ]
+    angle [ 0 360 ]
     rotate_speed 0
     start_scale [ 1 1.5 ]
     end_scale 0
@@ -115,12 +115,12 @@ rocks_break
 
 shrub_break
 {
-    image_start [ 6 0 ]
-    image_count 2
+    image_start [ 0 0 ]
+    image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 55 75 ]
     friction [ 3 6 ]
-    angle [ -30 30 ]
+    angle [ 0 360 ]
     rotate_speed 0
     start_scale [ 1 1.5 ]
     end_scale 0
@@ -132,12 +132,12 @@ shrub_break
 
 grass_break
 {
-    image_start [ 0 1 ]
-    image_count 2
+    image_start [ 0 0 ]
+    image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 55 75 ]
     friction [ 3 6 ]
-    angle [ -30 30 ]
+    angle [ 0 360 ]
     rotate_speed 0
     start_scale [ 1 1.5 ]
     end_scale 0
