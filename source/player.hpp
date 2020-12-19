@@ -12,3 +12,5 @@ GLOBAL struct Player
 } gPlayer;
 
 INTERNAL void UpdatePlayer ();
+
+INTERNAL void PlayerPickUp (std::string item, int amount);

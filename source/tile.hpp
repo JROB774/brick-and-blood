@@ -34,6 +34,12 @@ struct Tile
     } draw;
 };
 
+struct TileDrops
+{
+    std::string type;
+    int min, max;
+};
+
 struct TileBase
 {
     int hits;
@@ -43,6 +49,7 @@ struct TileBase
     std::vector<std::string> particle_hit;
     std::vector<std::string> particle_break;
     std::vector<std::string> sound_hit;
+    std::vector<TileDrops> drops;
 };
 
 INTERNAL void InitTiles ();

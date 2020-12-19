@@ -44,6 +44,18 @@ INTERNAL void UpdatePlayer ()
         }
     }
 
+    // Debug key for printing the player inventory.
+    #if defined(BUILD_DEBUG)
+    if (IsKeyPressed(SDL_SCANCODE_I))
+    {
+        printf("INVENTORY:\n");
+        for (auto [item,amount]: gPlayer.inventory)
+        {
+            printf("    %d %s\n", amount, item.c_str());
+        }
+    }
+    #endif // BUILD_DEBUG
+
     // The camera tracks the player's current position!
     Entity* p = MapGetFirstEntityOfType("player");
     if (p)
@@ -52,4 +64,10 @@ INTERNAL void UpdatePlayer ()
         float cy = roundf(p->draw.pos.y + (TILE_H/2) - (WINDOW_SCREEN_H/2));
         SetCameraTarget(cx,cy);
     }
+}
+
+INTERNAL void PlayerPickUp (std::string item, int amount)
+{
+    if (gPlayer.inventory.count(item)) gPlayer.inventory[item] += amount;
+    else gPlayer.inventory[item] = amount;
 }

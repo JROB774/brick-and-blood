@@ -88,6 +88,18 @@ INTERNAL void InitTiles ()
             }
         }
 
+        if (data.Contains("drops"))
+        {
+            for (int i=0; i<data["drops"].size(); ++i)
+            {
+                TileDrops drops;
+                drops.type = data["drops"][i][0].String();
+                drops.min  = data["drops"][i][1].Int();
+                drops.max  = data["drops"][i][2].Int();
+                base.drops.push_back(drops);
+            }
+        }
+
         gTiles.insert({ data.name, base });
     }
 }
@@ -119,5 +131,18 @@ INTERNAL void DamageTile (int x, int y)
     if (!base.sound_hit.empty())
     {
         PlaySound(base.sound_hit.at(RandomRange(0,(int)base.sound_hit.size()-1)));
+    }
+
+    // Handle picking up the drops on break.
+    if (t.hits <= 0)
+    {
+        if (!base.drops.empty())
+        {
+            for (auto& drop: base.drops)
+            {
+                int quantity = RandomRange(drop.min,drop.max);
+                PlayerPickUp(drop.type, quantity);
+            }
+        }
     }
 }
