@@ -207,10 +207,30 @@ INTERNAL void UpdateMap ()
 
 INTERNAL void RenderMap ()
 {
-    // Render tiles.
-    for (int iy=0; iy<WORLD_H; ++iy)
+    // Render Tiles
+
+    // We determine a range of chunks around the player so we can cull the rest.
+    // Avoiding rendering the whole map when only a small fraction can be seen.
+    int minx = 0;
+    int miny = 0;
+    int maxx = WORLD_W-1;
+    int maxy = WORLD_H-1;
+
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p) // We need the player to do this. If we can't find one we just fallback to the whole map.
     {
-        for (int ix=0; ix<WORLD_W; ++ix)
+        int cx = p->pos.x / CHUNK_W;
+        int cy = p->pos.y / CHUNK_H;
+
+        minx = std::clamp(cx-3, 0, WORLD_W-1);
+        miny = std::clamp(cy-3, 0, WORLD_H-1);
+        maxx = std::clamp(cx+3, 0, WORLD_W-1);
+        maxy = std::clamp(cy+3, 0, WORLD_H-1);
+    }
+
+    for (int iy=miny; iy<=maxy; ++iy)
+    {
+        for (int ix=minx; ix<=maxx; ++ix)
         {
             Chunk& chunk = gMap.chunks[iy][ix];
             for (int ty=0; ty<CHUNK_H; ++ty)
