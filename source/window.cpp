@@ -27,7 +27,7 @@ INTERNAL bool InitWindow ()
     }
 
     SDL_SetRenderDrawBlendMode(gWindow.renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetWindowMinimumSize(gWindow.window, WINDOW_SCREEN_W,WINDOW_SCREEN_H);
+    SDL_SetWindowMinimumSize(gWindow.window, WINDOW_MIN_W,WINDOW_MIN_H);
 
     SetFullscreen(gSettings.fullscreen);
 
