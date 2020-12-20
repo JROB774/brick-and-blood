@@ -1,5 +1,9 @@
+GLOBAL constexpr Vec4 APPLICATION_CLEAR = { 0.28f,0.18f,0.24f,1.0f };
+
 INTERNAL void InitApplication ()
 {
+    SDL_ShowCursor(SDL_DISABLE);
+
     gApplication.state = APP_STATE_GAME;
 
     gApplication.debug = false;
@@ -8,11 +12,14 @@ INTERNAL void InitApplication ()
     InitParticles();
     InitEntities();
     InitTiles();
+    InitItems();
+
+    InitFade();
 
     InitGame();
     InitEditor();
 
-    SDL_ShowCursor(SDL_DISABLE);
+    FadeFrom(SDLColorToColor({ 38,13,28,255 }), 2);
 }
 
 INTERNAL void QuitApplication ()
@@ -78,13 +85,14 @@ INTERNAL void RenderApplication (float dt)
         SetViewport();
 
         constexpr Rect SCREEN = { 0,0,WINDOW_SCREEN_W,WINDOW_SCREEN_H };
-        DrawFill(SCREEN, { 0.28f,0.18f,0.24f,1.0f });
+        DrawFill(SCREEN, APPLICATION_CLEAR);
 
         switch (gApplication.state)
         {
             case (APP_STATE_GAME): RenderGame(); break;
         }
 
+        RenderFade();
         UnsetViewport();
     }
     else
