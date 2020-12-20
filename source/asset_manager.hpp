@@ -67,7 +67,7 @@ struct AssetData: public AssetBase
 struct AssetAnimation: public AssetBase
 {
     static inline const std::string Path = "anims/";
-    static inline const std::string Ext = ".anim";
+    static inline const std::string Ext = ".data";
     void Load (std::string file_name) override;
     void Free () override;
     Animation data;
@@ -76,7 +76,7 @@ struct AssetAnimation: public AssetBase
 struct AssetFont: public AssetBase
 {
     static inline const std::string Path = "fonts/";
-    static inline const std::string Ext = ".font";
+    static inline const std::string Ext = ".data";
     void Load (std::string file_name) override;
     void Free () override;
     Font data;
