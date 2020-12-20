@@ -100,6 +100,15 @@ INTERNAL Vec4 Lerp (Vec4 a, Vec4 b, float t)
     return a;
 }
 
+INTERNAL Rect Lerp (Rect a, Rect b, float t)
+{
+    a.x = Lerp(a.x, b.x, t);
+    a.y = Lerp(a.y, b.y, t);
+    a.w = Lerp(a.w, b.w, t);
+    a.h = Lerp(a.h, b.h, t);
+    return a;
+}
+
 INTERNAL float DegToRad (float deg)
 {
     return (deg * (float)M_PI) / 180.0f;

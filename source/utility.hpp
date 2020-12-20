@@ -104,6 +104,7 @@ INTERNAL float Lerp (float a, float b, float t);
 INTERNAL Vec2  Lerp (Vec2  a, Vec2  b, float t);
 INTERNAL Vec3  Lerp (Vec3  a, Vec3  b, float t);
 INTERNAL Vec4  Lerp (Vec4  a, Vec4  b, float t);
+INTERNAL Rect  Lerp (Rect  a, Rect  b, float t);
 
 INTERNAL float DegToRad (float deg);
 INTERNAL float RadToDeg (float rad);
