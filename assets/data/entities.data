@@ -56,27 +56,28 @@ pig
     particle_dead [ blood0_dead blood1_dead ]
     drops [ [ meat 2 2 ] ]
 }
-cat
-{
-    faction animal
-    initiative 2
-    health 2
-    behavior BehaviorWander
-    image [ 5 0 ]
-    color [ 207 198 194 ]
-    particle_hit [ blood0_hit blood1_hit ]
-    particle_dead [ blood0_dead blood1_dead ]
-    drops [ [ meat 1 2 ] ]
-}
-dog
-{
-    faction animal
-    initiative 2
-    health 2
-    behavior BehaviorWander
-    image [ 6 0 ]
-    color [ 207 198 194 ]
-    particle_hit [ blood0_hit blood1_hit ]
-    particle_dead [ blood0_dead blood1_dead ]
-    drops [ [ meat 1 2 ] ]
-}
+
+# cat
+# {
+#     faction animal
+#     initiative 2
+#     health 2
+#     behavior BehaviorWander
+#     image [ 5 0 ]
+#     color [ 207 198 194 ]
+#     particle_hit [ blood0_hit blood1_hit ]
+#     particle_dead [ blood0_dead blood1_dead ]
+#     drops [ [ meat 1 2 ] ]
+# }
+# dog
+# {
+#     faction animal
+#     initiative 2
+#     health 2
+#     behavior BehaviorWander
+#     image [ 6 0 ]
+#     color [ 207 198 194 ]
+#     particle_hit [ blood0_hit blood1_hit ]
+#     particle_dead [ blood0_dead blood1_dead ]
+#     drops [ [ meat 1 2 ] ]
+# }

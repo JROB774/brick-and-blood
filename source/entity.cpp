@@ -1,5 +1,18 @@
 GLOBAL std::map<std::string,EntityBase> gEntities;
 
+INTERNAL std::vector<std::string> GetAllEntityTypesOfFaction (std::string faction)
+{
+    std::vector<std::string> types;
+    for (auto [type,base]: gEntities)
+    {
+        if (base.faction == faction)
+        {
+            types.push_back(type);
+        }
+    }
+    return types;
+}
+
 INTERNAL void InitEntities ()
 {
     gEntities.clear();
@@ -116,10 +129,13 @@ INTERNAL void UpdateEntities (std::vector<Entity>& entities)
     // Sort the entities based on initiative so they get updated in correct order.
     std::sort(entities.begin(), entities.end());
 
+    // Remove any entities that are no longer alive.
+    entities.erase(std::remove_if(entities.begin(), entities.end(), [](const Entity& e){ return !e.active; }), entities.end());
+
     // Update all the entities.
     for (auto& e: entities)
     {
-        if (e.health <= 0) continue;
+        if (!e.active) continue;
 
         e.old_pos.x = e.pos.x;
         e.old_pos.y = e.pos.y;
@@ -133,7 +149,7 @@ INTERNAL void RenderEntities (std::vector<Entity>& entities)
 {
     for (auto& e: entities)
     {
-        if (e.health <= 0) continue;
+        if (!e.active) continue;
 
         // Smoothly lerp the entity from tile-to-tile to give a more fluid feel to the movement.
         float target_x = (float)e.pos.x*TILE_W;
@@ -184,6 +200,7 @@ INTERNAL void DamageEntity (Entity& e)
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
     e.draw.angle.current = ENTITY_HIT_ANGLE;
     e.health--;
+    if (e.health <= 0) e.active = false;
 
     // Handle either hit or death visual and sound effects.
     EntityBase& base = gEntities.at(e.type);
@@ -253,7 +270,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
 
 INTERNAL void Entity_BehaviorWander (Entity& e)
 {
-    if (Random() % 2 == 0) // 50/50 chance of moving.
+    if (RandomRange(1,100) <= 25) // 25%
     {
         int targetx = e.pos.x;
         int targety = e.pos.y;

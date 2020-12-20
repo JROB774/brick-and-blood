@@ -1,3 +1,23 @@
+INTERNAL void MapCheckForAndRemoveOutOfRangeEntities ()
+{
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p) // We cannot despawn entities if there is no player to base it off of.
+    {
+        int minx = p->pos.x - MAX_ENTITY_ACTIVE_RADIUS;
+        int miny = p->pos.y - MAX_ENTITY_ACTIVE_RADIUS;
+        int maxx = p->pos.x + MAX_ENTITY_ACTIVE_RADIUS;
+        int maxy = p->pos.y + MAX_ENTITY_ACTIVE_RADIUS;
+
+        for (auto& e: gMap.entities)
+        {
+            if (e.pos.x <= minx || e.pos.x >= maxx || e.pos.y <= miny || e.pos.y >= maxy)
+            {
+                e.active = false;
+            }
+        }
+    }
+}
+
 INTERNAL void MapPlaceTile (std::string type, int x, int y)
 {
     // If the specified base type can't be found then we don't create a tile.
@@ -27,6 +47,16 @@ INTERNAL void MapPlaceTile (std::string type, int x, int y)
 
 INTERNAL void MapSpawnEntity (std::string type, int x, int y)
 {
+    // Check if we have space for entities. If we don't see if any entities can be removed.
+    if (gMap.entities.size() >= MAX_ENTITIES)
+    {
+        MapCheckForAndRemoveOutOfRangeEntities();
+        if (gMap.entities.size() >= MAX_ENTITIES) // If still no space then don't spawn...
+        {
+            return;
+        }
+    }
+
     // If the specified base type can't be found then we don't create an entity.
     if (!gEntities.count(type))
     {
@@ -37,11 +67,10 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y)
 
     // Check if the position contains a solid tile, if it does then do not spawn an entity.
     Tile* tile = MapGetTileAtPos(x,y);
-    if (tile && tile->solid)
-    {
-        LOG_ERROR(ERR_MIN, "Could not place entity at (%d,%d), solid tile present!", x,y);
-        return;
-    }
+    if (tile && tile->solid) return;
+    // Check if the position contains an entity, if it does then do not spawn an entity.
+    Entity* entity = MapGetEntityAtPos(x,y);
+    if (entity) return;
 
     // Create the actual entity and add it to the manager.
     gMap.entities.push_back(Entity());
@@ -56,6 +85,7 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y)
     e.pos.y = y;
     e.old_pos.x = x;
     e.old_pos.y = y;
+    e.active = true;
     e.draw.pos.x = (float)(x*TILE_W);
     e.draw.pos.y = (float)(y*TILE_H);
     e.draw.clip.x = base.image.x*TILE_W;
@@ -141,6 +171,41 @@ INTERNAL Entity* MapGetFirstEntityOfType (std::string type)
     return entity;
 }
 
+INTERNAL void MapRandomlySpawnEntities ()
+{
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p) // We cannot spawn entities if there is no player to base it off of.
+    {
+        std::vector<std::string> animal_types = GetAllEntityTypesOfFaction("animal");
+
+        constexpr int CHANCES_TO_SPAWN = 3;
+        for (int i=0; i<CHANCES_TO_SPAWN; ++i)
+        {
+            if (Random()%2 == 0) // 50%
+            {
+                // Determine type to spawn.
+                std::string type = animal_types.at(RandomRange(0,(int)animal_types.size()-1));
+
+                // Determine where to spawn the entities.
+                Vec2 spawn_off = { (float)RandomRange(MIN_ENTITY_SPAWN_RADIUS,MAX_ENTITY_SPAWN_RADIUS),0 };
+                spawn_off = RotateVec2(spawn_off, DegToRad(RandomFloatRange(0.0f,360.0f)));
+
+                int sx = p->pos.x + (int)spawn_off.x;
+                int sy = p->pos.y + (int)spawn_off.y;
+
+                // Determine how many to spawn.
+                int amount = RandomRange(3,7);
+                for (int j=0; j<amount; ++j)
+                {
+                    int x = RandomRange(sx-5,sx+5);
+                    int y = RandomRange(sy-5,sy+5);
+                    MapSpawnEntity(type,x,y);
+                }
+            }
+        }
+    }
+}
+
 INTERNAL void InitMap ()
 {
     // @Incomplete: In the future we want to load a map if there is one present. For now we just always generate.
@@ -189,6 +254,9 @@ INTERNAL void InitMap ()
     int px = (WORLD_W*CHUNK_W) / 2;
     int py = (WORLD_H*CHUNK_H) / 2;
     MapSpawnEntity("player",px,py);
+
+    // Spawn in some initial entities.
+    MapRandomlySpawnEntities();
 }
 
 INTERNAL void QuitMap ()
@@ -200,9 +268,15 @@ INTERNAL void QuitMap ()
 
 INTERNAL void UpdateMap ()
 {
-    // Only update entites when the player performs an input (they are turn-based).
-    if (gPlayer.update) UpdateEntities(gMap.entities);
-    UpdateParticles(gMap.particles); // Always update particles, they are real-time.
+    // Only update certain bits of logic when the player interacts with the world.
+    if (gPlayer.update)
+    {
+        MapRandomlySpawnEntities();
+        UpdateEntities(gMap.entities);
+    }
+
+    // Always update particles, they should run in  real-time.
+    UpdateParticles(gMap.particles);
 }
 
 INTERNAL void RenderMap ()

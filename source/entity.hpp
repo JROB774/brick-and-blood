@@ -27,6 +27,8 @@ struct Entity
 
     struct { int x,y; } pos, old_pos;
 
+    bool active;
+
     // Drawing stuff.
     struct
     {
@@ -71,6 +73,8 @@ struct EntityBase
     std::vector<std::string> sound_hit;
     std::vector<EntityDrops> drops;
 };
+
+INTERNAL std::vector<std::string> GetAllEntityTypesOfFaction (std::string faction);
 
 INTERNAL void   InitEntities ();
 INTERNAL void UpdateEntities (std::vector<Entity>& entities);

@@ -10,6 +10,12 @@ GLOBAL constexpr int WORLD_H = 256;
 GLOBAL constexpr int WORLD_W_IN_TILES = WORLD_W*CHUNK_W;
 GLOBAL constexpr int WORLD_H_IN_TILES = WORLD_H*CHUNK_H;
 
+GLOBAL constexpr int MAX_ENTITIES = 128;
+
+GLOBAL constexpr int MIN_ENTITY_SPAWN_RADIUS  =  35; // Area where entities can spawn.
+GLOBAL constexpr int MAX_ENTITY_SPAWN_RADIUS  =  65;
+GLOBAL constexpr int MAX_ENTITY_ACTIVE_RADIUS = 100; // Area where entities start to despawn.
+
 //
 // INTERFACE
 //
