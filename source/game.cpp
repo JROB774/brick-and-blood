@@ -32,4 +32,5 @@ INTERNAL void RenderGame ()
     BeginCamera();
     RenderMap();
     EndCamera();
+    RenderPlayer();
 }
