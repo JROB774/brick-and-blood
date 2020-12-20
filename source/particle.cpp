@@ -157,7 +157,7 @@ INTERNAL void InitParticles ()
 INTERNAL void UpdateParticles (std::vector<Particle>& particles)
 {
     // Remove any particles that are no longer alive.
-    // @Incomplete: ...
+    particles.erase(std::remove_if(particles.begin(), particles.end(), [](const Particle& p){ return p.lifetime <= 0.0f; }), particles.end());
 
     for (auto& p: particles)
     {
