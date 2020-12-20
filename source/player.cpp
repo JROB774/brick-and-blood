@@ -1,9 +1,15 @@
 GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
+GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 999;
 
 INTERNAL void PlayerPickUp (std::string item, int amount)
 {
     if (gPlayer.inventory.items.count(item)) gPlayer.inventory.items[item] += amount;
     else gPlayer.inventory.items[item] = amount;
+    // Make sure the number of items does not exceed the stack limit.
+    if (gPlayer.inventory.items[item] > PLAYER_MAX_ITEM_STACK)
+    {
+        gPlayer.inventory.items[item] = PLAYER_MAX_ITEM_STACK;
+    }
 }
 
 INTERNAL void InitPlayer ()
@@ -109,26 +115,75 @@ INTERNAL void UpdatePlayer ()
     #endif // BUILD_DEBUG
 }
 
-INTERNAL void RenderPlayer ()
+INTERNAL void RenderPlayerCursor ()
 {
-    // We do this here so it always happens (keeps things smooth).
+    const Vec4 FILL_COLOR = SDLColorToColor({ 244,180,27,255 });
+    const Vec4 OUTLINE_COLOR = SDLColorToColor({ 38,13,28,255 });
 
-    const Vec4 PLAYER_INVENTORY_BG_COLOR = SDLColorToColor({ 38,13,28,255 });
-    const Vec4 PLAYER_INVENTORY_FG_COLOR = SDLColorToColor({ 244,180,27,255 });
+    Vec2 pos = GetMousePos();
+
+    int scale_x = GetWindowWidth() / WINDOW_SCREEN_W;
+    int scale_y = GetWindowHeight() / WINDOW_SCREEN_H;
+    int scale   = std::min(scale_x,scale_y);
+
+    pos.x = (pos.x-GetViewport().x) / scale;
+    pos.y = (pos.y-GetViewport().y) / scale;
+
+    DrawImage("cursor", pos.x,pos.y, {1,1}, {0,0}, 0.0f, FLIP_NONE, FILL_COLOR);
+    DrawImage("cursor_outline", pos.x,pos.y, {1,1}, {0,0}, 0.0f, FLIP_NONE, OUTLINE_COLOR);
+}
+
+INTERNAL void RenderPlayerInventory ()
+{
+    const Vec4 INVENTORY_BG_COLOR = SDLColorToColor({ 38,13,28,255 });
+    const Vec4 INVENTORY_FG_COLOR = SDLColorToColor({ 244,180,27,255 });
+
+    const float INVENTORY_INSET = 3;
+
+    const float INVENTORY_ITEM_BOUNDS_W = 96;
+    const float INVENTORY_ITEM_BOUNDS_H = 186;
 
     gPlayer.inventory.bounds.current = Lerp(gPlayer.inventory.bounds.current, gPlayer.inventory.bounds.target, gApplication.delta_time*30);
-    DrawFill(gPlayer.inventory.bounds.current, PLAYER_INVENTORY_BG_COLOR);
+    DrawFill(gPlayer.inventory.bounds.current, INVENTORY_BG_COLOR);
 
-    ScissorOn(gPlayer.inventory.bounds.current);
+    // Don't draw if the inventory is closed...
+    if (gPlayer.inventory.bounds.current.x >= ((WINDOW_SCREEN_W/2)-INVENTORY_INSET) &&
+        gPlayer.inventory.bounds.current.y >= ((WINDOW_SCREEN_H/2)-INVENTORY_INSET))
+    {
+        return;
+    }
 
     // Draw the outline.
-    float ox = gPlayer.inventory.bounds.current.x + 3;
-    float oy = gPlayer.inventory.bounds.current.y + 3;
-    float ow = gPlayer.inventory.bounds.current.w - 6;
-    float oh = gPlayer.inventory.bounds.current.h - 6;
-    DrawRect(ox,oy,ow,oh, PLAYER_INVENTORY_FG_COLOR);
+    float x = gPlayer.inventory.bounds.current.x + (INVENTORY_INSET  );
+    float y = gPlayer.inventory.bounds.current.y + (INVENTORY_INSET  );
+    float w = gPlayer.inventory.bounds.current.w - (INVENTORY_INSET*2);
+    float h = gPlayer.inventory.bounds.current.h - (INVENTORY_INSET*2);
+    DrawRect(x,y,w,h, INVENTORY_FG_COLOR);
 
-    // @Incomplete: Draw the inventory...
+    // This is the bounds you can draw in!
+    x = roundf(x + ((INVENTORY_INSET+1)  ));
+    y = roundf(y + ((INVENTORY_INSET+1)  ));
+    w = roundf(w - ((INVENTORY_INSET+1)*2));
+    h = roundf(h - ((INVENTORY_INSET+1)*2));
+
+    ScissorOn(x,y,w,h);
+
+    // Draw the item list.
+    float ix = x;
+    float iy = y;
+    float iw = w/2;
+    float ih = h;
+
+    DrawRect(ix,iy,iw,ih, INVENTORY_FG_COLOR);
 
     ScissorOff();
+}
+
+INTERNAL void RenderPlayer ()
+{
+    RenderPlayerInventory();
+    if (gPlayer.state == PLAYER_STATE_INVENTORY)
+    {
+        RenderPlayerCursor();
+    }
 }

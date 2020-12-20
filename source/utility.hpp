@@ -54,6 +54,9 @@ union Vec4
 struct Rect
 {
     float x, y, w, h;
+
+    inline bool operator== (const Rect& r) { return (x == r.x && y == r.y && w == r.w && h == r.h); }
+    inline bool operator!= (const Rect& r) { return !(operator==(r)); }
 };
 
 // We store colors as four floating-point values whereas SDL handles colors as

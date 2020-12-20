@@ -32,3 +32,4 @@ INTERNAL int  GetWindowWidth        ();
 INTERNAL int  GetWindowHeight       ();
 INTERNAL int  GetCachedWindowWidth  ();
 INTERNAL int  GetCachedWindowHeight ();
+INTERNAL Rect GetViewport           ();

@@ -219,3 +219,24 @@ INTERNAL void UnsetViewport ()
     SDL_RenderSetViewport(gWindow.renderer, NULL);
     SDL_RenderSetScale(gWindow.renderer, 1,1);
 }
+
+INTERNAL Rect GetViewport ()
+{
+    int windoww,windowh;
+    SDL_GetWindowSize(gWindow.window, &windoww,&windowh);
+
+    int sx = (int)floorf(((float)windoww / (float)WINDOW_SCREEN_W));
+    int sy = (int)floorf(((float)windowh / (float)WINDOW_SCREEN_H));
+
+    // Determine the smallest scale and use that.
+    float scale = (float)((sx < sy) ? sx : sy);
+
+    Rect viewport;
+
+    viewport.x = (float)(((windoww - (WINDOW_SCREEN_W * (int)scale)) / 2) / (int)scale);
+    viewport.y = (float)(((windowh - (WINDOW_SCREEN_H * (int)scale)) / 2) / (int)scale);
+    viewport.w = (float)(WINDOW_SCREEN_W);
+    viewport.h = (float)(WINDOW_SCREEN_H);
+
+    return viewport;
+}
