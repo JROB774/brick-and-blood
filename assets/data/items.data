@@ -1,5 +1,29 @@
 meat
 {
     image [ 0 0 ]
+    color [ 230 72 46 ]
+}
+
+wood
+{
+    image [ 1 0 ]
     color [ 191 121 88 ]
+}
+
+rocks
+{
+    image [ 2 0 ]
+    color [ 207 198 184 ]
+}
+
+sticks
+{
+    image [ 3 0 ]
+    color [ 191 121 88 ]
+}
+
+grass
+{
+    image [ 4 0 ]
+    color [ 56 217 115 ]
 }
