@@ -1,14 +1,28 @@
 GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
 GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 999;
 
-INTERNAL void PlayerPickUp (std::string item, int amount)
+INTERNAL void PlayerPickUpItem (std::string name, int amount)
 {
-    if (gPlayer.inventory.items.count(item)) gPlayer.inventory.items[item] += amount;
-    else gPlayer.inventory.items[item] = amount;
-    // Make sure the number of items does not exceed the stack limit.
-    if (gPlayer.inventory.items[item] > PLAYER_MAX_ITEM_STACK)
+    // If the specified base type can't be found then we don't pick up an item
+    if (!gItems.count(name))
     {
-        gPlayer.inventory.items[item] = PLAYER_MAX_ITEM_STACK;
+        LOG_ERROR(ERR_MIN, "Could not pickup item of unknown type: %s", name.c_str());
+        return;
+    }
+
+    if (gPlayer.inventory.items.count(name))
+    {
+        gPlayer.inventory.items[name] += amount;
+    }
+    else
+    {
+        gPlayer.inventory.items[name] = amount;
+    }
+
+    // Make sure the number of items does not exceed the stack limit.
+    if (gPlayer.inventory.items[name] > PLAYER_MAX_ITEM_STACK)
+    {
+        gPlayer.inventory.items[name] = PLAYER_MAX_ITEM_STACK;
     }
 }
 
@@ -182,8 +196,10 @@ INTERNAL void RenderPlayerInventory ()
 INTERNAL void RenderPlayer ()
 {
     RenderPlayerInventory();
+    /*
     if (gPlayer.state == PLAYER_STATE_INVENTORY)
     {
         RenderPlayerCursor();
     }
+    */
 }

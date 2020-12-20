@@ -1,4 +1,4 @@
-std::map<std::string,TileBase> gTiles;
+GLOBAL std::map<std::string,TileBase> gTiles;
 
 INTERNAL void InitTiles ()
 {
@@ -141,7 +141,7 @@ INTERNAL void DamageTile (int x, int y)
             for (auto& drop: base.drops)
             {
                 int quantity = RandomRange(drop.min,drop.max);
-                PlayerPickUp(drop.type, quantity);
+                PlayerPickUpItem(drop.type, quantity);
             }
         }
     }

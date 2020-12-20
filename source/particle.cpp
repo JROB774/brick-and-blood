@@ -1,4 +1,4 @@
-std::map<std::string,ParticleBase> gParticles;
+GLOBAL std::map<std::string,ParticleBase> gParticles;
 
 INTERNAL void InitParticles ()
 {

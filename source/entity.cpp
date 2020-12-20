@@ -1,4 +1,4 @@
-std::map<std::string,EntityBase> gEntities;
+GLOBAL std::map<std::string,EntityBase> gEntities;
 
 INTERNAL void InitEntities ()
 {
@@ -205,7 +205,7 @@ INTERNAL void DamageEntity (Entity& e)
             for (auto& drop: base.drops)
             {
                 int quantity = RandomRange(drop.min,drop.max);
-                PlayerPickUp(drop.type, quantity);
+                PlayerPickUpItem(drop.type, quantity);
             }
         }
     }
