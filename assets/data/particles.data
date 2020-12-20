@@ -65,7 +65,7 @@ blood1_dead
 
 tree_hit
 {
-    image_start [ 0 0 ]
+    image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -74,14 +74,14 @@ tree_hit
     rotate_speed 10
     start_scale 1
     end_scale 0
-    start_color [ 56 217 115 ]
-    end_color [ 56 217 115 ]
+    start_color [ 56 217 115 255 ]
+    end_color [ 56 217 115 127 ]
     spawn_count [ 1 3 ]
     spawn_angle [ 0 360 ]
 }
 tree_break
 {
-    image_start [ 0 0 ]
+    image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -90,15 +90,15 @@ tree_break
     rotate_speed 10
     start_scale [ 1 1.5 ]
     end_scale 0
-    start_color [ 56 217 115 ]
-    end_color [ 56 217 115 ]
+    start_color [ 56 217 115 255 ]
+    end_color [ 56 217 115 127 ]
     spawn_count [ 5 10 ]
     spawn_angle [ 0 360 ]
 }
 
 rocks_break
 {
-    image_start [ 0 0 ]
+    image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -107,15 +107,15 @@ rocks_break
     rotate_speed 10
     start_scale [ 1 1.5 ]
     end_scale 0
-    start_color [ 207 198 184 ]
-    end_color [ 207 198 184 ]
+    start_color [ 207 198 184 255 ]
+    end_color [ 207 198 184 127 ]
     spawn_count [ 5 10 ]
     spawn_angle [ 0 360 ]
 }
 
 shrub_break
 {
-    image_start [ 0 0 ]
+    image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -124,15 +124,15 @@ shrub_break
     rotate_speed 10
     start_scale [ 1 1.5 ]
     end_scale 0
-    start_color [ 191 121 88 ]
-    end_color [ 191 121 88 ]
+    start_color [ 191 121 88 255 ]
+    end_color [ 191 121 88 127 ]
     spawn_count [ 5 10 ]
     spawn_angle [ 0 360 ]
 }
 
 grass_break
 {
-    image_start [ 0 0 ]
+    image_start [ 3 0 ]
     image_count 3
     lifetime [ 0.1 0.3 ]
     speed [ 30 50 ]
@@ -141,8 +141,8 @@ grass_break
     rotate_speed 10
     start_scale [ 1 1.5 ]
     end_scale 0
-    start_color [ 56 217 115 ]
-    end_color [ 56 217 115 ]
+    start_color [ 56 217 115 255 ]
+    end_color [ 56 217 115 127 ]
     spawn_count [ 5 10 ]
     spawn_angle [ 0 360 ]
 }
