@@ -55,6 +55,8 @@ INTERNAL void UpdatePlayerStatePlay ()
         gPlayer.state = PLAYER_STATE_INVENTORY;
         gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
         gPlayer.inventory.bounds.target = { TILE_W,TILE_H,WINDOW_SCREEN_W-(TILE_W*2),WINDOW_SCREEN_H-(TILE_H*2) };
+        gPlayer.inventory.scale.current = { 0,0 };
+        gPlayer.inventory.scale.target = { 1,1 };
         return;
     }
 
@@ -90,6 +92,7 @@ INTERNAL void UpdatePlayerStateInventory ()
     {
         gPlayer.state = PLAYER_STATE_PLAY;
         gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
+        gPlayer.inventory.scale.target = { 0,0 };
         return;
     }
 
@@ -129,24 +132,6 @@ INTERNAL void UpdatePlayer ()
     #endif // BUILD_DEBUG
 }
 
-INTERNAL void RenderPlayerCursor ()
-{
-    const Vec4 FILL_COLOR = SDLColorToColor({ 244,180,27,255 });
-    const Vec4 OUTLINE_COLOR = SDLColorToColor({ 38,13,28,255 });
-
-    Vec2 pos = GetMousePos();
-
-    int scale_x = GetWindowWidth() / WINDOW_SCREEN_W;
-    int scale_y = GetWindowHeight() / WINDOW_SCREEN_H;
-    int scale   = std::min(scale_x,scale_y);
-
-    pos.x = (pos.x-GetViewport().x) / scale;
-    pos.y = (pos.y-GetViewport().y) / scale;
-
-    DrawImage("cursor", pos.x,pos.y, {1,1}, {0,0}, 0.0f, FLIP_NONE, FILL_COLOR);
-    DrawImage("cursor_outline", pos.x,pos.y, {1,1}, {0,0}, 0.0f, FLIP_NONE, OUTLINE_COLOR);
-}
-
 INTERNAL void RenderPlayerInventory ()
 {
     const Vec4 INVENTORY_BG_COLOR = SDLColorToColor({ 38,13,28,255 });
@@ -158,6 +143,8 @@ INTERNAL void RenderPlayerInventory ()
     const float INVENTORY_ITEM_BOUNDS_H = 186;
 
     gPlayer.inventory.bounds.current = Lerp(gPlayer.inventory.bounds.current, gPlayer.inventory.bounds.target, gApplication.delta_time*30);
+    gPlayer.inventory.scale.current = Lerp(gPlayer.inventory.scale.current, gPlayer.inventory.scale.target, gApplication.delta_time*30);
+
     DrawFill(gPlayer.inventory.bounds.current, INVENTORY_BG_COLOR);
 
     // Don't draw if the inventory is closed...
@@ -167,39 +154,14 @@ INTERNAL void RenderPlayerInventory ()
         return;
     }
 
-    // Draw the outline.
-    float x = gPlayer.inventory.bounds.current.x + (INVENTORY_INSET  );
-    float y = gPlayer.inventory.bounds.current.y + (INVENTORY_INSET  );
-    float w = gPlayer.inventory.bounds.current.w - (INVENTORY_INSET*2);
-    float h = gPlayer.inventory.bounds.current.h - (INVENTORY_INSET*2);
-    DrawRect(x,y,w,h, INVENTORY_FG_COLOR);
-
-    // This is the bounds you can draw in!
-    x = roundf(x + ((INVENTORY_INSET+1)  ));
-    y = roundf(y + ((INVENTORY_INSET+1)  ));
-    w = roundf(w - ((INVENTORY_INSET+1)*2));
-    h = roundf(h - ((INVENTORY_INSET+1)*2));
-
-    ScissorOn(x,y,w,h);
-
-    // Draw the item list.
-    float ix = x;
-    float iy = y;
-    float iw = w/2;
-    float ih = h;
-
-    DrawRect(ix,iy,iw,ih, INVENTORY_FG_COLOR);
-
-    ScissorOff();
+    // Draw the actual inventory.
+    float ix = gPlayer.inventory.bounds.current.x;
+    float iy = gPlayer.inventory.bounds.current.y;
+    DrawImage("inventorybg", ix,iy, gPlayer.inventory.scale.current, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR);
+    DrawImage("inventoryfg", ix,iy, gPlayer.inventory.scale.current, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR);
 }
 
 INTERNAL void RenderPlayer ()
 {
     RenderPlayerInventory();
-    /*
-    if (gPlayer.state == PLAYER_STATE_INVENTORY)
-    {
-        RenderPlayerCursor();
-    }
-    */
 }

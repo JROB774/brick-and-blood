@@ -21,6 +21,11 @@ GLOBAL struct Player
 
         struct
         {
+            Vec2 current;
+            Vec2 target;
+        } scale;
+        struct
+        {
             Rect current;
             Rect target;
         } bounds;
