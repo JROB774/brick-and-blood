@@ -181,6 +181,18 @@ INTERNAL void UpdatePlayer ()
     #endif // BUILD_DEBUG
 }
 
+INTERNAL void RenderPlayerHeadsUp ()
+{
+    const Vec4 HEADSUP_BG_COLOR = { 0.28f,0.18f,0.24f,1.0f };
+    const Vec4 HEADSUP_FG_COLOR = SDLColorToColor({ 244,180,27,255 });
+
+    if (gPlayer.state != PLAYER_STATE_INVENTORY)
+    {
+        DrawImage("headsupbg", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_BG_COLOR);
+        DrawImage("headsupfg", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR);
+    }
+}
+
 INTERNAL void RenderPlayerInventory ()
 {
     const Vec4 INVENTORY_BG_COLOR = SDLColorToColor({ 38,13,28,255 });
@@ -257,5 +269,6 @@ INTERNAL void RenderPlayerInventory ()
 
 INTERNAL void RenderPlayer ()
 {
+    RenderPlayerHeadsUp();
     RenderPlayerInventory();
 }
