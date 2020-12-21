@@ -103,6 +103,9 @@ INTERNAL std::string FixPathSlashes (std::string path_name);
 INTERNAL std::string FormatStringV  (const char* format, va_list args);
 INTERNAL std::string FormatTime     (const char* format);
 
+INTERNAL std::string StrUpper (std::string str);
+INTERNAL std::string StrLower (std::string str);
+
 INTERNAL float Lerp (float a, float b, float t);
 INTERNAL Vec2  Lerp (Vec2  a, Vec2  b, float t);
 INTERNAL Vec3  Lerp (Vec3  a, Vec3  b, float t);

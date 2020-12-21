@@ -73,6 +73,17 @@ INTERNAL std::string FormatTime (const char* format)
     return time_str;
 }
 
+INTERNAL std::string StrUpper (std::string str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), [](char c){ return (char)std::toupper(c); });
+    return str;
+}
+INTERNAL std::string StrLower (std::string str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), [](char c){ return (char)std::tolower(c); });
+    return str;
+}
+
 INTERNAL float Lerp (float a, float b, float t)
 {
     return a + t * (b - a);
