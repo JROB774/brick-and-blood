@@ -18,4 +18,4 @@ INTERNAL void DrawRect  (Rect rect,                              Vec4 color);
 INTERNAL void DrawFill  (Rect rect,                              Vec4 color);
 
 INTERNAL void DrawImage (std::string image_name, float x, float y, Vec2 scale = {1,1}, Vec2 center = {0,0}, float angle = 0.0f, Flip flip = FLIP_NONE, Vec4 color = { 1,1,1,1 }, const SDL_Rect* clip = NULL); // Angle in degrees!
-INTERNAL void DrawText  (std::string font_name, std::string text, float x, float y, Vec4 color = { 1,1,1,1 });
+INTERNAL void DrawText  (std::string font_name, std::string text, float x, float y, Vec4 color = { 1,1,1,1 }, float scale = 1.0f);

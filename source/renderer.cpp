@@ -80,7 +80,7 @@ INTERNAL void DrawImage (std::string image_name, float x, float y, Vec2 scale, V
     SDL_RenderCopyExF(gWindow.renderer, image->texture, clip, &rect, angle, &point, flip);
 }
 
-INTERNAL void DrawText (std::string font_name, std::string text, float x, float y, Vec4 color)
+INTERNAL void DrawText (std::string font_name, std::string text, float x, float y, Vec4 color, float scale)
 {
     // NOTE: We just assume the caller wants multi-line text to be center aligned.
 
@@ -95,14 +95,14 @@ INTERNAL void DrawText (std::string font_name, std::string text, float x, float 
     {
         if (text[i] == '\n')
         {
-            ix = x + (GetTextLineWidth(font_name, text, 0)/2) - (GetTextLineWidth(font_name, text, line+1)/2);
-            iy += font->charh;
+            ix = x + (((GetTextLineWidth(font_name, text, 0)/2) - (GetTextLineWidth(font_name, text, line+1)/2)) * scale);
+            iy += font->charh * scale;
             line++;
         }
         else
         {
-            DrawImage(font->image, ix, iy, {1,1}, {0,0}, 0.0f, FLIP_NONE, color, &font->bounds[static_cast<U8>(text.at(i))]);
-            ix += font->charw;
+            DrawImage(font->image, ix, iy, {scale,scale}, {0,0}, 0.0f, FLIP_NONE, color, &font->bounds[static_cast<U8>(text.at(i))]);
+            ix += font->charw * scale;
         }
     }
 }
