@@ -28,6 +28,16 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     {
         gPlayer.inventory.items.push_back({ name, amount });
         found = &gPlayer.inventory.items.back();
+
+        // If there is an available hotbar slot, then place it in there.
+        for (int i=0; i<HOTBAR_SIZE; ++i)
+        {
+            if (gPlayer.hotbar.items[i] == HOTBAR_ITEM_EMPTY)
+            {
+                gPlayer.hotbar.items[i] = (int)gPlayer.inventory.items.size()-1;
+                break;
+            }
+        }
     }
 
     // Make sure the number of items does not exceed the stack limit.
@@ -50,6 +60,8 @@ INTERNAL void InitPlayer ()
     gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
     gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
 
+    for (int i=0; i<HOTBAR_SIZE; ++i) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+
     // Set the inital position of the camera.
     Entity* p = MapGetFirstEntityOfType("player");
     if (p)
@@ -60,16 +72,28 @@ INTERNAL void InitPlayer ()
     }
 }
 
+INTERNAL void OpenInventory ()
+{
+    gPlayer.state = PLAYER_STATE_INVENTORY;
+    gPlayer.input_timer = 0.0f;
+    gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
+    gPlayer.inventory.bounds.target = { TILE_W,TILE_H,WINDOW_SCREEN_W-(TILE_W*2),WINDOW_SCREEN_H-(TILE_H*2) };
+    gPlayer.inventory.scale.current = { 0,0 };
+    gPlayer.inventory.scale.target = { 1,1 };
+}
+INTERNAL void CloseInventory ()
+{
+    gPlayer.state = PLAYER_STATE_PLAY;
+    gPlayer.input_timer = 0.0f;
+    gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
+    gPlayer.inventory.scale.target = { 0,0 };
+}
+
 INTERNAL void UpdatePlayerStatePlay ()
 {
     if (IsKeyPressed(SDL_SCANCODE_TAB))
     {
-        gPlayer.state = PLAYER_STATE_INVENTORY;
-        gPlayer.input_timer = 0.0f;
-        gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
-        gPlayer.inventory.bounds.target = { TILE_W,TILE_H,WINDOW_SCREEN_W-(TILE_W*2),WINDOW_SCREEN_H-(TILE_H*2) };
-        gPlayer.inventory.scale.current = { 0,0 };
-        gPlayer.inventory.scale.target = { 1,1 };
+        OpenInventory();
         return;
     }
 
@@ -103,10 +127,7 @@ INTERNAL void UpdatePlayerStateInventory ()
 {
     if (IsKeyPressed(SDL_SCANCODE_TAB))
     {
-        gPlayer.state = PLAYER_STATE_PLAY;
-        gPlayer.input_timer = 0.0f;
-        gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
-        gPlayer.inventory.scale.target = { 0,0 };
+        CloseInventory();
         return;
     }
 
@@ -118,7 +139,7 @@ INTERNAL void UpdatePlayerStateInventory ()
         IsKeyPressed(SDL_SCANCODE_UP) ||
         IsKeyPressed(SDL_SCANCODE_DOWN))
     {
-        gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME * 3; // Initial cooldown is longer.
+        gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME;
         update = true;
     }
     // This system exists so that keys can be held.
@@ -138,8 +159,22 @@ INTERNAL void UpdatePlayerStateInventory ()
     // INVENTORY
     if (update)
     {
-        if (IsKeyDown(SDL_SCANCODE_W) || IsKeyDown(SDL_SCANCODE_UP)) gPlayer.inventory.selected_item--;
-        if (IsKeyDown(SDL_SCANCODE_S) || IsKeyDown(SDL_SCANCODE_DOWN)) gPlayer.inventory.selected_item++;
+        if (IsKeyDown(SDL_SCANCODE_W) || IsKeyDown(SDL_SCANCODE_UP))
+        {
+            gPlayer.inventory.selected_item--;
+            if (gPlayer.inventory.selected_item < 0)
+            {
+                gPlayer.inventory.selected_item = (int)gPlayer.inventory.items.size()-1;
+            }
+        }
+        if (IsKeyDown(SDL_SCANCODE_S) || IsKeyDown(SDL_SCANCODE_DOWN))
+        {
+            gPlayer.inventory.selected_item++;
+            if (gPlayer.inventory.selected_item > gPlayer.inventory.items.size()-1)
+            {
+                gPlayer.inventory.selected_item = 0;
+            }
+        }
 
         gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
     }
@@ -188,8 +223,21 @@ INTERNAL void RenderPlayerHeadsUp ()
 
     if (gPlayer.state != PLAYER_STATE_INVENTORY)
     {
-        DrawImage("headsupbg", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_BG_COLOR);
-        DrawImage("headsupfg", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR);
+        DrawFill(1,1,137,18, HEADSUP_BG_COLOR);
+        DrawImage("headsup", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR);
+
+        // Draw the items in the hotbar.
+        float x = 21;
+        float y = 6;
+        for (int i=0; i<HOTBAR_SIZE; ++i)
+        {
+            if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
+            {
+                InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
+                DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &GetItem(item.name).clip);
+                x += 13;
+            }
+        }
     }
 }
 
@@ -260,6 +308,23 @@ INTERNAL void RenderPlayerInventory ()
         ScissorOn(166,35,127,88);
         {
             // @Incomplete: ...
+        }
+        ScissorOff();
+
+        // HOTBAR
+        ScissorOn(27,131,266,26);
+        {
+            float x = 32;
+            float y = 136;
+            for (int i=0; i<HOTBAR_SIZE; ++i)
+            {
+                if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
+                {
+                    InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
+                    DrawImage("item", x,y, {1,1}, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR, &GetItem(item.name).clip);
+                    x += 30;
+                }
+            }
         }
         ScissorOff();
     }

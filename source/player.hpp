@@ -1,5 +1,8 @@
 #pragma once
 
+GLOBAL constexpr int HOTBAR_ITEM_EMPTY = -1;
+GLOBAL constexpr int HOTBAR_SIZE = 9;
+
 enum PlayerState
 {
     PLAYER_STATE_PLAY,
@@ -39,7 +42,7 @@ GLOBAL struct Player
 
     struct
     {
-        // ...
+        int items[HOTBAR_SIZE]; // Points into the inventory items vector.
     } hotbar;
 
 } gPlayer;
