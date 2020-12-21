@@ -1,5 +1,10 @@
 GLOBAL std::map<std::string,ItemBase> gItems;
 
+INTERNAL ItemBase& GetItem (std::string name)
+{
+    return gItems.at(name);
+}
+
 INTERNAL void InitItems ()
 {
     gItems.clear();
@@ -29,8 +34,8 @@ INTERNAL void InitItems ()
 
             base.clip.x = imagex*TILE_W;
             base.clip.y = imagey*TILE_H;
-            base.clip.w = imagex;
-            base.clip.h = imagey;
+            base.clip.w = TILE_W;
+            base.clip.h = TILE_H;
         }
 
         if (data.Contains("color"))

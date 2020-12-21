@@ -8,4 +8,6 @@ struct ItemBase
     Vec4 color;
 };
 
+INTERNAL ItemBase& GetItem (std::string name);
+
 INTERNAL void InitItems ();

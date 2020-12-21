@@ -3,6 +3,8 @@ GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 999;
 
 INTERNAL void PlayerPickUpItem (std::string name, int amount)
 {
+    if (amount <= 0) return;
+
     // If the specified base type can't be found then we don't pick up an item
     if (!gItems.count(name))
     {
@@ -10,19 +12,28 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
         return;
     }
 
-    if (gPlayer.inventory.items.count(name))
+    // If we already have the item in our inventory then add to it.
+    InventoryItem* found = NULL;
+    for (auto& item: gPlayer.inventory.items)
     {
-        gPlayer.inventory.items[name] += amount;
+        if (item.name == name)
+        {
+            found = &item;
+            item.amount += amount;
+            break;
+        }
     }
-    else
+    // Otherwise we create a new entry for it.
+    if (!found)
     {
-        gPlayer.inventory.items[name] = amount;
+        gPlayer.inventory.items.push_back({ name, amount });
+        found = &gPlayer.inventory.items.back();
     }
 
     // Make sure the number of items does not exceed the stack limit.
-    if (gPlayer.inventory.items[name] > PLAYER_MAX_ITEM_STACK)
+    if (found->amount > PLAYER_MAX_ITEM_STACK)
     {
-        gPlayer.inventory.items[name] = PLAYER_MAX_ITEM_STACK;
+        found->amount = PLAYER_MAX_ITEM_STACK;
     }
 }
 
@@ -34,6 +45,7 @@ INTERNAL void InitPlayer ()
     gPlayer.update = false;
 
     gPlayer.inventory.items.clear();
+    gPlayer.inventory.selected_item = 0;
 
     gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
     gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
@@ -96,6 +108,13 @@ INTERNAL void UpdatePlayerStateInventory ()
         return;
     }
 
+    // INVENTORY
+    if (IsKeyPressed(SDL_SCANCODE_W)) gPlayer.inventory.selected_item--;
+    if (IsKeyPressed(SDL_SCANCODE_S)) gPlayer.inventory.selected_item++;
+
+    gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
+
+    // CRAFTING
     // @Incomplete: ...
 }
 
@@ -142,6 +161,8 @@ INTERNAL void RenderPlayerInventory ()
     const float INVENTORY_ITEM_BOUNDS_W = 96;
     const float INVENTORY_ITEM_BOUNDS_H = 186;
 
+    const float INVENTORY_TEXT_OFF = 1;
+
     gPlayer.inventory.bounds.current = Lerp(gPlayer.inventory.bounds.current, gPlayer.inventory.bounds.target, gApplication.delta_time*30);
     gPlayer.inventory.scale.current = Lerp(gPlayer.inventory.scale.current, gPlayer.inventory.scale.target, gApplication.delta_time*30);
 
@@ -155,9 +176,52 @@ INTERNAL void RenderPlayerInventory ()
     }
 
     // Draw the actual inventory.
+
     float ix = gPlayer.inventory.bounds.current.x;
     float iy = gPlayer.inventory.bounds.current.y;
+
     DrawImage("inventorybg", ix,iy, gPlayer.inventory.scale.current, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR);
+
+    if ((gPlayer.inventory.bounds.current.w >= gPlayer.inventory.bounds.target.w-3) && (gPlayer.inventory.bounds.target.w != 0.0f))
+    {
+        // INVENTORY
+        ScissorOn(27,35,127,88);
+        {
+            float x = 27;
+            float y = 35;
+
+            int index = 0;
+            for (auto item: gPlayer.inventory.items)
+            {
+                if (item.amount > 0)
+                {
+                    Vec4 color = INVENTORY_FG_COLOR;
+                    if (index == gPlayer.inventory.selected_item)
+                    {
+                        DrawFill(x,y,128,8, INVENTORY_FG_COLOR);
+                        color = INVENTORY_BG_COLOR;
+                    }
+
+                    DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);
+                    DrawText("main", StrUpper(item.name), x+INVENTORY_TEXT_OFF+12,y, color);
+                    std::string quant = std::to_string(item.amount);
+                    DrawText("main", StrUpper(quant), (x+127)-(INVENTORY_TEXT_OFF+GetTextWidth("main",quant)),y, color);
+
+                    y += 8;
+                    index++;
+                }
+            }
+        }
+        ScissorOff();
+
+        // CRAFTING
+        ScissorOn(166,35,127,88);
+        {
+            // @Incomplete: ...
+        }
+        ScissorOff();
+    }
+
     DrawImage("inventoryfg", ix,iy, gPlayer.inventory.scale.current, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR);
 }
 

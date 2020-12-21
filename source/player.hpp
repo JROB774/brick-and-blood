@@ -6,6 +6,12 @@ enum PlayerState
     PLAYER_STATE_INVENTORY,
 };
 
+struct InventoryItem
+{
+    std::string name;
+    int amount;
+};
+
 GLOBAL struct Player
 {
     PlayerState state;
@@ -15,9 +21,9 @@ GLOBAL struct Player
 
     struct
     {
-        // The inventory is a lookup of different resources and the quanities of those resources.
-        // For example searching up "stone" in the inventory would return the amount of stone.
-        std::map<std::string,int> items;
+
+        std::vector<InventoryItem> items;
+        int selected_item;
 
         struct
         {
@@ -31,6 +37,11 @@ GLOBAL struct Player
         } bounds;
 
     } inventory;
+
+    struct
+    {
+        // ...
+    } hotbar;
 
 } gPlayer;
 
