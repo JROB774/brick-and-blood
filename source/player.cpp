@@ -61,6 +61,7 @@ INTERNAL void InitPlayer ()
     gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
 
     for (int i=0; i<HOTBAR_SIZE; ++i) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+    gPlayer.hotbar.selected_item = 0;
 
     // Set the inital position of the camera.
     Entity* p = MapGetFirstEntityOfType("player");
@@ -121,6 +122,39 @@ INTERNAL void UpdatePlayerStatePlay ()
             gPlayer.update = true;
         }
     }
+
+    // Change the currently selected hotbar item.
+    if (IsKeyPressed(SDL_SCANCODE_1)) gPlayer.hotbar.selected_item = 0;
+    if (IsKeyPressed(SDL_SCANCODE_2)) gPlayer.hotbar.selected_item = 1;
+    if (IsKeyPressed(SDL_SCANCODE_3)) gPlayer.hotbar.selected_item = 2;
+    if (IsKeyPressed(SDL_SCANCODE_4)) gPlayer.hotbar.selected_item = 3;
+    if (IsKeyPressed(SDL_SCANCODE_5)) gPlayer.hotbar.selected_item = 4;
+    if (IsKeyPressed(SDL_SCANCODE_6)) gPlayer.hotbar.selected_item = 5;
+    if (IsKeyPressed(SDL_SCANCODE_7)) gPlayer.hotbar.selected_item = 6;
+    if (IsKeyPressed(SDL_SCANCODE_8)) gPlayer.hotbar.selected_item = 7;
+    if (IsKeyPressed(SDL_SCANCODE_9)) gPlayer.hotbar.selected_item = 8;
+}
+
+INTERNAL void PlayerSetHotbarItemToSelected (int slot)
+{
+    if (gPlayer.hotbar.items[slot] == gPlayer.inventory.selected_item) // If the item is already in the slot then remove it.
+    {
+        gPlayer.hotbar.items[slot] = HOTBAR_ITEM_EMPTY;
+    }
+    else // Otherwise put it into the hotbar at that location.
+    {
+        gPlayer.hotbar.items[slot] = gPlayer.inventory.selected_item;
+        for (int i=0; i<HOTBAR_SIZE; ++i) // Make sure no other slots are set to this item.
+        {
+            if (i != slot)
+            {
+                if (gPlayer.hotbar.items[i] == gPlayer.hotbar.items[slot])
+                {
+                    gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+                }
+            }
+        }
+    }
 }
 
 INTERNAL void UpdatePlayerStateInventory ()
@@ -178,6 +212,18 @@ INTERNAL void UpdatePlayerStateInventory ()
 
         gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
     }
+    if (!gPlayer.inventory.items.empty())
+    {
+        if (IsKeyPressed(SDL_SCANCODE_1)) PlayerSetHotbarItemToSelected(0);
+        if (IsKeyPressed(SDL_SCANCODE_2)) PlayerSetHotbarItemToSelected(1);
+        if (IsKeyPressed(SDL_SCANCODE_3)) PlayerSetHotbarItemToSelected(2);
+        if (IsKeyPressed(SDL_SCANCODE_4)) PlayerSetHotbarItemToSelected(3);
+        if (IsKeyPressed(SDL_SCANCODE_5)) PlayerSetHotbarItemToSelected(4);
+        if (IsKeyPressed(SDL_SCANCODE_6)) PlayerSetHotbarItemToSelected(5);
+        if (IsKeyPressed(SDL_SCANCODE_7)) PlayerSetHotbarItemToSelected(6);
+        if (IsKeyPressed(SDL_SCANCODE_8)) PlayerSetHotbarItemToSelected(7);
+        if (IsKeyPressed(SDL_SCANCODE_9)) PlayerSetHotbarItemToSelected(8);
+    }
 
     // CRAFTING
     // @Incomplete: ...
@@ -231,12 +277,19 @@ INTERNAL void RenderPlayerHeadsUp ()
         float y = 6;
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
+            Vec4 color = HEADSUP_FG_COLOR;
+            if (i == gPlayer.hotbar.selected_item)
+            {
+                DrawFill(x-1,y-1,10,10, HEADSUP_FG_COLOR);
+                color = HEADSUP_BG_COLOR;
+            }
+
             if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
             {
                 InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
-                DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &GetItem(item.name).clip);
-                x += 13;
+                DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);
             }
+            x += 13;
         }
     }
 }
@@ -322,8 +375,8 @@ INTERNAL void RenderPlayerInventory ()
                 {
                     InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
                     DrawImage("item", x,y, {1,1}, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR, &GetItem(item.name).clip);
-                    x += 30;
                 }
+                x += 30;
             }
         }
         ScissorOff();

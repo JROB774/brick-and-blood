@@ -43,6 +43,7 @@ GLOBAL struct Player
     struct
     {
         int items[HOTBAR_SIZE]; // Points into the inventory items vector.
+        int selected_item;
     } hotbar;
 
 } gPlayer;
