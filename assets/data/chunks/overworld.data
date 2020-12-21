@@ -402,4 +402,31 @@ chunks
         [
         ]
     }
+
+    {
+        tiles
+        [
+            [ 2 0 foliage1 ]
+            [ 6 1 foliage0 ]
+            [ 7 1 foliage1 ]
+            [ 5 2 foliage1 ]
+            [ 6 2 foliage0 ]
+            [ 7 2 foliage3 ]
+            [ 8 2 foliage0 ]
+            [ 0 3 foliage0 ]
+            [ 5 3 foliage3 ]
+            [ 6 3 foliage1 ]
+            [ 7 3 foliage2 ]
+            [ 8 3 foliage1 ]
+            [ 3 4 foliage0 ]
+            [ 6 4 foliage1 ]
+            [ 5 5 foliage1 ]
+            [ 8 6 foliage1 ]
+            [ 2 7 foliage0 ]
+            [ 6 8 foliage1 ]
+        ]
+        entities
+        [
+        ]
+    }
 ]
