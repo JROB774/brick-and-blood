@@ -21,7 +21,6 @@ GLOBAL struct Player
 
     struct
     {
-
         std::vector<InventoryItem> items;
         int selected_item;
 

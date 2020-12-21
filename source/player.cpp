@@ -65,6 +65,7 @@ INTERNAL void UpdatePlayerStatePlay ()
     if (IsKeyPressed(SDL_SCANCODE_TAB))
     {
         gPlayer.state = PLAYER_STATE_INVENTORY;
+        gPlayer.input_timer = 0.0f;
         gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
         gPlayer.inventory.bounds.target = { TILE_W,TILE_H,WINDOW_SCREEN_W-(TILE_W*2),WINDOW_SCREEN_H-(TILE_H*2) };
         gPlayer.inventory.scale.current = { 0,0 };
@@ -103,16 +104,45 @@ INTERNAL void UpdatePlayerStateInventory ()
     if (IsKeyPressed(SDL_SCANCODE_TAB))
     {
         gPlayer.state = PLAYER_STATE_PLAY;
+        gPlayer.input_timer = 0.0f;
         gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
         gPlayer.inventory.scale.target = { 0,0 };
         return;
     }
 
-    // INVENTORY
-    if (IsKeyPressed(SDL_SCANCODE_W)) gPlayer.inventory.selected_item--;
-    if (IsKeyPressed(SDL_SCANCODE_S)) gPlayer.inventory.selected_item++;
+    bool update = false;
 
-    gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
+    // If any of the player's input keys are pressed we update the simulation.
+    if (IsKeyPressed(SDL_SCANCODE_W)  ||
+        IsKeyPressed(SDL_SCANCODE_S)  ||
+        IsKeyPressed(SDL_SCANCODE_UP) ||
+        IsKeyPressed(SDL_SCANCODE_DOWN))
+    {
+        gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME * 3; // Initial cooldown is longer.
+        update = true;
+    }
+    // This system exists so that keys can be held.
+    if (IsKeyDown(SDL_SCANCODE_W)  ||
+        IsKeyDown(SDL_SCANCODE_S)  ||
+        IsKeyDown(SDL_SCANCODE_UP) ||
+        IsKeyDown(SDL_SCANCODE_DOWN))
+    {
+        gPlayer.input_timer -= gApplication.delta_time;
+        if (gPlayer.input_timer <= 0.0f)
+        {
+            gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME;
+            update = true;
+        }
+    }
+
+    // INVENTORY
+    if (update)
+    {
+        if (IsKeyDown(SDL_SCANCODE_W) || IsKeyDown(SDL_SCANCODE_UP)) gPlayer.inventory.selected_item--;
+        if (IsKeyDown(SDL_SCANCODE_S) || IsKeyDown(SDL_SCANCODE_DOWN)) gPlayer.inventory.selected_item++;
+
+        gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
+    }
 
     // CRAFTING
     // @Incomplete: ...
