@@ -35,5 +35,5 @@ planks
     image [ 5 0 ]
     color [ 191 121 88 ]
     place planks
-    recipe [ [ wood 5 ] [ rocks 2 ] ]
+    recipe [ [ wood 5 ] ]
 }
