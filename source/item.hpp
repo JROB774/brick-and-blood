@@ -14,6 +14,7 @@ struct ItemBase
     Vec4 color;
     std::string place;
     std::vector<ItemIngredient> recipe;
+    int stack;
 };
 
 INTERNAL ItemBase& GetItem (std::string name);

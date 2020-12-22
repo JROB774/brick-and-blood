@@ -35,7 +35,7 @@ planks
     image [ 5 0 ]
     color [ 191 121 88 ]
     place planks
-    recipe [ [ wood 5 ] ]
+    recipe [ [ wood 6 ] ]
 }
 
 fence
@@ -51,16 +51,19 @@ axe
     image [ 7 0 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
+    stack 1
 }
 shovel
 {
     image [ 0 1 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
+    stack 1
 }
 pickaxe
 {
     image [ 1 1 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]
+    stack 1
 }

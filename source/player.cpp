@@ -1,5 +1,4 @@
 GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
-GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 99;
 
 INTERNAL std::string PlayerGetEquippedItemName ()
 {
@@ -48,9 +47,9 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     }
 
     // Make sure the number of items does not exceed the stack limit.
-    if (found->amount > PLAYER_MAX_ITEM_STACK)
+    if (found->amount > GetItem(name).stack)
     {
-        found->amount = PLAYER_MAX_ITEM_STACK;
+        found->amount = GetItem(name).stack;
     }
 }
 

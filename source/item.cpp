@@ -63,6 +63,8 @@ INTERNAL void InitItems ()
             }
         }
 
+        base.stack = data["stack"].Int(99);
+
         gItems.insert({ data.name, base });
     }
 }
