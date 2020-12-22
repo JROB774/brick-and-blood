@@ -47,40 +47,50 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     }
 }
 
-INTERNAL void PlayerUpdateInventory ()
+INTERNAL void PlayerRefreshInventory ()
 {
-    // Update the hotbar to remove any items that are empty (NEEDS TO GO FIRST).
-    for (int i=0; i<HOTBAR_SIZE; ++i)
-    {
-        InventoryItem& item = gPlayer.inventory.items[gPlayer.hotbar.items[i]];
-        if (item.amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
-    }
+    // Refresh all the items and crafting recipes displayed on the inventory screen.
 
-    // Remove any items that have been emptied out.
-    std::vector<int> to_remove;
-    for (int i=0; i<gPlayer.inventory.items.size(); ++i) if (gPlayer.inventory.items[i].amount <= 0) to_remove.push_back(i);
-    int old_size = (int)gPlayer.inventory.items.size();
-    gPlayer.inventory.items.erase(std::remove_if(gPlayer.inventory.items.begin(),gPlayer.inventory.items.end(),
-    [=](const InventoryItem& i) { return (i.amount <= 0); }),
-    gPlayer.inventory.items.end());
-
-    // Adjust hotbar indices based on the removed items.
-    for (auto index: to_remove)
+    // INVENTORY
     {
+        // Update the hotbar to remove any items that are empty (NEEDS TO GO FIRST).
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
-            if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
+            InventoryItem& item = gPlayer.inventory.items[gPlayer.hotbar.items[i]];
+            if (item.amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+        }
+
+        // Remove any items that have been emptied out.
+        std::vector<int> to_remove;
+        for (int i=0; i<gPlayer.inventory.items.size(); ++i) if (gPlayer.inventory.items[i].amount <= 0) to_remove.push_back(i);
+        int old_size = (int)gPlayer.inventory.items.size();
+        gPlayer.inventory.items.erase(std::remove_if(gPlayer.inventory.items.begin(),gPlayer.inventory.items.end(),
+        [=](const InventoryItem& i) { return (i.amount <= 0); }),
+        gPlayer.inventory.items.end());
+
+        // Adjust hotbar indices based on the removed items.
+        for (auto index: to_remove)
+        {
+            for (int i=0; i<HOTBAR_SIZE; ++i)
             {
-                if (gPlayer.hotbar.items[i] > index)
+                if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
                 {
-                    gPlayer.hotbar.items[i]--;
+                    if (gPlayer.hotbar.items[i] > index)
+                    {
+                        gPlayer.hotbar.items[i]--;
+                    }
                 }
             }
         }
+
+        // Make sure the selected item is still in range.
+        gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
     }
 
-    // Make sure the selected item is still in range.
-    gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
+    // CRAFTING
+    {
+        // @Incomplete: ...
+    }
 }
 
 INTERNAL void PlayerPlaceSelectedItem (int x, int y)
@@ -95,11 +105,11 @@ INTERNAL void PlayerPlaceSelectedItem (int x, int y)
         Tile* t = MapGetTileAtPos(x,y);
         if (t && (!t->active || t->hits == TILE_INDESTRUCTIBLE))
         {
-            MapPlaceTile(place,x,y);
+            MapSpawnTile(place,x,y);
             item.amount--;
             if (item.amount <= 0)
             {
-                PlayerUpdateInventory();
+                PlayerRefreshInventory();
             }
         }
     }
@@ -340,12 +350,18 @@ INTERNAL void RenderPlayerHeadsUp ()
 
     if (gPlayer.state != PLAYER_STATE_INVENTORY)
     {
-        DrawFill(1,1,137,22, HEADSUP_BG_COLOR);
+        constexpr SDL_Rect MAIN_CLIP = { 0,0,140,22 };
 
-        DrawImage("headsup", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR);
+        SDL_Rect heart_clip = { 7,30,8,6 };
+        // @Incomplete: Shrink based on the player's current health...
+
+        DrawFill(1,1,140,22, HEADSUP_BG_COLOR);
+
+        DrawImage("headsup", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &MAIN_CLIP);
+        DrawImage("headsup", 8,9, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &heart_clip);
 
         // Draw the items in the hotbar.
-        float x = 21;
+        float x = 24;
         float y = 6;
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {

@@ -39,7 +39,38 @@ INTERNAL void MapPlaceTile (std::string type, int x, int y)
     t->draw.clip.y = base.image.y*TILE_H;
     t->draw.clip.w = TILE_W;
     t->draw.clip.h = TILE_H;
+    t->draw.scale.current = 1.0f;
+    t->draw.scale.target = 1.0f;
     t->draw.angle.current = 0.0f;
+    t->draw.angle.target = 0.0f;
+    t->draw.color.current = base.color;
+    t->draw.color.target = base.color;
+}
+
+INTERNAL void MapSpawnTile (std::string type, int x, int y)
+{
+    // If the specified base type can't be found then we don't create a tile.
+    if (!gTiles.count(type))
+    {
+        LOG_ERROR(ERR_MIN, "Could not create tile of unknown type: %s", type.c_str());
+        return;
+    }
+    TileBase& base = gTiles.at(type);
+
+    Tile* t = MapGetTileAtPos(x,y);
+    if (!t) return;
+
+    t->type = type;
+    t->hits = base.hits;
+    t->solid = base.solid;
+    t->active = true;
+    t->draw.clip.x = base.image.x*TILE_W;
+    t->draw.clip.y = base.image.y*TILE_H;
+    t->draw.clip.w = TILE_W;
+    t->draw.clip.h = TILE_H;
+    t->draw.scale.current = TILE_SPAWN_SCALE;
+    t->draw.scale.target = 1.0f;
+    t->draw.angle.current = TILE_SPAWN_ANGLE;
     t->draw.angle.target = 0.0f;
     t->draw.color.current = base.color;
     t->draw.color.target = base.color;
@@ -314,6 +345,7 @@ INTERNAL void RenderMap ()
                     Tile& t = chunk.tiles[ty][tx];
 
                     // Smoothly lerp other values that have a current and a target for smoother visuals.
+                    t.draw.scale.current = Lerp(t.draw.scale.current, t.draw.scale.target, gApplication.delta_time*TILE_SCALE_SPEED);
                     t.draw.angle.current = Lerp(t.draw.angle.current, t.draw.angle.target, gApplication.delta_time*TILE_TURN_SPEED);
                     t.draw.color.current = Lerp(t.draw.color.current, t.draw.color.target, gApplication.delta_time*TILE_COLOR_SPEED);
 
@@ -322,8 +354,13 @@ INTERNAL void RenderMap ()
                     float x = (float)((ix*CHUNK_W)+tx) * TILE_W;
                     float y = (float)((iy*CHUNK_H)+ty) * TILE_H;
 
+                    // Adjust the X and Y for the current scale of the tile so it remains centered.
+                    x -= (TILE_W * (t.draw.scale.current - 1.0f)) / 2;
+                    y -= (TILE_H * (t.draw.scale.current - 1.0f)) / 2;
+
+                    Vec2 scale = { t.draw.scale.current, t.draw.scale.current };
                     Vec2 center = { TILE_W/2, TILE_H/2 };
-                    DrawImage("tile", x,y, {1,1}, center, t.draw.angle.current, FLIP_NONE, t.draw.color.current, &t.draw.clip);
+                    DrawImage("tile", x,y, scale, center, t.draw.angle.current, FLIP_NONE, t.draw.color.current, &t.draw.clip);
                 }
             }
         }
