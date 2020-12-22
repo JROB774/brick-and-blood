@@ -1,6 +1,6 @@
 #pragma once
 
-GLOBAL constexpr int HOTBAR_ITEM_EMPTY = -1;
+GLOBAL constexpr size_t HOTBAR_ITEM_EMPTY = 0;
 GLOBAL constexpr int HOTBAR_SIZE = 9;
 
 enum PlayerState
@@ -17,6 +17,7 @@ enum InventoryState
 
 struct InventoryItem
 {
+    size_t id;
     std::string name;
     int amount;
 };
@@ -53,7 +54,7 @@ GLOBAL struct Player
 
     struct
     {
-        int items[HOTBAR_SIZE]; // Points into the inventory items vector.
+        size_t items[HOTBAR_SIZE]; // IDs for the inventory item vector.
         int selected_item;
     } hotbar;
 

@@ -1,13 +1,20 @@
 GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
 
-INTERNAL std::string PlayerGetEquippedItemName ()
-{
-    int index = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
-    if (index == HOTBAR_ITEM_EMPTY) return "";
-    return gPlayer.inventory.items[index].name;
-}
+GLOBAL size_t gInventoryId = 1; // Unique ID!
 
-INTERNAL InventoryItem* GetInventoryItem (std::string name)
+INTERNAL InventoryItem* GetInventoryItemByID (size_t id)
+{
+    InventoryItem* item = NULL;
+    for (auto& i: gPlayer.inventory.items)
+    {
+        if (id == i.id)
+        {
+            item = &i;
+        }
+    }
+    return item;
+}
+INTERNAL InventoryItem* GetInventoryItemByName (std::string name)
 {
     InventoryItem* item = NULL;
     for (auto& i: gPlayer.inventory.items)
@@ -18,6 +25,13 @@ INTERNAL InventoryItem* GetInventoryItem (std::string name)
         }
     }
     return item;
+}
+
+INTERNAL std::string PlayerGetEquippedItemName ()
+{
+    size_t id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
+    if (id == HOTBAR_ITEM_EMPTY) return "";
+    return GetInventoryItemByID(id)->name;
 }
 
 INTERNAL void PlayerRefreshInventory ()
@@ -31,33 +45,16 @@ INTERNAL void PlayerRefreshInventory ()
         {
             if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
             {
-                InventoryItem& item = gPlayer.inventory.items[gPlayer.hotbar.items[i]];
-                if (item.amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+                InventoryItem* item = GetInventoryItemByID(gPlayer.hotbar.items[i]);
+                if (item->amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
             }
         }
 
         // Remove any items that have been emptied out.
-        std::vector<int> to_remove;
-        for (int i=0; i<gPlayer.inventory.items.size(); ++i) if (gPlayer.inventory.items[i].amount <= 0) to_remove.push_back(i);
         int old_size = (int)gPlayer.inventory.items.size();
         gPlayer.inventory.items.erase(std::remove_if(gPlayer.inventory.items.begin(),gPlayer.inventory.items.end(),
         [=](const InventoryItem& i) { return (i.amount <= 0); }),
         gPlayer.inventory.items.end());
-
-        // Adjust hotbar indices based on the removed items.
-        for (auto index: to_remove)
-        {
-            for (int i=0; i<HOTBAR_SIZE; ++i)
-            {
-                if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
-                {
-                    if (gPlayer.hotbar.items[i] > index)
-                    {
-                        gPlayer.hotbar.items[i]--;
-                    }
-                }
-            }
-        }
 
         // Sort the inventory based on category.
         std::stable_sort(gPlayer.inventory.items.begin(), gPlayer.inventory.items.end(),
@@ -85,7 +82,7 @@ INTERNAL void PlayerRefreshInventory ()
                 bool available = true;
                 for (auto& ingredient: item.recipe)
                 {
-                    InventoryItem* ii = GetInventoryItem(ingredient.type);
+                    InventoryItem* ii = GetInventoryItemByName(ingredient.type);
                     if (!ii || ii->amount < ingredient.amount)
                     {
                         available = false;
@@ -145,17 +142,15 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     // Otherwise we create a new entry for it.
     if (!found)
     {
-        gPlayer.inventory.items.push_back({ name, amount });
+        gPlayer.inventory.items.push_back({ gInventoryId++, name, amount });
         found = &gPlayer.inventory.items.back();
-
-        PlayerRefreshInventory();
 
         // If there is an available hotbar slot, then place it in there.
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
             if (gPlayer.hotbar.items[i] == HOTBAR_ITEM_EMPTY)
             {
-                gPlayer.hotbar.items[i] = (int)gPlayer.inventory.items.size()-1;
+                gPlayer.hotbar.items[i] = gPlayer.inventory.items.back().id;
                 break;
             }
         }
@@ -166,25 +161,30 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     {
         found->amount = GetItem(name).stack;
     }
+
+    PlayerRefreshInventory();
 }
 
 INTERNAL void PlayerPlaceSelectedItem (int x, int y)
 {
-    int item_index = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
-    if (item_index == HOTBAR_ITEM_EMPTY) return;
+    size_t item_id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
+    if (item_id == HOTBAR_ITEM_EMPTY) return;
 
-    InventoryItem& item = gPlayer.inventory.items[item_index];
-    std::string place = GetItem(item.name).place;
-    if (!place.empty()) // If the item can be placed.
+    InventoryItem* item = GetInventoryItemByID(item_id);
+    if (item)
     {
-        Tile* t = MapGetTileAtPos(x,y);
-        if (t && (!t->active || t->hits == TILE_INDESTRUCTIBLE))
+        std::string place = GetItem(item->name).place;
+        if (!place.empty()) // If the item can be placed.
         {
-            MapSpawnTile(place,x,y);
-            item.amount--;
-            if (item.amount <= 0)
+            Tile* t = MapGetTileAtPos(x,y);
+            if (t && (!t->active || t->hits == TILE_INDESTRUCTIBLE))
             {
-                PlayerRefreshInventory();
+                MapSpawnTile(place,x,y);
+                item->amount--;
+                if (item->amount <= 0)
+                {
+                    PlayerRefreshInventory();
+                }
             }
         }
     }
@@ -300,7 +300,7 @@ INTERNAL void PlayerSetHotbarItemToSelected (int slot)
     }
     else // Otherwise put it into the hotbar at that location.
     {
-        gPlayer.hotbar.items[slot] = gPlayer.inventory.selected_item;
+        gPlayer.hotbar.items[slot] = gPlayer.inventory.items[gPlayer.inventory.selected_item].id;
         for (int i=0; i<HOTBAR_SIZE; ++i) // Make sure no other slots are set to this item.
         {
             if (i != slot)
@@ -515,11 +515,11 @@ INTERNAL void RenderPlayerHeadsUp ()
 
             if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
             {
-                InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
-                DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);
+                InventoryItem* item = GetInventoryItemByID(gPlayer.hotbar.items[i]);
+                DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item->name).clip);
 
                 // Draw the quantity.
-                std::string quant = std::to_string(item.amount);
+                std::string quant = std::to_string(item->amount);
                 float tx = x+4-((GetTextWidth("main",quant)*0.5f)/2);
                 float ty = y+10;
                 DrawText("main", StrUpper(quant), tx,ty, HEADSUP_BG_COLOR, 0.5f);
@@ -646,8 +646,8 @@ INTERNAL void RenderPlayerInventory ()
             {
                 if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
                 {
-                    InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
-                    DrawImage("item", x,y, {1,1}, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR, &GetItem(item.name).clip);
+                    InventoryItem* item = GetInventoryItemByID(gPlayer.hotbar.items[i]);
+                    DrawImage("item", x,y, {1,1}, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR, &GetItem(item->name).clip);
                 }
                 x += 30;
             }
