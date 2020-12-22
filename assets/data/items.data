@@ -37,3 +37,30 @@ planks
     place planks
     recipe [ [ wood 5 ] ]
 }
+
+fence
+{
+    image [ 6 0 ]
+    color [ 191 121 88 ]
+    place fence
+    recipe [ [ wood 3 ] [ sticks 1 ] ]
+}
+
+axe
+{
+    image [ 7 0 ]
+    color [ 207 198 184 ]
+    recipe [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
+}
+shovel
+{
+    image [ 0 1 ]
+    color [ 207 198 184 ]
+    recipe [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
+}
+pickaxe
+{
+    image [ 1 1 ]
+    color [ 207 198 184 ]
+    recipe [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]
+}

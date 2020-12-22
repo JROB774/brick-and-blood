@@ -144,3 +144,14 @@ planks
     particle_break brown_break
     drops [ [ planks 1 1 ] ]
 }
+
+fence
+{
+    hits 2
+    image [ 1 2 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ fence 1 1 ] ]
+}
