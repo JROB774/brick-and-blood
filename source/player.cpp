@@ -1,5 +1,5 @@
 GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
-GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 999;
+GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 99;
 
 INTERNAL void PlayerPickUpItem (std::string name, int amount)
 {
@@ -248,18 +248,6 @@ INTERNAL void UpdatePlayer ()
         float cy = roundf(p->draw.pos.y + (TILE_H/2) - (WINDOW_SCREEN_H/2));
         SetCameraTarget(cx,cy);
     }
-
-    // Debug key for printing the player inventory.
-    #if defined(BUILD_DEBUG)
-    if (IsKeyPressed(SDL_SCANCODE_I))
-    {
-        printf("INVENTORY:\n");
-        for (auto [item,amount]: gPlayer.inventory.items)
-        {
-            printf("  %d %s\n", amount, item.c_str());
-        }
-    }
-    #endif // BUILD_DEBUG
 }
 
 INTERNAL void RenderPlayerHeadsUp ()
@@ -288,6 +276,8 @@ INTERNAL void RenderPlayerHeadsUp ()
             {
                 InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
                 DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);
+
+                // @Incomplete: Draw the quantity...
             }
             x += 13;
         }
