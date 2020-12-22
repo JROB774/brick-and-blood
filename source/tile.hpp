@@ -59,6 +59,7 @@ struct TileBase
     std::vector<std::string> particle_break;
     std::vector<std::string> sound_hit;
     std::vector<TileDrops> drops;
+    std::vector<std::string> tools;
 };
 
 INTERNAL void InitTiles ();

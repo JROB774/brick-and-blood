@@ -1,6 +1,13 @@
 GLOBAL constexpr float PLAYER_INPUT_REFRESH_TIME = 0.1f;
 GLOBAL constexpr int PLAYER_MAX_ITEM_STACK = 99;
 
+INTERNAL std::string PlayerGetEquippedItemName ()
+{
+    int index = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
+    if (index == HOTBAR_ITEM_EMPTY) return "";
+    return gPlayer.inventory.items[index].name;
+}
+
 INTERNAL void PlayerPickUpItem (std::string name, int amount)
 {
     if (amount <= 0) return;

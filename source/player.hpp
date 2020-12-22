@@ -59,6 +59,8 @@ GLOBAL struct Player
 
 } gPlayer;
 
+INTERNAL std::string PlayerGetEquippedItemName ();
+
 INTERNAL void PlayerPickUpItem (std::string name, int amount);
 INTERNAL void PlayerPlaceSelectedItem (int x, int y);
 

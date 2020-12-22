@@ -7,6 +7,7 @@ tree0
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree1
 {
@@ -17,6 +18,7 @@ tree1
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree2
 {
@@ -27,6 +29,7 @@ tree2
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree3
 {
@@ -37,6 +40,7 @@ tree3
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree4
 {
@@ -47,6 +51,7 @@ tree4
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree5
 {
@@ -57,6 +62,7 @@ tree5
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree6
 {
@@ -67,6 +73,7 @@ tree6
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 tree7
 {
@@ -77,6 +84,7 @@ tree7
     particle_hit green_hit
     particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    tools [ axe ]
 }
 
 foliage0

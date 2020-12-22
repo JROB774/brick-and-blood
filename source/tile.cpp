@@ -100,6 +100,14 @@ INTERNAL void InitTiles ()
             }
         }
 
+        if (data.Contains("tools"))
+        {
+            for (int i=0; i<data["tools"].size(); ++i)
+            {
+                base.tools.push_back(data["tools"][i].String());
+            }
+        }
+
         gTiles.insert({ data.name, base });
     }
 }
@@ -114,15 +122,33 @@ INTERNAL void DamageTile (int x, int y)
     if (!tile) return;
 
     Tile& t = *tile;
+    TileBase& base = gTiles.at(t.type);
 
     if (t.hits == TILE_INDESTRUCTIBLE) return;
+
+    // Check that the player has the needed tool equipped.
+    if (!base.tools.empty())
+    {
+        bool success = false;
+        for (auto& tool: base.tools)
+        {
+            if (PlayerGetEquippedItemName() == tool)
+            {
+                success = true;
+                break;
+            }
+        }
+        if (!success)
+        {
+            return;
+        }
+    }
 
     t.draw.angle.current = TILE_HIT_ANGLE;
     t.hits--;
     if (t.hits <= 0) t.active = false;
 
     // Handle either hit or death visual and sound effects.
-    TileBase& base = gTiles.at(t.type);
 
     Rect particle_region = { (float)(x*TILE_W)+(TILE_W/2),(float)(y*TILE_H)+(TILE_H/2),0,0 };
     if (t.hits > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
