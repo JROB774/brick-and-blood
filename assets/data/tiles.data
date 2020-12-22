@@ -151,6 +151,7 @@ planks
     particle_hit brown_hit
     particle_break brown_break
     drops [ [ planks 1 1 ] ]
+    tools [ axe ]
 }
 
 fence
@@ -162,4 +163,5 @@ fence
     particle_hit brown_hit
     particle_break brown_break
     drops [ [ fence 1 1 ] ]
+    tools [ axe ]
 }
