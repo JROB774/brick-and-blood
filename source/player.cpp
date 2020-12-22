@@ -57,23 +57,24 @@ INTERNAL void PlayerUpdateInventory ()
     }
 
     // Remove any items that have been emptied out.
+    std::vector<int> to_remove;
+    for (int i=0; i<gPlayer.inventory.items.size(); ++i) if (gPlayer.inventory.items[i].amount <= 0) to_remove.push_back(i);
     int old_size = (int)gPlayer.inventory.items.size();
     gPlayer.inventory.items.erase(std::remove_if(gPlayer.inventory.items.begin(),gPlayer.inventory.items.end(),
-    [](const InventoryItem& i)
-    {
-        return (i.amount <= 0);
-    }),
+    [=](const InventoryItem& i) { return (i.amount <= 0); }),
     gPlayer.inventory.items.end());
 
-    // Adjust each hotbar index by how many items were removed.
-    int diff = old_size - (int)gPlayer.inventory.items.size();
-    if (diff)
+    // Adjust hotbar indices based on the removed items.
+    for (auto index: to_remove)
     {
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
             if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
             {
-                gPlayer.hotbar.items[i] -= diff;
+                if (gPlayer.hotbar.items[i] > index)
+                {
+                    gPlayer.hotbar.items[i]--;
+                }
             }
         }
     }
