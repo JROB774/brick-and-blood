@@ -540,7 +540,7 @@ INTERNAL void RenderPlayerInventory ()
             float y = 35;
 
             int index = 0;
-            for (auto recipe: gPlayer.inventory.recipes)
+            for (auto item: gPlayer.inventory.recipes)
             {
                 Vec4 color = INVENTORY_FG_COLOR;
                 if (gPlayer.inventory.state == INVENTORY_STATE_CRAFTING)
@@ -552,10 +552,21 @@ INTERNAL void RenderPlayerInventory ()
                     }
                 }
 
-                DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(recipe).clip);
-                DrawText("main", StrUpper(recipe), x+INVENTORY_TEXT_OFF+12,y, color);
-                // std::string quant = std::to_string(item.amount);
-                // DrawText("main", StrUpper(quant), (x+127)-(INVENTORY_TEXT_OFF+GetTextWidth("main",quant)),y, color);
+                DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item).clip);
+                DrawText("main", StrUpper(item), x+INVENTORY_TEXT_OFF+12,y, color);
+
+                // Write out the recipe.
+                float rx = (x+127)-INVENTORY_TEXT_OFF;
+                auto& recipe = GetItem(item).recipe;
+                for (int i=(int)recipe.size()-1; i>=0; --i) // We render from right to left.
+                {
+                    ItemIngredient ingredient = recipe.at(i);
+                    std::string quant = std::to_string(ingredient.amount);
+                    rx -= GetTextWidth("main",quant);
+                    DrawText("main", StrUpper(quant), rx,y, color);
+                    rx -= 8;
+                    DrawImage("item", rx,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(ingredient.type).clip);
+                }
 
                 y += 8;
                 index++;
