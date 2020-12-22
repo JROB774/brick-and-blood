@@ -296,10 +296,10 @@ INTERNAL void RenderMap ()
         int cx = p->pos.x / CHUNK_W;
         int cy = p->pos.y / CHUNK_H;
 
-        minx = std::clamp(cx-3, 0, WORLD_W-1);
-        miny = std::clamp(cy-3, 0, WORLD_H-1);
-        maxx = std::clamp(cx+3, 0, WORLD_W-1);
-        maxy = std::clamp(cy+3, 0, WORLD_H-1);
+        minx = std::clamp(cx-2, 0, WORLD_W-1);
+        miny = std::clamp(cy-1, 0, WORLD_H-1);
+        maxx = std::clamp(cx+2, 0, WORLD_W-1);
+        maxy = std::clamp(cy+1, 0, WORLD_H-1);
     }
 
     for (int iy=miny; iy<=maxy; ++iy)
@@ -338,9 +338,9 @@ INTERNAL void RenderMap ()
         float w = (CHUNK_W*TILE_W);
         float h = (CHUNK_H*TILE_H);
 
-        for (int iy=0; iy<WORLD_H; ++iy)
+        for (int iy=miny; iy<=maxy; ++iy)
         {
-            for (int ix=0; ix<WORLD_W; ++ix)
+            for (int ix=minx; ix<=maxx; ++ix)
             {
                 DrawRect(ix*w,iy*h,w,h, { 1,0,0,0.5f });
             }
