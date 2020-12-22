@@ -100,6 +100,17 @@ INTERNAL void InitTiles ()
             }
         }
 
+        if (data.Contains("recipe"))
+        {
+            for (int i=0; i<data["recipe"].size(); ++i)
+            {
+                TileIngredient ingredient;
+                ingredient.type = data["recipe"][i][0].String();
+                ingredient.amount = data["recipe"][i][1].Int();
+                base.recipe.push_back(ingredient);
+            }
+        }
+
         gTiles.insert({ data.name, base });
     }
 }

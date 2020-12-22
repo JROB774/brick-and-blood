@@ -9,6 +9,12 @@ enum PlayerState
     PLAYER_STATE_INVENTORY,
 };
 
+enum InventoryState
+{
+    INVENTORY_STATE_ITEMS,
+    INVENTORY_STATE_CRAFTING,
+};
+
 struct InventoryItem
 {
     std::string name;
@@ -24,6 +30,8 @@ GLOBAL struct Player
 
     struct
     {
+        InventoryState state;
+
         std::vector<InventoryItem> items;
         int selected_item;
 

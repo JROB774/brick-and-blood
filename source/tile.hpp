@@ -40,6 +40,12 @@ struct TileDrops
     int min, max;
 };
 
+struct TileIngredient
+{
+    std::string type;
+    int amount;
+};
+
 struct TileBase
 {
     int hits;
@@ -50,6 +56,7 @@ struct TileBase
     std::vector<std::string> particle_break;
     std::vector<std::string> sound_hit;
     std::vector<TileDrops> drops;
+    std::vector<TileIngredient> recipe;
 };
 
 INTERNAL void InitTiles ();

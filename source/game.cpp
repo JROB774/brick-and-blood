@@ -2,6 +2,8 @@ INTERNAL void InitGame ()
 {
     InitMap();
     InitPlayer();
+
+    PlayerPickUpItem("planks", 30);
 }
 
 INTERNAL void QuitGame ()

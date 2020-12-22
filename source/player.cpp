@@ -112,6 +112,8 @@ INTERNAL void InitPlayer ()
     gPlayer.input_timer = 0.0f;
     gPlayer.update = false;
 
+    gPlayer.inventory.state = INVENTORY_STATE_ITEMS;
+
     gPlayer.inventory.items.clear();
     gPlayer.inventory.selected_item = 0;
 
@@ -225,6 +227,8 @@ INTERNAL void PlayerSetHotbarItemToSelected (int slot)
 
 INTERNAL void UpdatePlayerStateInventory ()
 {
+    // @Incomplete: Need to handle scrolling the inventory and crafting lists when there are too many items...
+
     if (IsKeyPressed(SDL_SCANCODE_TAB))
     {
         CloseInventory();
@@ -256,43 +260,56 @@ INTERNAL void UpdatePlayerStateInventory ()
         }
     }
 
-    // INVENTORY
-    if (update)
-    {
-        if (IsKeyDown(SDL_SCANCODE_W) || IsKeyDown(SDL_SCANCODE_UP))
-        {
-            gPlayer.inventory.selected_item--;
-            if (gPlayer.inventory.selected_item < 0)
-            {
-                gPlayer.inventory.selected_item = (int)gPlayer.inventory.items.size()-1;
-            }
-        }
-        if (IsKeyDown(SDL_SCANCODE_S) || IsKeyDown(SDL_SCANCODE_DOWN))
-        {
-            gPlayer.inventory.selected_item++;
-            if (gPlayer.inventory.selected_item > gPlayer.inventory.items.size()-1)
-            {
-                gPlayer.inventory.selected_item = 0;
-            }
-        }
+    // Set state to and from inventory and crafting.
+    if (IsKeyPressed(SDL_SCANCODE_A) || IsKeyPressed(SDL_SCANCODE_LEFT)) gPlayer.inventory.state = INVENTORY_STATE_ITEMS;
+    if (IsKeyPressed(SDL_SCANCODE_D) || IsKeyPressed(SDL_SCANCODE_RIGHT)) gPlayer.inventory.state = INVENTORY_STATE_CRAFTING;
 
-        gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
-    }
-    if (!gPlayer.inventory.items.empty())
+    // Handle update logic based on what state the inventory is currently in.
+    switch (gPlayer.inventory.state)
     {
-        if (IsKeyPressed(SDL_SCANCODE_1)) PlayerSetHotbarItemToSelected(0);
-        if (IsKeyPressed(SDL_SCANCODE_2)) PlayerSetHotbarItemToSelected(1);
-        if (IsKeyPressed(SDL_SCANCODE_3)) PlayerSetHotbarItemToSelected(2);
-        if (IsKeyPressed(SDL_SCANCODE_4)) PlayerSetHotbarItemToSelected(3);
-        if (IsKeyPressed(SDL_SCANCODE_5)) PlayerSetHotbarItemToSelected(4);
-        if (IsKeyPressed(SDL_SCANCODE_6)) PlayerSetHotbarItemToSelected(5);
-        if (IsKeyPressed(SDL_SCANCODE_7)) PlayerSetHotbarItemToSelected(6);
-        if (IsKeyPressed(SDL_SCANCODE_8)) PlayerSetHotbarItemToSelected(7);
-        if (IsKeyPressed(SDL_SCANCODE_9)) PlayerSetHotbarItemToSelected(8);
-    }
+        // INVENTORY
+        case (INVENTORY_STATE_ITEMS):
+        {
+            if (update)
+            {
+                if (IsKeyDown(SDL_SCANCODE_W) || IsKeyDown(SDL_SCANCODE_UP))
+                {
+                    gPlayer.inventory.selected_item--;
+                    if (gPlayer.inventory.selected_item < 0)
+                    {
+                        gPlayer.inventory.selected_item = (int)gPlayer.inventory.items.size()-1;
+                    }
+                }
+                if (IsKeyDown(SDL_SCANCODE_S) || IsKeyDown(SDL_SCANCODE_DOWN))
+                {
+                    gPlayer.inventory.selected_item++;
+                    if (gPlayer.inventory.selected_item > gPlayer.inventory.items.size()-1)
+                    {
+                        gPlayer.inventory.selected_item = 0;
+                    }
+                }
 
-    // CRAFTING
-    // @Incomplete: ...
+                gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
+            }
+            if (!gPlayer.inventory.items.empty())
+            {
+                if (IsKeyPressed(SDL_SCANCODE_1)) PlayerSetHotbarItemToSelected(0);
+                if (IsKeyPressed(SDL_SCANCODE_2)) PlayerSetHotbarItemToSelected(1);
+                if (IsKeyPressed(SDL_SCANCODE_3)) PlayerSetHotbarItemToSelected(2);
+                if (IsKeyPressed(SDL_SCANCODE_4)) PlayerSetHotbarItemToSelected(3);
+                if (IsKeyPressed(SDL_SCANCODE_5)) PlayerSetHotbarItemToSelected(4);
+                if (IsKeyPressed(SDL_SCANCODE_6)) PlayerSetHotbarItemToSelected(5);
+                if (IsKeyPressed(SDL_SCANCODE_7)) PlayerSetHotbarItemToSelected(6);
+                if (IsKeyPressed(SDL_SCANCODE_8)) PlayerSetHotbarItemToSelected(7);
+                if (IsKeyPressed(SDL_SCANCODE_9)) PlayerSetHotbarItemToSelected(8);
+            }
+        } break;
+        // CRAFTING
+        case (INVENTORY_STATE_CRAFTING):
+        {
+            // @Incomplete: ...
+        } break;
+    }
 }
 
 INTERNAL void UpdatePlayer ()
@@ -401,10 +418,13 @@ INTERNAL void RenderPlayerInventory ()
                 if (item.amount > 0)
                 {
                     Vec4 color = INVENTORY_FG_COLOR;
-                    if (index == gPlayer.inventory.selected_item)
+                    if (gPlayer.inventory.state == INVENTORY_STATE_ITEMS)
                     {
-                        DrawFill(x,y,128,8, INVENTORY_FG_COLOR);
-                        color = INVENTORY_BG_COLOR;
+                        if (index == gPlayer.inventory.selected_item)
+                        {
+                            DrawFill(x,y,128,8, INVENTORY_FG_COLOR);
+                            color = INVENTORY_BG_COLOR;
+                        }
                     }
 
                     DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);

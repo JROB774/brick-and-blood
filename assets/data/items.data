@@ -29,3 +29,10 @@ grass
     color [ 56 217 115 ]
     place grass
 }
+
+planks
+{
+    image [ 5 0 ]
+    color [ 191 121 88 ]
+    place planks
+}

@@ -4,8 +4,8 @@ tree0
     image [ 0 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree1
@@ -14,8 +14,8 @@ tree1
     image [ 1 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree2
@@ -24,8 +24,8 @@ tree2
     image [ 2 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree3
@@ -34,8 +34,8 @@ tree3
     image [ 3 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree4
@@ -44,8 +44,8 @@ tree4
     image [ 4 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree5
@@ -54,8 +54,8 @@ tree5
     image [ 5 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree6
@@ -64,8 +64,8 @@ tree6
     image [ 6 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 tree7
@@ -74,8 +74,8 @@ tree7
     image [ 7 0 ]
     color [ 56 217 115 ]
     solid true
-    particle_hit tree_hit
-    particle_break tree_break
+    particle_hit green_hit
+    particle_break green_break
     drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
 }
 
@@ -110,7 +110,7 @@ rocks
     image [ 4 1 ]
     color [ 207 198 184 ]
     solid false
-    particle_break rocks_break
+    particle_break grey_break
     drops [ [ rocks 1 1 ] ]
 }
 
@@ -120,7 +120,7 @@ shrub
     image [ 5 1 ]
     color [ 191 121 88 ]
     solid true
-    particle_break shrub_break
+    particle_break brown_break
     drops [ [ sticks 1 3 ] ]
 }
 
@@ -130,6 +130,18 @@ grass
     image [ 6 1 ]
     color [ 56 217 115 ]
     solid false
-    particle_break grass_break
+    particle_break green_break
     drops [ [ grass 1 1 ] ]
+}
+
+planks
+{
+    hits 3
+    image [ 0 2 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ planks 1 1 ] ]
+    recipe [ [ wood 5 ] ]
 }
