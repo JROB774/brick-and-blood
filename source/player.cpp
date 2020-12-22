@@ -47,6 +47,19 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     }
 }
 
+INTERNAL InventoryItem* GetInventoryItem (std::string name)
+{
+    InventoryItem* item = NULL;
+    for (auto& i: gPlayer.inventory.items)
+    {
+        if (name == i.name)
+        {
+            item = &i;
+        }
+    }
+    return item;
+}
+
 INTERNAL void PlayerRefreshInventory ()
 {
     // Refresh all the items and crafting recipes displayed on the inventory screen.
@@ -56,8 +69,11 @@ INTERNAL void PlayerRefreshInventory ()
         // Update the hotbar to remove any items that are empty (NEEDS TO GO FIRST).
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
-            InventoryItem& item = gPlayer.inventory.items[gPlayer.hotbar.items[i]];
-            if (item.amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+            if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
+            {
+                InventoryItem& item = gPlayer.inventory.items[gPlayer.hotbar.items[i]];
+                if (item.amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+            }
         }
 
         // Remove any items that have been emptied out.
@@ -89,7 +105,32 @@ INTERNAL void PlayerRefreshInventory ()
 
     // CRAFTING
     {
-        // @Incomplete: ...
+        gPlayer.inventory.recipes.clear();
+
+        // Check if new recipes can be made and add them to the list.
+        for (auto& [name,item]: gItems)
+        {
+            if (!item.recipe.empty())
+            {
+                bool available = true;
+                for (auto& ingredient: item.recipe)
+                {
+                    InventoryItem* ii = GetInventoryItem(ingredient.type);
+                    if (!ii || ii->amount < ingredient.amount)
+                    {
+                        available = false;
+                        break;
+                    }
+                }
+                if (available)
+                {
+                    gPlayer.inventory.recipes.push_back(name);
+                }
+            }
+        }
+
+        // Make sure the selected item is still in range.
+        gPlayer.inventory.selected_recipe = std::clamp(gPlayer.inventory.selected_recipe, 0, (int)gPlayer.inventory.recipes.size()-1);
     }
 }
 
@@ -127,6 +168,9 @@ INTERNAL void InitPlayer ()
     gPlayer.inventory.items.clear();
     gPlayer.inventory.selected_item = 0;
 
+    gPlayer.inventory.recipes.clear();
+    gPlayer.inventory.selected_recipe = 0;
+
     gPlayer.inventory.bounds.current = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
     gPlayer.inventory.bounds.target = { WINDOW_SCREEN_W/2,WINDOW_SCREEN_H/2, 0,0 };
 
@@ -151,6 +195,7 @@ INTERNAL void OpenInventory ()
     gPlayer.inventory.bounds.target = { TILE_W,TILE_H,WINDOW_SCREEN_W-(TILE_W*2),WINDOW_SCREEN_H-(TILE_H*2) };
     gPlayer.inventory.scale.current = { 0,0 };
     gPlayer.inventory.scale.target = { 1,1 };
+    PlayerRefreshInventory();
 }
 INTERNAL void CloseInventory ()
 {
@@ -271,8 +316,20 @@ INTERNAL void UpdatePlayerStateInventory ()
     }
 
     // Set state to and from inventory and crafting.
-    if (IsKeyPressed(SDL_SCANCODE_A) || IsKeyPressed(SDL_SCANCODE_LEFT)) gPlayer.inventory.state = INVENTORY_STATE_ITEMS;
-    if (IsKeyPressed(SDL_SCANCODE_D) || IsKeyPressed(SDL_SCANCODE_RIGHT)) gPlayer.inventory.state = INVENTORY_STATE_CRAFTING;
+    if (IsKeyPressed(SDL_SCANCODE_A) || IsKeyPressed(SDL_SCANCODE_LEFT))
+    {
+        if (!gPlayer.inventory.items.empty())
+        {
+            gPlayer.inventory.state = INVENTORY_STATE_ITEMS;
+        }
+    }
+    if (IsKeyPressed(SDL_SCANCODE_D) || IsKeyPressed(SDL_SCANCODE_RIGHT))
+    {
+        if (!gPlayer.inventory.recipes.empty())
+        {
+            gPlayer.inventory.state = INVENTORY_STATE_CRAFTING;
+        }
+    }
 
     // Handle update logic based on what state the inventory is currently in.
     switch (gPlayer.inventory.state)
@@ -317,7 +374,28 @@ INTERNAL void UpdatePlayerStateInventory ()
         // CRAFTING
         case (INVENTORY_STATE_CRAFTING):
         {
-            // @Incomplete: ...
+            if (update)
+            {
+                if (IsKeyDown(SDL_SCANCODE_W) || IsKeyDown(SDL_SCANCODE_UP))
+                {
+                    gPlayer.inventory.selected_recipe--;
+                    if (gPlayer.inventory.selected_recipe < 0)
+                    {
+                        gPlayer.inventory.selected_recipe = (int)gPlayer.inventory.recipes.size()-1;
+                    }
+                }
+                if (IsKeyDown(SDL_SCANCODE_S) || IsKeyDown(SDL_SCANCODE_DOWN))
+                {
+                    gPlayer.inventory.selected_recipe++;
+                    if (gPlayer.inventory.selected_recipe > gPlayer.inventory.recipes.size()-1)
+                    {
+                        gPlayer.inventory.selected_recipe = 0;
+                    }
+                }
+
+                gPlayer.inventory.selected_recipe = std::clamp(gPlayer.inventory.selected_recipe, 0, (int)gPlayer.inventory.recipes.size()-1);
+            }
+
         } break;
     }
 }
@@ -458,7 +536,30 @@ INTERNAL void RenderPlayerInventory ()
         // CRAFTING
         ScissorOn(166,35,127,88);
         {
-            // @Incomplete: ...
+            float x = 166;
+            float y = 35;
+
+            int index = 0;
+            for (auto recipe: gPlayer.inventory.recipes)
+            {
+                Vec4 color = INVENTORY_FG_COLOR;
+                if (gPlayer.inventory.state == INVENTORY_STATE_CRAFTING)
+                {
+                    if (index == gPlayer.inventory.selected_recipe)
+                    {
+                        DrawFill(x,y,128,8, INVENTORY_FG_COLOR);
+                        color = INVENTORY_BG_COLOR;
+                    }
+                }
+
+                DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(recipe).clip);
+                DrawText("main", StrUpper(recipe), x+INVENTORY_TEXT_OFF+12,y, color);
+                // std::string quant = std::to_string(item.amount);
+                // DrawText("main", StrUpper(quant), (x+127)-(INVENTORY_TEXT_OFF+GetTextWidth("main",quant)),y, color);
+
+                y += 8;
+                index++;
+            }
         }
         ScissorOff();
 

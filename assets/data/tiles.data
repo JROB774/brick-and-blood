@@ -143,5 +143,4 @@ planks
     particle_hit brown_hit
     particle_break brown_break
     drops [ [ planks 1 1 ] ]
-    recipe [ [ wood 5 ] ]
 }

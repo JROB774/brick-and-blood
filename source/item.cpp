@@ -52,6 +52,17 @@ INTERNAL void InitItems ()
 
         base.place = data["place"].String("");
 
+        if (data.Contains("recipe"))
+        {
+            for (int i=0; i<data["recipe"].size(); ++i)
+            {
+                ItemIngredient ingredient;
+                ingredient.type = data["recipe"][i][0].String();
+                ingredient.amount = data["recipe"][i][1].Int();
+                base.recipe.push_back(ingredient);
+            }
+        }
+
         gItems.insert({ data.name, base });
     }
 }

@@ -35,6 +35,9 @@ GLOBAL struct Player
         std::vector<InventoryItem> items;
         int selected_item;
 
+        std::vector<std::string> recipes;
+        int selected_recipe;
+
         struct
         {
             Vec2 current;
