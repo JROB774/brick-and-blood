@@ -1,17 +1,20 @@
 meat
 {
+    category food
     image [ 0 0 ]
     color [ 230 72 46 ]
 }
 
 wood
 {
+    category nature
     image [ 1 0 ]
     color [ 191 121 88 ]
 }
 
 rocks
 {
+    category nature
     image [ 2 0 ]
     color [ 207 198 184 ]
     place rocks
@@ -19,12 +22,14 @@ rocks
 
 sticks
 {
+    category nature
     image [ 3 0 ]
     color [ 191 121 88 ]
 }
 
 grass
 {
+    category nature
     image [ 4 0 ]
     color [ 56 217 115 ]
     place grass
@@ -32,6 +37,7 @@ grass
 
 planks
 {
+    category wood
     image [ 5 0 ]
     color [ 191 121 88 ]
     place planks
@@ -40,6 +46,7 @@ planks
 
 fence
 {
+    category wood
     image [ 6 0 ]
     color [ 191 121 88 ]
     place fence
@@ -48,6 +55,7 @@ fence
 
 axe
 {
+    category tool
     image [ 7 0 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
@@ -55,6 +63,7 @@ axe
 }
 shovel
 {
+    category tool
     image [ 0 1 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
@@ -62,6 +71,7 @@ shovel
 }
 pickaxe
 {
+    category tool
     image [ 1 1 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]

@@ -7,52 +7,6 @@ INTERNAL std::string PlayerGetEquippedItemName ()
     return gPlayer.inventory.items[index].name;
 }
 
-INTERNAL void PlayerPickUpItem (std::string name, int amount)
-{
-    if (amount <= 0) return;
-
-    // If the specified base type can't be found then we don't pick up an item
-    if (!gItems.count(name))
-    {
-        LOG_ERROR(ERR_MIN, "Could not pickup item of unknown type: %s", name.c_str());
-        return;
-    }
-
-    // If we already have the item in our inventory then add to it.
-    InventoryItem* found = NULL;
-    for (auto& item: gPlayer.inventory.items)
-    {
-        if (item.name == name)
-        {
-            found = &item;
-            item.amount += amount;
-            break;
-        }
-    }
-    // Otherwise we create a new entry for it.
-    if (!found)
-    {
-        gPlayer.inventory.items.push_back({ name, amount });
-        found = &gPlayer.inventory.items.back();
-
-        // If there is an available hotbar slot, then place it in there.
-        for (int i=0; i<HOTBAR_SIZE; ++i)
-        {
-            if (gPlayer.hotbar.items[i] == HOTBAR_ITEM_EMPTY)
-            {
-                gPlayer.hotbar.items[i] = (int)gPlayer.inventory.items.size()-1;
-                break;
-            }
-        }
-    }
-
-    // Make sure the number of items does not exceed the stack limit.
-    if (found->amount > GetItem(name).stack)
-    {
-        found->amount = GetItem(name).stack;
-    }
-}
-
 INTERNAL InventoryItem* GetInventoryItem (std::string name)
 {
     InventoryItem* item = NULL;
@@ -105,6 +59,16 @@ INTERNAL void PlayerRefreshInventory ()
             }
         }
 
+        // Sort the inventory based on category.
+        std::stable_sort(gPlayer.inventory.items.begin(), gPlayer.inventory.items.end(),
+        [](const InventoryItem& a, const InventoryItem& b)
+        {
+            auto& ia = GetItem(a.name);
+            auto& ib = GetItem(b.name);
+            if (ia.category == ib.category) return (a.name < b.name);
+            return (ia.category < ib.category);
+        });
+
         // Make sure the selected item is still in range.
         gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
     }
@@ -135,6 +99,16 @@ INTERNAL void PlayerRefreshInventory ()
             }
         }
 
+        // Sort the recipes based on category.
+        std::stable_sort(gPlayer.inventory.recipes.begin(), gPlayer.inventory.recipes.end(),
+        [](const std::string& a, const std::string& b)
+        {
+            auto& ia = GetItem(a);
+            auto& ib = GetItem(b);
+            if (ia.category == ib.category) return (a < b);
+            return (ia.category < ib.category);
+        });
+
         // Make sure the selected item is still in range.
         gPlayer.inventory.selected_recipe = std::clamp(gPlayer.inventory.selected_recipe, 0, (int)gPlayer.inventory.recipes.size()-1);
 
@@ -143,6 +117,54 @@ INTERNAL void PlayerRefreshInventory ()
         {
             gPlayer.inventory.state = INVENTORY_STATE_ITEMS;
         }
+    }
+}
+
+INTERNAL void PlayerPickUpItem (std::string name, int amount)
+{
+    if (amount <= 0) return;
+
+    // If the specified base type can't be found then we don't pick up an item
+    if (!gItems.count(name))
+    {
+        LOG_ERROR(ERR_MIN, "Could not pickup item of unknown type: %s", name.c_str());
+        return;
+    }
+
+    // If we already have the item in our inventory then add to it.
+    InventoryItem* found = NULL;
+    for (auto& item: gPlayer.inventory.items)
+    {
+        if (item.name == name)
+        {
+            found = &item;
+            item.amount += amount;
+            break;
+        }
+    }
+    // Otherwise we create a new entry for it.
+    if (!found)
+    {
+        gPlayer.inventory.items.push_back({ name, amount });
+        found = &gPlayer.inventory.items.back();
+
+        PlayerRefreshInventory();
+
+        // If there is an available hotbar slot, then place it in there.
+        for (int i=0; i<HOTBAR_SIZE; ++i)
+        {
+            if (gPlayer.hotbar.items[i] == HOTBAR_ITEM_EMPTY)
+            {
+                gPlayer.hotbar.items[i] = (int)gPlayer.inventory.items.size()-1;
+                break;
+            }
+        }
+    }
+
+    // Make sure the number of items does not exceed the stack limit.
+    if (found->amount > GetItem(name).stack)
+    {
+        found->amount = GetItem(name).stack;
     }
 }
 
