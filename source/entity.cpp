@@ -234,26 +234,40 @@ INTERNAL void DamageEntity (Entity& e)
 
 INTERNAL void Entity_BehaviorPlayer (Entity& e)
 {
+    // Handle Movement
+
+    int movex = e.pos.x;
+    int movey = e.pos.y;
+
+    if (IsKeyDown(SDL_SCANCODE_W)) movey--;
+    if (IsKeyDown(SDL_SCANCODE_D)) movex++;
+    if (IsKeyDown(SDL_SCANCODE_S)) movey++;
+    if (IsKeyDown(SDL_SCANCODE_A)) movex--;
+
+    if (movex != e.pos.x || movey != e.pos.y) MoveEntity(e,movex,movey);
+
+    // Handle Interactions (Attacking, Building)
+
     int targetx = e.pos.x;
     int targety = e.pos.y;
 
-    if (IsKeyDown(SDL_SCANCODE_W)) targety--;
-    if (IsKeyDown(SDL_SCANCODE_D)) targetx++;
-    if (IsKeyDown(SDL_SCANCODE_S)) targety++;
-    if (IsKeyDown(SDL_SCANCODE_A)) targetx--;
+    if (IsKeyDown(SDL_SCANCODE_UP   )) targety--;
+    if (IsKeyDown(SDL_SCANCODE_RIGHT)) targetx++;
+    if (IsKeyDown(SDL_SCANCODE_DOWN )) targety++;
+    if (IsKeyDown(SDL_SCANCODE_LEFT )) targetx--;
 
-    // If our target is not our tile handle attacking, moving, etc.
     if (targetx != e.pos.x || targety != e.pos.y)
     {
         Entity* o = MapGetEntityAtPos(targetx,targety);
-        if (o) // If there's an entity at our target location, carry out the appropriate action.
+        if (o)
         {
+            // If there's an entity at our target location, then attack.
             e.draw.angle.current = ENTITY_TURN_ANGLE*3;
             DamageEntity(*o);
         }
-        else // Othewise handle the case of tiles.
+        else
         {
-            // If there is a tile in the space the player wants to move to we attack it, otherwise we move.
+            // If there's a tile at our target location, then attack.
             Tile* t = MapGetTileAtPos(targetx,targety);
             if (t && t->active && t->hits > 0)
             {
@@ -262,23 +276,13 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
             }
             else
             {
-                MoveEntity(e, targetx,targety);
+                // Attempt to place whatever we have equipped.
+                if (targetx != e.pos.x || targety != e.pos.y)
+                {
+                    PlayerPlaceSelectedItem(targetx,targety);
+                }
             }
         }
-    }
-
-    int buildx = e.pos.x;
-    int buildy = e.pos.y;
-
-    if (IsKeyDown(SDL_SCANCODE_UP   )) buildy--;
-    if (IsKeyDown(SDL_SCANCODE_RIGHT)) buildx++;
-    if (IsKeyDown(SDL_SCANCODE_DOWN )) buildy++;
-    if (IsKeyDown(SDL_SCANCODE_LEFT )) buildx--;
-
-    // If the player wants to place/build something then do it.
-    if (buildx != e.pos.x || buildy != e.pos.y)
-    {
-        PlayerPlaceSelectedItem(buildx,buildy);
     }
 }
 
