@@ -131,6 +131,12 @@ INTERNAL void PlayerRefreshInventory ()
 
         // Make sure the selected item is still in range.
         gPlayer.inventory.selected_recipe = std::clamp(gPlayer.inventory.selected_recipe, 0, (int)gPlayer.inventory.recipes.size()-1);
+
+        // If there are no recipes make sure the state is set to the item list instead.
+        if (gPlayer.inventory.recipes.empty())
+        {
+            gPlayer.inventory.state = INVENTORY_STATE_ITEMS;
+        }
     }
 }
 
@@ -280,6 +286,28 @@ INTERNAL void PlayerSetHotbarItemToSelected (int slot)
     }
 }
 
+INTERNAL void PlayerCraftSelectedRecipe ()
+{
+    std::string item_name = gPlayer.inventory.recipes[gPlayer.inventory.selected_recipe];
+    PlayerPickUpItem(item_name, 1);
+
+    // Remove the items that were used to craft.
+    auto& recipe = GetItem(item_name).recipe;
+    for (auto& ingredient: recipe)
+    {
+        for (auto& item: gPlayer.inventory.items)
+        {
+            if (item.name == ingredient.type)
+            {
+                item.amount -= ingredient.amount;
+                break;
+            }
+        }
+    }
+
+    PlayerRefreshInventory();
+}
+
 INTERNAL void UpdatePlayerStateInventory ()
 {
     // @Incomplete: Need to handle scrolling the inventory and crafting lists when there are too many items...
@@ -293,19 +321,21 @@ INTERNAL void UpdatePlayerStateInventory ()
     bool update = false;
 
     // If any of the player's input keys are pressed we update the simulation.
-    if (IsKeyPressed(SDL_SCANCODE_W)  ||
-        IsKeyPressed(SDL_SCANCODE_S)  ||
-        IsKeyPressed(SDL_SCANCODE_UP) ||
-        IsKeyPressed(SDL_SCANCODE_DOWN))
+    if (IsKeyPressed(SDL_SCANCODE_W)    ||
+        IsKeyPressed(SDL_SCANCODE_S)    ||
+        IsKeyPressed(SDL_SCANCODE_UP)   ||
+        IsKeyPressed(SDL_SCANCODE_DOWN) ||
+        IsKeyPressed(SDL_SCANCODE_SPACE))
     {
-        gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME;
+        gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME * 3; // Initial cooldown is longer...
         update = true;
     }
     // This system exists so that keys can be held.
-    if (IsKeyDown(SDL_SCANCODE_W)  ||
-        IsKeyDown(SDL_SCANCODE_S)  ||
-        IsKeyDown(SDL_SCANCODE_UP) ||
-        IsKeyDown(SDL_SCANCODE_DOWN))
+    if (IsKeyDown(SDL_SCANCODE_W)    ||
+        IsKeyDown(SDL_SCANCODE_S)    ||
+        IsKeyDown(SDL_SCANCODE_UP)   ||
+        IsKeyDown(SDL_SCANCODE_DOWN) ||
+        IsKeyDown(SDL_SCANCODE_SPACE))
     {
         gPlayer.input_timer -= gApplication.delta_time;
         if (gPlayer.input_timer <= 0.0f)
@@ -394,6 +424,11 @@ INTERNAL void UpdatePlayerStateInventory ()
                 }
 
                 gPlayer.inventory.selected_recipe = std::clamp(gPlayer.inventory.selected_recipe, 0, (int)gPlayer.inventory.recipes.size()-1);
+
+                if (IsKeyDown(SDL_SCANCODE_SPACE))
+                {
+                    PlayerCraftSelectedRecipe();
+                }
             }
 
         } break;
