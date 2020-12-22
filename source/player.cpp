@@ -47,6 +47,63 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     }
 }
 
+INTERNAL void PlayerUpdateInventory ()
+{
+    // Update the hotbar to remove any items that are empty (NEEDS TO GO FIRST).
+    for (int i=0; i<HOTBAR_SIZE; ++i)
+    {
+        InventoryItem& item = gPlayer.inventory.items[gPlayer.hotbar.items[i]];
+        if (item.amount <= 0) gPlayer.hotbar.items[i] = HOTBAR_ITEM_EMPTY;
+    }
+
+    // Remove any items that have been emptied out.
+    int old_size = (int)gPlayer.inventory.items.size();
+    gPlayer.inventory.items.erase(std::remove_if(gPlayer.inventory.items.begin(),gPlayer.inventory.items.end(),
+    [](const InventoryItem& i)
+    {
+        return (i.amount <= 0);
+    }),
+    gPlayer.inventory.items.end());
+
+    // Adjust each hotbar index by how many items were removed.
+    int diff = old_size - (int)gPlayer.inventory.items.size();
+    if (diff)
+    {
+        for (int i=0; i<HOTBAR_SIZE; ++i)
+        {
+            if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
+            {
+                gPlayer.hotbar.items[i] -= diff;
+            }
+        }
+    }
+
+    // Make sure the selected item is still in range.
+    gPlayer.inventory.selected_item = std::clamp(gPlayer.inventory.selected_item, 0, (int)gPlayer.inventory.items.size()-1);
+}
+
+INTERNAL void PlayerPlaceSelectedItem (int x, int y)
+{
+    int item_index = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
+    if (item_index == HOTBAR_ITEM_EMPTY) return;
+
+    InventoryItem& item = gPlayer.inventory.items[item_index];
+    std::string place = GetItem(item.name).place;
+    if (!place.empty()) // If the item can be placed.
+    {
+        Tile* t = MapGetTileAtPos(x,y);
+        if (t && (!t->active || t->hits == TILE_INDESTRUCTIBLE))
+        {
+            MapPlaceTile(place,x,y);
+            item.amount--;
+            if (item.amount <= 0)
+            {
+                PlayerUpdateInventory();
+            }
+        }
+    }
+}
+
 INTERNAL void InitPlayer ()
 {
     gPlayer.state = PLAYER_STATE_PLAY;
@@ -99,20 +156,28 @@ INTERNAL void UpdatePlayerStatePlay ()
     }
 
     // If any of the player's input keys are pressed we update the simulation.
-    if (IsKeyPressed(SDL_SCANCODE_A) ||
-        IsKeyPressed(SDL_SCANCODE_D) ||
-        IsKeyPressed(SDL_SCANCODE_W) ||
-        IsKeyPressed(SDL_SCANCODE_S) ||
+    if (IsKeyPressed(SDL_SCANCODE_A    ) ||
+        IsKeyPressed(SDL_SCANCODE_D    ) ||
+        IsKeyPressed(SDL_SCANCODE_W    ) ||
+        IsKeyPressed(SDL_SCANCODE_S    ) ||
+        IsKeyPressed(SDL_SCANCODE_UP   ) ||
+        IsKeyPressed(SDL_SCANCODE_RIGHT) ||
+        IsKeyPressed(SDL_SCANCODE_DOWN ) ||
+        IsKeyPressed(SDL_SCANCODE_LEFT ) ||
         IsKeyPressed(SDL_SCANCODE_SPACE))
     {
         gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME * 3; // Initial cooldown is longer...
         gPlayer.update = true;
     }
     // This system exists so that keys can be held.
-    if (IsKeyDown(SDL_SCANCODE_A) ||
-        IsKeyDown(SDL_SCANCODE_D) ||
-        IsKeyDown(SDL_SCANCODE_W) ||
-        IsKeyDown(SDL_SCANCODE_S) ||
+    if (IsKeyDown(SDL_SCANCODE_A    ) ||
+        IsKeyDown(SDL_SCANCODE_D    ) ||
+        IsKeyDown(SDL_SCANCODE_W    ) ||
+        IsKeyDown(SDL_SCANCODE_S    ) ||
+        IsKeyDown(SDL_SCANCODE_UP   ) ||
+        IsKeyDown(SDL_SCANCODE_RIGHT) ||
+        IsKeyDown(SDL_SCANCODE_DOWN ) ||
+        IsKeyDown(SDL_SCANCODE_LEFT ) ||
         IsKeyDown(SDL_SCANCODE_SPACE))
     {
         gPlayer.input_timer -= gApplication.delta_time;

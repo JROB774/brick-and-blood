@@ -266,6 +266,20 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
             }
         }
     }
+
+    int buildx = e.pos.x;
+    int buildy = e.pos.y;
+
+    if (IsKeyDown(SDL_SCANCODE_UP   )) buildy--;
+    if (IsKeyDown(SDL_SCANCODE_RIGHT)) buildx++;
+    if (IsKeyDown(SDL_SCANCODE_DOWN )) buildy++;
+    if (IsKeyDown(SDL_SCANCODE_LEFT )) buildx--;
+
+    // If the player wants to place/build something then do it.
+    if (buildx != e.pos.x || buildy != e.pos.y)
+    {
+        PlayerPlaceSelectedItem(buildx,buildy);
+    }
 }
 
 INTERNAL void Entity_BehaviorWander (Entity& e)

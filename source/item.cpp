@@ -50,6 +50,8 @@ INTERNAL void InitItems ()
             base.color = { 1,1,1,1 };
         }
 
+        base.place = data["place"].String("");
+
         gItems.insert({ data.name, base });
     }
 }
