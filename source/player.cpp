@@ -322,7 +322,8 @@ INTERNAL void RenderPlayerHeadsUp ()
 
     if (gPlayer.state != PLAYER_STATE_INVENTORY)
     {
-        DrawFill(1,1,137,18, HEADSUP_BG_COLOR);
+        DrawFill(1,1,137,22, HEADSUP_BG_COLOR);
+
         DrawImage("headsup", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR);
 
         // Draw the items in the hotbar.
@@ -333,7 +334,7 @@ INTERNAL void RenderPlayerHeadsUp ()
             Vec4 color = HEADSUP_FG_COLOR;
             if (i == gPlayer.hotbar.selected_item)
             {
-                DrawFill(x-1,y-1,10,10, HEADSUP_FG_COLOR);
+                DrawFill(x,y,8,8, HEADSUP_FG_COLOR);
                 color = HEADSUP_BG_COLOR;
             }
 
@@ -342,8 +343,13 @@ INTERNAL void RenderPlayerHeadsUp ()
                 InventoryItem& item = gPlayer.inventory.items.at(gPlayer.hotbar.items[i]);
                 DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);
 
-                // @Incomplete: Draw the quantity...
+                // Draw the quantity.
+                std::string quant = std::to_string(item.amount);
+                float tx = x+4-((GetTextWidth("main",quant)*0.5f)/2);
+                float ty = y+10;
+                DrawText("main", StrUpper(quant), tx,ty, HEADSUP_BG_COLOR, 0.5f);
             }
+
             x += 13;
         }
     }
