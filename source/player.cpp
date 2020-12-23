@@ -294,7 +294,7 @@ INTERNAL void UpdatePlayerStatePlay ()
 
 INTERNAL void PlayerSetHotbarItemToSelected (int slot)
 {
-    if (gPlayer.hotbar.items[slot] == gPlayer.inventory.selected_item) // If the item is already in the slot then remove it.
+    if (gPlayer.hotbar.items[slot] == gPlayer.inventory.items[gPlayer.inventory.selected_item].id) // If the item is already in the slot then remove it.
     {
         gPlayer.hotbar.items[slot] = HOTBAR_ITEM_EMPTY;
     }
