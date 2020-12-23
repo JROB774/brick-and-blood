@@ -20,6 +20,11 @@ INTERNAL void FadeTo (Vec4 color, float speed)
     gFade.speed = speed;
 }
 
+INTERNAL bool IsFadeToDone ()
+{
+    return (gFade.current.a+0.01f >= gFade.target.a);
+}
+
 INTERNAL void InitFade ()
 {
     gFade.target = { 0,0,0,0 };
