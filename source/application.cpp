@@ -4,7 +4,7 @@ INTERNAL void InitApplication ()
 {
     SDL_ShowCursor(SDL_DISABLE);
 
-    gApplication.state = APP_STATE_GAME;
+    gApplication.state = APP_STATE_MENU;
 
     gApplication.debug = false;
     gApplication.editor = false;
@@ -17,6 +17,7 @@ INTERNAL void InitApplication ()
     InitFade();
 
     InitGame();
+    InitMenu();
     InitEditor();
 
     FadeFrom(SDLColorToColor({ 38,13,28,255 }), 2);
@@ -25,6 +26,7 @@ INTERNAL void InitApplication ()
 INTERNAL void QuitApplication ()
 {
     QuitEditor();
+    QuitMenu();
     QuitGame();
 }
 
@@ -71,6 +73,7 @@ INTERNAL void UpdateApplication (float dt)
     {
         switch (gApplication.state)
         {
+            case (APP_STATE_MENU): UpdateMenu(); break;
             case (APP_STATE_GAME): UpdateGame(); break;
         }
 
@@ -89,6 +92,7 @@ INTERNAL void RenderApplication (float dt)
 
         switch (gApplication.state)
         {
+            case (APP_STATE_MENU): RenderMenu(); break;
             case (APP_STATE_GAME): RenderGame(); break;
         }
 

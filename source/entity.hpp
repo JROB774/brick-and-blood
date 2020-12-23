@@ -65,6 +65,7 @@ struct EntityBase
     std::string faction;
     int initiative;
     int health;
+    int damage;
     EntityBehavior behavior;
     struct { int x,y; } image;
     Vec4 color;

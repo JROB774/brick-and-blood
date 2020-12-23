@@ -6,6 +6,7 @@ GLOBAL constexpr int APP_VERSION_PATCH = 0;
 
 enum AppState
 {
+    APP_STATE_MENU,
     APP_STATE_GAME,
     APP_STATE_TOTAL
 };

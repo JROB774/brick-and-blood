@@ -2,7 +2,7 @@
 
 GLOBAL struct GameState
 {
-
+    // ...
 } gGameState;
 
 INTERNAL void   InitGame ();

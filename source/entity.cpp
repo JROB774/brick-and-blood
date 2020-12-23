@@ -38,6 +38,7 @@ INTERNAL void InitEntities ()
         base.faction = data["faction"].String();
         base.initiative = data["initiative"].Int(INT_MAX);
         base.health = data["health"].Int(1);
+        base.damage = data["damage"].Int(0);
 
         std::string behavior = data["behavior"].String("none");
         if (behavior != "none")
