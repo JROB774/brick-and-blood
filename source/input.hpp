@@ -12,6 +12,11 @@ INTERNAL bool IsKeyUp       (SDL_Scancode code);
 INTERNAL bool IsKeyPressed  (SDL_Scancode code);
 INTERNAL bool IsKeyReleased (SDL_Scancode code);
 
+INTERNAL bool IsAnyKeyDown     ();
+INTERNAL bool IsAnyKeyUp       ();
+INTERNAL bool IsAnyKeyPressed  ();
+INTERNAL bool IsAnyKeyReleased ();
+
 // MOUSE
 
 INTERNAL int GetMouseScrollVertical   ();

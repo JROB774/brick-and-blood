@@ -146,6 +146,27 @@ INTERNAL bool IsKeyReleased (SDL_Scancode code)
     return (gInput.current_key_state[code] == 0 && gInput.previous_key_state[code] == 1);
 }
 
+INTERNAL bool IsAnyKeyDown ()
+{
+    for (int i=0; i<SDL_NUM_SCANCODES; ++i) if (IsKeyDown((SDL_Scancode)i)) return true;
+    return false;
+}
+INTERNAL bool IsAnyKeyUp ()
+{
+    for (int i=0; i<SDL_NUM_SCANCODES; ++i) if (IsKeyUp((SDL_Scancode)i)) return true;
+    return false;
+}
+INTERNAL bool IsAnyKeyPressed ()
+{
+    for (int i=0; i<SDL_NUM_SCANCODES; ++i) if (IsKeyPressed((SDL_Scancode)i)) return true;
+    return false;
+}
+INTERNAL bool IsAnyKeyReleased ()
+{
+    for (int i=0; i<SDL_NUM_SCANCODES; ++i) if (IsKeyReleased((SDL_Scancode)i)) return true;
+    return false;
+}
+
 // MOUSE
 
 INTERNAL int GetMouseScrollVertical ()
