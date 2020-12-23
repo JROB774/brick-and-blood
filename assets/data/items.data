@@ -77,3 +77,11 @@ pickaxe
     recipe [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]
     stack 1
 }
+sword
+{
+    category tool
+    image [ 2 1 ]
+    color [ 207 198 184 ]
+    recipe [ [ sticks 3 ] [grass 2 ] [ rocks 4 ] ]
+    stack 1
+}
