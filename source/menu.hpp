@@ -2,7 +2,7 @@
 
 GLOBAL struct MenuState
 {
-    // ...
+    bool leaving;
 } gMenuState;
 
 INTERNAL void   InitMenu ();
