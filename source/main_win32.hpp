@@ -67,6 +67,7 @@
 #include "map.hpp"
 #include "menu.hpp"
 #include "game.hpp"
+#include "lose.hpp"
 #include "editor.hpp"
 #include "application.hpp"
 
@@ -95,5 +96,6 @@
 #include "map.cpp"
 #include "menu.cpp"
 #include "game.cpp"
+#include "lose.cpp"
 #include "editor.cpp"
 #include "application.cpp"

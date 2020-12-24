@@ -570,6 +570,12 @@ INTERNAL void UpdatePlayer ()
         float cy = roundf(p->draw.pos.y + (TILE_H/2) - (WINDOW_SCREEN_H/2));
         SetCameraTarget(cx,cy);
     }
+
+    // Go to the game over if the player dies.
+    if (gPlayer.health <= 0.0f)
+    {
+        StartLose();
+    }
 }
 
 INTERNAL void RenderPlayerHeadsUp ()

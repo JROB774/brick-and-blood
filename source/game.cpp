@@ -1,6 +1,7 @@
-INTERNAL void InitGame ()
+INTERNAL void StartGame ()
 {
-    InitLighting();
+    gApplication.state = APP_STATE_GAME;
+
     InitMap();
     InitPlayer();
 
@@ -8,12 +9,6 @@ INTERNAL void InitGame ()
     SetLightingIntensity(0);
 
     gGameState.turns = 0;
-}
-
-INTERNAL void QuitGame ()
-{
-    QuitMap();
-    QuitLighting();
 }
 
 INTERNAL void UpdateGame ()

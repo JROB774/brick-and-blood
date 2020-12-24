@@ -8,6 +8,7 @@ enum AppState
 {
     APP_STATE_MENU,
     APP_STATE_GAME,
+    APP_STATE_LOSE,
     APP_STATE_TOTAL
 };
 

@@ -1,11 +1,7 @@
-INTERNAL void InitMenu ()
+INTERNAL void StartMenu ()
 {
+    gApplication.state = APP_STATE_MENU;
     gMenuState.leaving = false;
-}
-
-INTERNAL void QuitMenu ()
-{
-    // Nothing...
 }
 
 INTERNAL void UpdateMenu ()
@@ -20,7 +16,7 @@ INTERNAL void UpdateMenu ()
         if (IsFadeToDone())
         {
             FadeFrom(SDLColorToColor({ 38,13,28,255 }), 10);
-            gApplication.state = APP_STATE_GAME;
+            StartGame();
         }
     }
 }

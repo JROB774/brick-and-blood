@@ -4,8 +4,6 @@ INTERNAL void InitApplication ()
 {
     SDL_ShowCursor(SDL_DISABLE);
 
-    gApplication.state = APP_STATE_MENU;
-
     gApplication.debug = false;
     gApplication.editor = false;
 
@@ -13,21 +11,19 @@ INTERNAL void InitApplication ()
     InitEntities();
     InitTiles();
     InitItems();
-
     InitFade();
-
-    InitGame();
-    InitMenu();
+    InitLighting();
     InitEditor();
+
+    StartMenu();
 
     FadeFrom(SDLColorToColor({ 38,13,28,255 }), 2);
 }
 
 INTERNAL void QuitApplication ()
 {
+    QuitLighting();
     QuitEditor();
-    QuitMenu();
-    QuitGame();
 }
 
 // Debug commands that can be called using the F1-12 keys in a debug build.
@@ -75,6 +71,7 @@ INTERNAL void UpdateApplication (float dt)
         {
             case (APP_STATE_MENU): UpdateMenu(); break;
             case (APP_STATE_GAME): UpdateGame(); break;
+            case (APP_STATE_LOSE): UpdateLose(); break;
         }
 
         UpdateCamera();
@@ -94,6 +91,7 @@ INTERNAL void RenderApplication (float dt)
         {
             case (APP_STATE_MENU): RenderMenu(); break;
             case (APP_STATE_GAME): RenderGame(); break;
+            case (APP_STATE_LOSE): RenderLose(); break;
         }
 
         RenderFade();

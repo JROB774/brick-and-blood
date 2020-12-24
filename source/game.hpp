@@ -9,7 +9,6 @@ GLOBAL struct GameState
     int turns;
 } gGameState;
 
-INTERNAL void   InitGame ();
-INTERNAL void   QuitGame ();
+INTERNAL void  StartGame ();
 INTERNAL void UpdateGame ();
 INTERNAL void RenderGame ();
