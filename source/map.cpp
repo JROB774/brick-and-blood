@@ -88,6 +88,12 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y, std::string state_
         }
     }
 
+    // Don't spawn an entity out of the map bounds.
+    if (x < 0 || x >= WORLD_W_IN_TILES || y < 0 || y >= WORLD_H_IN_TILES)
+    {
+        return;
+    }
+
     // If the specified base type can't be found then we don't create an entity.
     if (!gEntities.count(type))
     {

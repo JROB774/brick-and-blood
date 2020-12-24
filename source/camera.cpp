@@ -18,12 +18,30 @@ INTERNAL void UpdateCamera ()
 
 INTERNAL void SetCameraTarget (float x, float y)
 {
+    // Lock the camera within the map boundaries and then set its position.
+    float xmax = (float)((WORLD_W_IN_TILES * TILE_W) - WINDOW_SCREEN_W);
+    float ymax = (float)((WORLD_H_IN_TILES * TILE_H) - WINDOW_SCREEN_H);
+
+    if (x < 0)    x = 0;
+    if (y < 0)    y = 0;
+    if (x > xmax) x = xmax;
+    if (y > ymax) y = ymax;
+
     gCamera.target_x = roundf(x);
     gCamera.target_y = roundf(y);
 }
 
 INTERNAL void SetCamera (float x, float y)
 {
+    // Lock the camera within the map boundaries and then set its position.
+    float xmax = (float)((WORLD_W_IN_TILES * TILE_W) - WINDOW_SCREEN_W);
+    float ymax = (float)((WORLD_H_IN_TILES * TILE_H) - WINDOW_SCREEN_H);
+
+    if (x < 0)    x = 0;
+    if (y < 0)    y = 0;
+    if (x > xmax) x = xmax;
+    if (y > ymax) y = ymax;
+
     gCamera.x        = roundf(x);
     gCamera.y        = roundf(y);
     gCamera.target_x = roundf(x);
