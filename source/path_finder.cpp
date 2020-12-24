@@ -24,7 +24,8 @@ INTERNAL void CheckPathFrontierNeighbor (PathFinder& path_finder, PathPoint curr
         PathPoint dir = { PATH_FINDER_DIR_NONE, PATH_FINDER_DIR_NONE };
         // Make sure we do not bother checking and adding solid tiles to the node mpa.
         Tile* tile = MapGetTileAtPos(current.x+xoff,current.y+yoff);
-        if (!tile || !tile->solid)
+        // Entity* entity = MapGetEntityAtPos(current.x+xoff,current.y+yoff);
+        if (/*(!entity || entity->type == "player") &&*/ (!tile || !tile->solid))
         {
             path_finder.frontier.push_back({ current.x+xoff, current.y+yoff });
             dir = { current.x, current.y };
@@ -34,7 +35,7 @@ INTERNAL void CheckPathFrontierNeighbor (PathFinder& path_finder, PathPoint curr
     }
 }
 
-INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end)
+INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end, bool cardinal, bool diagonal)
 {
     // Creates a new path-finder to create a path from start to end.
     PathFinder path_finder;
@@ -49,11 +50,20 @@ INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end)
         PathPoint current = path_finder.frontier[0];
         path_finder.frontier.erase(path_finder.frontier.begin());
 
-        // we do not want to attempt to access outside of the map bounds.
-        if (current.y > 0                 ) CheckPathFrontierNeighbor(path_finder, current,  0,-1);
-        if (current.x < WORLD_W_IN_TILES-1) CheckPathFrontierNeighbor(path_finder, current,  1, 0);
-        if (current.y < WORLD_H_IN_TILES-1) CheckPathFrontierNeighbor(path_finder, current,  0, 1);
-        if (current.x > 0                 ) CheckPathFrontierNeighbor(path_finder, current, -1, 0);
+        if (cardinal)
+        {
+            CheckPathFrontierNeighbor(path_finder, current,  0,-1);
+            CheckPathFrontierNeighbor(path_finder, current,  1, 0);
+            CheckPathFrontierNeighbor(path_finder, current,  0, 1);
+            CheckPathFrontierNeighbor(path_finder, current, -1, 0);
+        }
+        if (diagonal)
+        {
+            CheckPathFrontierNeighbor(path_finder, current,  1,-1);
+            CheckPathFrontierNeighbor(path_finder, current,  1, 1);
+            CheckPathFrontierNeighbor(path_finder, current, -1, 1);
+            CheckPathFrontierNeighbor(path_finder, current, -1,-1);
+        }
 
         // Break early if we found our destination.
         if (current == end) break;

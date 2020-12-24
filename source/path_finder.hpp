@@ -35,4 +35,4 @@ struct PathFinder
     PathPoint end;
 };
 
-INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end);
+INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end, bool cardinal = true, bool diagonal = true);
