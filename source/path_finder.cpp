@@ -24,8 +24,8 @@ INTERNAL void CheckPathFrontierNeighbor (PathFinder& path_finder, PathPoint curr
         PathPoint dir = { PATH_FINDER_DIR_NONE, PATH_FINDER_DIR_NONE };
         // Make sure we do not bother checking and adding solid tiles to the node mpa.
         Tile* tile = MapGetTileAtPos(current.x+xoff,current.y+yoff);
-        // Entity* entity = MapGetEntityAtPos(current.x+xoff,current.y+yoff);
-        if (/*(!entity || entity->type == "player") &&*/ (!tile || !tile->solid))
+        Entity* entity = MapGetEntityAtPos(current.x+xoff,current.y+yoff);
+        if ((!entity || entity->type == "player") && (!tile || !tile->solid))
         {
             path_finder.frontier.push_back({ current.x+xoff, current.y+yoff });
             dir = { current.x, current.y };
@@ -50,6 +50,14 @@ INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end, bool c
         PathPoint current = path_finder.frontier[0];
         path_finder.frontier.erase(path_finder.frontier.begin());
 
+        // If we go out of the path finding bounds we just give up.
+        if (current.x < (start.x-20) || current.x > (start.x+20) ||
+            current.y < (start.y-20) || current.y > (start.y+20))
+        {
+            return std::move(path);
+        }
+
+        // Expand the frontier in the desired directions to search.
         if (cardinal)
         {
             CheckPathFrontierNeighbor(path_finder, current,  0,-1);

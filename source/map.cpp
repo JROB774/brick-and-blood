@@ -348,7 +348,10 @@ INTERNAL void InitMap ()
     // @Temporary: Spawn a goblin for testing!!!
     // @Temporary: Spawn a goblin for testing!!!
     #if defined(BUILD_DEBUG)
-    MapSpawnEntity("goblin",px-10,py);
+    for (int i=0; i<30; ++i)
+    {
+        MapSpawnEntity("goblin",px+RandomRange(-10,10),py+RandomRange(-10,10));
+    }
     #endif // BUILD_DEBUG
 
     // Spawn in some initial entities.
