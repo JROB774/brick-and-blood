@@ -5,6 +5,13 @@ raw_meat
     image [ 0 0 ]
     color [ 230 72 46 ]
 }
+meat
+{
+    pretty_name "Meat"
+    category food
+    image [ 0 0 ]
+    color [ 191 121 88 ]
+}
 
 wood
 {
@@ -13,7 +20,6 @@ wood
     image [ 1 0 ]
     color [ 191 121 88 ]
 }
-
 rocks
 {
     pretty_name "Rocks"
@@ -22,7 +28,6 @@ rocks
     color [ 207 198 184 ]
     place rocks
 }
-
 sticks
 {
     pretty_name "Sticks"
@@ -30,7 +35,6 @@ sticks
     image [ 3 0 ]
     color [ 191 121 88 ]
 }
-
 grass
 {
     pretty_name "Grass"
@@ -38,6 +42,13 @@ grass
     image [ 4 0 ]
     color [ 56 217 115 ]
     place grass
+}
+coal
+{
+    pretty_name "Coal"
+    category nature
+    image [ 4 1 ]
+    color [ 15 15 28 ]
 }
 
 planks
@@ -49,7 +60,6 @@ planks
     place planks
     recipe [ [ wood 6 ] ]
 }
-
 fence
 {
     pretty_name "Fence"
@@ -94,5 +104,16 @@ sword
     image [ 2 1 ]
     color [ 207 198 184 ]
     recipe [ [ sticks 3 ] [grass 2 ] [ rocks 4 ] ]
+    stack 1
+}
+
+fire
+{
+    pretty_name "Fire"
+    category light
+    image [ 3 1 ]
+    color [ 230 72 46 ]
+    place fire
+    recipe [ [ wood 10 ] [ sticks 10 ] [ rocks 10 ] ]
     stack 1
 }

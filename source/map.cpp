@@ -34,6 +34,7 @@ INTERNAL void MapPlaceTile (std::string type, int x, int y)
     t->type = type;
     t->hits = base.hits;
     t->solid = base.solid;
+    t->light = base.light;
     t->active = true;
     t->draw.clip.x = base.image.x*TILE_W;
     t->draw.clip.y = base.image.y*TILE_H;
@@ -63,6 +64,7 @@ INTERNAL void MapSpawnTile (std::string type, int x, int y)
     t->type = type;
     t->hits = base.hits;
     t->solid = base.solid;
+    t->light = base.light;
     t->active = true;
     t->draw.clip.x = base.image.x*TILE_W;
     t->draw.clip.y = base.image.y*TILE_H;

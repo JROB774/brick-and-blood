@@ -169,7 +169,6 @@ planks
     drops [ [ planks 1 1 ] ]
     tools [ axe ]
 }
-
 fence
 {
     pretty_name "Fence"
@@ -181,4 +180,17 @@ fence
     particle_break brown_break
     drops [ [ fence 1 1 ] ]
     tools [ axe ]
+}
+
+fire
+{
+    pretty_name "Fire"
+    hits 5
+    image [ 2 2 ]
+    color [ 230 72 46 ]
+    solid true
+    light true
+    particle_hit red_hit
+    particle_break red_break
+    drops [ [ wood 1 3 ] [ sticks 2 4 ] [ coal 1 2 ] ]
 }

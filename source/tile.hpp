@@ -19,6 +19,8 @@ struct Tile
     int hits;
 
     bool solid;
+    bool light;
+
     bool active;
 
     struct
@@ -56,6 +58,7 @@ struct TileBase
     struct { int x,y; } image;
     Vec4 color;
     bool solid;
+    bool light;
     std::vector<std::string> particle_hit;
     std::vector<std::string> particle_break;
     std::vector<std::string> sound_hit;
