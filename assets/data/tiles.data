@@ -7,7 +7,7 @@ tree0
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree1
@@ -19,7 +19,7 @@ tree1
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree2
@@ -31,7 +31,7 @@ tree2
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree3
@@ -43,7 +43,7 @@ tree3
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree4
@@ -55,7 +55,7 @@ tree4
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree5
@@ -67,7 +67,7 @@ tree5
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree6
@@ -79,7 +79,7 @@ tree6
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 tree7
@@ -91,7 +91,7 @@ tree7
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 3 6 ] [ sticks 0 2 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
     tools [ axe ]
 }
 
