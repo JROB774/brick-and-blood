@@ -194,6 +194,8 @@ INTERNAL void InitPlayer ()
 {
     gPlayer.state = PLAYER_STATE_PLAY;
 
+    gPlayer.hunger = PLAYER_MAX_HUNGER;
+
     gPlayer.input_timer = 0.0f;
     gPlayer.update = false;
 
@@ -491,18 +493,37 @@ INTERNAL void RenderPlayerHeadsUp ()
 
     if (gPlayer.state != PLAYER_STATE_INVENTORY)
     {
-        constexpr SDL_Rect MAIN_CLIP = { 0,0,140,22 };
+        const SDL_Rect MAIN_CLIP = { 0,0,156,22 };
 
-        SDL_Rect heart_clip = { 7,30,8,6 };
-        // @Incomplete: Shrink based on the player's current health...
+        const SDL_Rect HEALTH_CLIP = { 0,22,16,16 };
+        const SDL_Rect HUNGER_CLIP = { 16,22,16,16 };
 
-        DrawFill(1,1,140,22, HEADSUP_BG_COLOR);
+        DrawFill(1,1,156,22, HEADSUP_BG_COLOR);
 
-        DrawImage("headsup", 1,1, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &MAIN_CLIP);
-        DrawImage("headsup", 8,9, {1,1}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &heart_clip);
+        DrawImage("headsup", 1, 1, {1.0f,1.0f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR,   &MAIN_CLIP);
+        DrawImage("headsup", 4, 4, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &HEALTH_CLIP);
+        DrawImage("headsup", 4,12, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &HUNGER_CLIP);
+
+        std::string health = "0";
+        std::string hunger = std::to_string(gPlayer.hunger);
+
+        Entity* p = MapGetFirstEntityOfType("player");
+        if (p) health = std::to_string(p->health);
+
+        float tx,ty;
+
+        tx = 14 + ((float)(3 - health.length()) * 8);
+        ty = 4;
+
+        DrawText("main", health, tx,ty, HEADSUP_FG_COLOR);
+
+        tx = 14 + ((float)(3 - hunger.length()) * 8);
+        ty = 12;
+
+        DrawText("main", hunger, tx,ty, HEADSUP_FG_COLOR);
 
         // Draw the items in the hotbar.
-        float x = 24;
+        float x = 40;
         float y = 6;
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
@@ -520,8 +541,8 @@ INTERNAL void RenderPlayerHeadsUp ()
 
                 // Draw the quantity.
                 std::string quant = std::to_string(item->amount);
-                float tx = x+4-((GetTextWidth("main",quant)*0.5f)/2);
-                float ty = y+10;
+                tx = x+4-((GetTextWidth("main",quant)*0.5f)/2);
+                ty = y+10;
                 DrawText("main", StrUpper(quant), tx,ty, HEADSUP_BG_COLOR, 0.5f);
             }
 

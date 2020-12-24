@@ -3,6 +3,9 @@
 GLOBAL constexpr size_t HOTBAR_ITEM_EMPTY = 0;
 GLOBAL constexpr int HOTBAR_SIZE = 9;
 
+GLOBAL constexpr int PLAYER_MAX_HEALTH = 100;
+GLOBAL constexpr int PLAYER_MAX_HUNGER = 100;
+
 enum PlayerState
 {
     PLAYER_STATE_PLAY,
@@ -25,6 +28,9 @@ struct InventoryItem
 GLOBAL struct Player
 {
     PlayerState state;
+
+    // Health isn't stored, that is handled by the avatar entity!
+    int hunger;
 
     float input_timer;
     bool update;
