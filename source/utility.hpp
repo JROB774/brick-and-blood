@@ -121,6 +121,8 @@ INTERNAL float SinRange (float min, float max, float t);
 
 INTERNAL float RoundToMultiple (float num, float multiple);
 
+INTERNAL int Distance (int x1, int y1, int x2, int y2);
+
 // Random functions.
 
 INTERNAL void  RandomSeed       (int seed = -1);

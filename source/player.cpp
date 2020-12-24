@@ -77,16 +77,39 @@ INTERNAL void PlayerRefreshInventory ()
         // Check if new recipes can be made and add them to the list.
         for (auto& [name,item]: gItems)
         {
-            if (!item.recipe.empty())
+            if (!item.recipe.ingredients.empty())
             {
                 bool available = true;
-                for (auto& ingredient: item.recipe)
+                if (!item.recipe.equipment.empty()) // Some recipes require special equipment.
                 {
-                    InventoryItem* ii = GetInventoryItemByName(ingredient.type);
-                    if (!ii || ii->amount < ingredient.amount)
+                    available = false;
+                    auto tiles = MapGetAllLoadedTilesOfType(item.recipe.equipment);
+                    if (!tiles.empty())
                     {
-                        available = false;
-                        break;
+                        Entity* p = MapGetFirstEntityOfType("player");
+                        if (p) // We need the player to check distance!
+                        {
+                            for (auto& t: tiles) // Check how close and if in range of the player, the recipe is available.
+                            {
+                                if (abs(Distance(t->pos.x,t->pos.y, p->pos.x,p->pos.y)) <= EQUIPMENT_CRAFT_DISTANCE)
+                                {
+                                    available = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (available) // Check for the actual ingredients being present.
+                {
+                    for (auto& ingredient: item.recipe.ingredients)
+                    {
+                        InventoryItem* ii = GetInventoryItemByName(ingredient.type);
+                        if (!ii || ii->amount < ingredient.amount)
+                        {
+                            available = false;
+                            break;
+                        }
                     }
                 }
                 if (available)
@@ -380,7 +403,7 @@ INTERNAL void PlayerCraftItem (std::string item_name)
 
     // Remove the items that were used to craft.
     auto& recipe = GetItem(item_name).recipe;
-    for (auto& ingredient: recipe)
+    for (auto& ingredient: recipe.ingredients)
     {
         for (auto& item: gPlayer.inventory.items)
         {
@@ -708,9 +731,9 @@ INTERNAL void RenderPlayerInventory ()
                 // Write out the recipe.
                 float rx = (x+127)-INVENTORY_TEXT_OFF;
                 auto& recipe = GetItem(item).recipe;
-                for (int i=(int)recipe.size()-1; i>=0; --i) // We render from right to left.
+                for (int i=(int)recipe.ingredients.size()-1; i>=0; --i) // We render from right to left.
                 {
-                    ItemIngredient ingredient = recipe.at(i);
+                    ItemIngredient ingredient = recipe.ingredients.at(i);
                     std::string quant = std::to_string(ingredient.amount);
                     rx -= GetTextWidth("main",quant);
                     DrawText("main", StrUpper(quant), rx,y, color);

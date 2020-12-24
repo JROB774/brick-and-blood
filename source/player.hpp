@@ -1,5 +1,7 @@
 #pragma once
 
+GLOBAL constexpr int EQUIPMENT_CRAFT_DISTANCE = 5;
+
 GLOBAL constexpr size_t HOTBAR_ITEM_EMPTY = 0;
 GLOBAL constexpr int HOTBAR_SIZE = 9;
 

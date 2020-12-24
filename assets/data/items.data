@@ -15,6 +15,11 @@ meat
     color [ 191 121 88 ]
     hunger 10
     stack 12
+    recipe
+    {
+        equipment fire
+        ingredients [ [ raw_meat 1 ] ]
+    }
 }
 
 wood
@@ -62,7 +67,10 @@ planks
     image [ 5 0 ]
     color [ 191 121 88 ]
     place planks
-    recipe [ [ wood 6 ] ]
+    recipe
+    {
+        ingredients [ [ wood 6 ] ]
+    }
 }
 fence
 {
@@ -71,7 +79,10 @@ fence
     image [ 6 0 ]
     color [ 191 121 88 ]
     place fence
-    recipe [ [ wood 3 ] [ sticks 1 ] ]
+    recipe
+    {
+        ingredients [ [ wood 3 ] [ sticks 1 ] ]
+    }
 }
 
 axe
@@ -80,8 +91,11 @@ axe
     category tool
     image [ 7 0 ]
     color [ 207 198 184 ]
-    recipe [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
     stack 1
+    recipe
+    {
+        ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
+    }
 }
 shovel
 {
@@ -89,8 +103,11 @@ shovel
     category tool
     image [ 0 1 ]
     color [ 207 198 184 ]
-    recipe [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
     stack 1
+    recipe
+    {
+        ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
+    }
 }
 pickaxe
 {
@@ -98,8 +115,11 @@ pickaxe
     category tool
     image [ 1 1 ]
     color [ 207 198 184 ]
-    recipe [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]
     stack 1
+    recipe
+    {
+        ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]
+    }
 }
 sword
 {
@@ -107,8 +127,11 @@ sword
     category tool
     image [ 2 1 ]
     color [ 207 198 184 ]
-    recipe [ [ sticks 3 ] [grass 2 ] [ rocks 4 ] ]
     stack 1
+    recipe
+    {
+        ingredients [ [ sticks 3 ] [grass 2 ] [ rocks 4 ] ]
+    }
 }
 
 fire
@@ -118,6 +141,9 @@ fire
     image [ 3 1 ]
     color [ 230 72 46 ]
     place fire
-    recipe [ [ wood 10 ] [ sticks 10 ] [ rocks 10 ] ]
     stack 1
+    recipe
+    {
+        ingredients [ [ wood 10 ] [ sticks 10 ] [ rocks 10 ] ]
+    }
 }

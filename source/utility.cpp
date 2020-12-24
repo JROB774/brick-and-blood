@@ -153,6 +153,11 @@ INTERNAL float RoundToMultiple (float num, float multiple)
     else return num + multiple - rem;
 }
 
+INTERNAL int Distance (int x1, int y1, int x2, int y2)
+{
+    return (int)round(sqrt(pow(x2-x1,2)+pow(y2-y1,2)));
+}
+
 GLOBAL std::random_device gRandomDevice;
 GLOBAL std::mt19937 gRandomGenerator(gRandomDevice());
 

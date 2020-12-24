@@ -58,12 +58,16 @@ INTERNAL void InitItems ()
 
         if (data.Contains("recipe"))
         {
-            for (int i=0; i<data["recipe"].size(); ++i)
+            base.recipe.equipment = data["recipe"]["equipment"].String("");
+            if (data["recipe"].Contains("ingredients"))
             {
-                ItemIngredient ingredient;
-                ingredient.type = data["recipe"][i][0].String();
-                ingredient.amount = data["recipe"][i][1].Int();
-                base.recipe.push_back(ingredient);
+                for (int i=0; i<data["recipe"]["ingredients"].size(); ++i)
+                {
+                    ItemIngredient ingredient;
+                    ingredient.type = data["recipe"]["ingredients"][i][0].String();
+                    ingredient.amount = data["recipe"]["ingredients"][i][1].Int();
+                    base.recipe.ingredients.push_back(ingredient);
+                }
             }
         }
 

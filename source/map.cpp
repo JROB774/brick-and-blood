@@ -32,6 +32,7 @@ INTERNAL void MapPlaceTile (std::string type, int x, int y)
     if (!t) return;
 
     t->type = type;
+    t->pos = { x,y };
     t->hits = base.hits;
     t->solid = base.solid;
     t->light = base.light;
@@ -63,6 +64,7 @@ INTERNAL void MapSpawnTile (std::string type, int x, int y)
     if (!t) return;
 
     t->type = type;
+    t->pos = { x,y };
     t->hits = base.hits;
     t->solid = base.solid;
     t->light = base.light;
@@ -215,6 +217,46 @@ INTERNAL Entity* MapGetFirstEntityOfType (std::string type)
         }
     }
     return entity;
+}
+
+INTERNAL std::vector<Tile*> MapGetAllLoadedTilesOfType (std::string type)
+{
+    std::vector<Tile*> tiles;
+
+    // We use the culled/loaded area for retrieving the tiles.
+    int minx = 0;
+    int miny = 0;
+    int maxx = 0;
+    int maxy = 0;
+
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (!p) return tiles;
+
+    int cx = p->pos.x / CHUNK_W;
+    int cy = p->pos.y / CHUNK_H;
+
+    minx = std::clamp(cx-3, 0, WORLD_W-1);
+    miny = std::clamp(cy-3, 0, WORLD_H-1);
+    maxx = std::clamp(cx+3, 0, WORLD_W-1);
+    maxy = std::clamp(cy+3, 0, WORLD_H-1);
+
+    for (int iy=miny; iy<=maxy; ++iy)
+    {
+        for (int ix=minx; ix<=maxx; ++ix)
+        {
+            Chunk& chunk = gMap.chunks[iy][ix];
+            for (int ty=0; ty<CHUNK_H; ++ty)
+            {
+                for (int tx=0; tx<CHUNK_W; ++tx)
+                {
+                    Tile& t = chunk.tiles[ty][tx];
+                    if (t.type == type) tiles.push_back(&t);
+                }
+            }
+        }
+    }
+
+    return tiles;
 }
 
 INTERNAL void MapRandomlySpawnEntities ()

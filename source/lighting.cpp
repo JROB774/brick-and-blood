@@ -10,8 +10,8 @@ GLOBAL struct Lighting
 
 INTERNAL void InitLighting ()
 {
-    gLighting.target_intensity = 1.0f;
-    gLighting.intensity = 1.0f;
+    gLighting.target_intensity = 0.0f;
+    gLighting.intensity = 0.0f;
 
     gLighting.offset = 0.0f;
 

@@ -16,6 +16,8 @@ struct Tile
 {
     std::string type;
 
+    struct { int x,y; } pos;
+
     int hits;
 
     bool solid;
