@@ -54,6 +54,7 @@ INTERNAL void InitItems ()
         }
 
         base.place = data["place"].String("");
+        base.hunger = (float)data["hunger"].Number(0.0);
 
         if (data.Contains("recipe"))
         {

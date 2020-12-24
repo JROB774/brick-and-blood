@@ -309,10 +309,16 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
             }
             else
             {
-                // Attempt to place whatever we have equipped.
+                // Attempt to use whatever we have equipped.
                 if (targetx != e.pos.x || targety != e.pos.y)
                 {
-                    PlayerPlaceSelectedItem(targetx,targety);
+                    std::string item_name = PlayerGetEquippedItemName();
+                    if (!item_name.empty())
+                    {
+                        std::string category = GetItem(item_name).category;
+                        if (category == "food") PlayerEatSelectedItem();
+                        else PlayerPlaceSelectedItem(targetx,targety); // Attempt to place.
+                    }
                 }
             }
         }

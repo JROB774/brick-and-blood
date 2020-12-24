@@ -6,7 +6,14 @@ GLOBAL constexpr int HOTBAR_SIZE = 9;
 GLOBAL constexpr float PLAYER_MAX_HEALTH = 100.0f;
 GLOBAL constexpr float PLAYER_MAX_HUNGER = 100.0f;
 
+GLOBAL constexpr float PLAYER_HUNGER_GREAT = 98.0f;
+GLOBAL constexpr float PLAYER_HUNGER_HIGH = 90.0f;
+GLOBAL constexpr float PLAYER_HUNGER_LOW = 30.0f;
+GLOBAL constexpr float PLAYER_HUNGER_CRITICAL = 5.0f;
+
 GLOBAL constexpr float PLAYER_HUNGER_DECREMENT = 0.1f;
+GLOBAL constexpr float PLAYER_HEALTH_INCREMENT = 0.2f;
+GLOBAL constexpr float PLAYER_HEALTH_DECREMENT = 0.1f;
 
 enum PlayerState
 {
@@ -71,6 +78,8 @@ GLOBAL struct Player
 INTERNAL std::string PlayerGetEquippedItemName ();
 
 INTERNAL void PlayerPickUpItem (std::string name, int amount);
+
+INTERNAL void PlayerEatSelectedItem ();
 INTERNAL void PlayerPlaceSelectedItem (int x, int y);
 
 INTERNAL void   InitPlayer ();

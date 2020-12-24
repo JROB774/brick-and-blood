@@ -15,6 +15,7 @@ struct ItemBase
     SDL_Rect clip;
     Vec4 color;
     std::string place;
+    float hunger;
     std::vector<ItemIngredient> recipe;
     int stack;
 };

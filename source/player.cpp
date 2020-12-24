@@ -165,6 +165,29 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
     PlayerRefreshInventory();
 }
 
+INTERNAL void PlayerEatSelectedItem ()
+{
+    if (gPlayer.hunger >= PLAYER_MAX_HUNGER) return; // Do not eat if not hungry...
+
+    size_t item_id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
+    if (item_id == HOTBAR_ITEM_EMPTY) return;
+
+    InventoryItem* item = GetInventoryItemByID(item_id);
+    if (item)
+    {
+        float hunger = GetItem(item->name).hunger;
+        if (hunger > 0)
+        {
+            gPlayer.hunger = std::clamp(gPlayer.hunger+hunger, 0.0f,PLAYER_MAX_HUNGER);
+            item->amount--;
+            if (item->amount <= 0)
+            {
+                PlayerRefreshInventory();
+            }
+        }
+    }
+}
+
 INTERNAL void PlayerPlaceSelectedItem (int x, int y)
 {
     size_t item_id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
@@ -294,10 +317,33 @@ INTERNAL void UpdatePlayerStatePlay ()
     if (IsKeyPressed(SDL_SCANCODE_8)) gPlayer.hotbar.selected_item = 7;
     if (IsKeyPressed(SDL_SCANCODE_9)) gPlayer.hotbar.selected_item = 8;
 
-    // If the player has performed an action then make them hungries.
+    // If the player has performed an action then make them hungry.
     if (gPlayer.update)
     {
         gPlayer.hunger -= PLAYER_HUNGER_DECREMENT;
+
+        // If their hunger is high then heal the player.
+        if (gPlayer.hunger >= PLAYER_HUNGER_GREAT)
+        {
+            gPlayer.health += PLAYER_HEALTH_INCREMENT*6;
+        }
+        else if (gPlayer.hunger >= PLAYER_HUNGER_HIGH)
+        {
+            gPlayer.health += PLAYER_HEALTH_INCREMENT;
+        }
+
+        // If their hunger is low then damage the player.
+        if (gPlayer.hunger <= PLAYER_HUNGER_LOW)
+        {
+            gPlayer.health -= PLAYER_HEALTH_DECREMENT;
+            if (gPlayer.hunger <= PLAYER_HUNGER_CRITICAL)
+            {
+                gPlayer.health -= PLAYER_HEALTH_DECREMENT*2;
+            }
+        }
+
+        gPlayer.hunger = std::clamp(gPlayer.hunger, 0.0f,PLAYER_MAX_HUNGER);
+        gPlayer.health = std::clamp(gPlayer.health, 0.0f,PLAYER_MAX_HEALTH);
     }
 }
 

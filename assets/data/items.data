@@ -4,6 +4,8 @@ raw_meat
     category food
     image [ 0 0 ]
     color [ 230 72 46 ]
+    hunger 3
+    stack 12
 }
 meat
 {
@@ -11,6 +13,8 @@ meat
     category food
     image [ 0 0 ]
     color [ 191 121 88 ]
+    hunger 10
+    stack 12
 }
 
 wood
