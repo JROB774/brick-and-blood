@@ -350,10 +350,10 @@ INTERNAL void RenderMap ()
         int cx = p->pos.x / CHUNK_W;
         int cy = p->pos.y / CHUNK_H;
 
-        minx = std::clamp(cx-2, 0, WORLD_W-1);
-        miny = std::clamp(cy-1, 0, WORLD_H-1);
-        maxx = std::clamp(cx+2, 0, WORLD_W-1);
-        maxy = std::clamp(cy+1, 0, WORLD_H-1);
+        minx = std::clamp(cx-3, 0, WORLD_W-1);
+        miny = std::clamp(cy-3, 0, WORLD_H-1);
+        maxx = std::clamp(cx+3, 0, WORLD_W-1);
+        maxy = std::clamp(cy+3, 0, WORLD_H-1);
     }
 
     for (int iy=miny; iy<=maxy; ++iy)

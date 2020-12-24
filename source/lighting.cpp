@@ -1,5 +1,6 @@
 GLOBAL struct Lighting
 {
+    float target_intensity;
     float intensity;
     float offset;
     SDL_Texture* mask;
@@ -9,7 +10,9 @@ GLOBAL struct Lighting
 
 INTERNAL void InitLighting ()
 {
+    gLighting.target_intensity = 1.0f;
     gLighting.intensity = 1.0f;
+
     gLighting.offset = 0.0f;
 
     gLighting.enabled = false;
@@ -38,6 +41,9 @@ INTERNAL void QuitLighting ()
 
 INTERNAL void BeginLighting ()
 {
+    // Smoothly lerp the lighting intensity.
+    gLighting.intensity = Lerp(gLighting.intensity, gLighting.target_intensity, gApplication.delta_time*10.0f);
+
     // Fill the lighting mask with ambient shadow.
     U8 intensity = (U8)((1.0f-gLighting.intensity)*255.0f);
     SDL_SetRenderTarget(gWindow.renderer, gLighting.mask);
@@ -62,7 +68,7 @@ INTERNAL void EnableLighting (bool enable)
 
 INTERNAL void SetLightingIntensity (float intensity)
 {
-    gLighting.intensity = std::clamp(intensity, 0.0f,1.0f);
+    gLighting.target_intensity = std::clamp(intensity, 0.0f,1.0f);
 }
 
 INTERNAL void DrawLight (float x, float y, float r)

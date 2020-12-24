@@ -317,11 +317,14 @@ INTERNAL void UpdatePlayerStatePlay ()
     if (IsKeyPressed(SDL_SCANCODE_8)) gPlayer.hotbar.selected_item = 7;
     if (IsKeyPressed(SDL_SCANCODE_9)) gPlayer.hotbar.selected_item = 8;
 
-    // If the player has performed an action then make them hungry.
+    // Handle code on the player performing an action / updating.
     if (gPlayer.update)
     {
-        gPlayer.hunger -= PLAYER_HUNGER_DECREMENT;
+        // Increment the game's turn counter.
+        gGameState.turns++;
 
+        // If the player has performed an action then make them hungry.
+        gPlayer.hunger -= PLAYER_HUNGER_DECREMENT;
         // If their hunger is high then heal the player.
         if (gPlayer.hunger >= PLAYER_HUNGER_GREAT)
         {
@@ -331,7 +334,6 @@ INTERNAL void UpdatePlayerStatePlay ()
         {
             gPlayer.health += PLAYER_HEALTH_INCREMENT;
         }
-
         // If their hunger is low then damage the player.
         if (gPlayer.hunger <= PLAYER_HUNGER_LOW)
         {
@@ -339,9 +341,12 @@ INTERNAL void UpdatePlayerStatePlay ()
             if (gPlayer.hunger <= PLAYER_HUNGER_CRITICAL)
             {
                 gPlayer.health -= PLAYER_HEALTH_DECREMENT*2;
+                if (gPlayer.hunger <= 0.0f)
+                {
+                    gPlayer.health -= PLAYER_HEALTH_DECREMENT*2;
+                }
             }
         }
-
         gPlayer.hunger = std::clamp(gPlayer.hunger, 0.0f,PLAYER_MAX_HUNGER);
         gPlayer.health = std::clamp(gPlayer.health, 0.0f,PLAYER_MAX_HEALTH);
     }
@@ -569,12 +574,9 @@ INTERNAL void RenderPlayerHeadsUp ()
 
         tx = 14 + ((float)(3 - health.length()) * 8);
         ty = 4;
-
         DrawText("main", health, tx,ty, HEADSUP_FG_COLOR);
-
         tx = 14 + ((float)(3 - hunger.length()) * 8);
         ty = 12;
-
         DrawText("main", hunger, tx,ty, HEADSUP_FG_COLOR);
 
         // Draw the items in the hotbar.
