@@ -16,8 +16,7 @@ void main_loop ()
         SetFullscreen(!IsFullscreen());
     }
 
-    ClearWindow(Vec4(1,1,1,1));
-    SetViewport();
+    ClearWindow({ 0,0,0,1 });
 
     UpdateApplication(gTimer.delta_time);
     RenderApplication(gTimer.delta_time);

@@ -53,7 +53,7 @@ struct Entity
     } draw;
 
     // For sorting entities.
-    bool operator < (const Entity& e)
+    bool operator< (const Entity& e) const
     {
         return (initiative < e.initiative);
     }

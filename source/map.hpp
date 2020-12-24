@@ -4,8 +4,8 @@ GLOBAL constexpr int TILE_W  =  16; // In pixels!
 GLOBAL constexpr int TILE_H  =  16;
 GLOBAL constexpr int CHUNK_W =  10; // In tiles!
 GLOBAL constexpr int CHUNK_H =   9;
-GLOBAL constexpr int WORLD_W = 256; // In chunks!
-GLOBAL constexpr int WORLD_H = 256;
+GLOBAL constexpr int WORLD_W =   8; // In chunks!
+GLOBAL constexpr int WORLD_H =   8;
 
 GLOBAL constexpr int WORLD_W_IN_TILES = WORLD_W*CHUNK_W;
 GLOBAL constexpr int WORLD_H_IN_TILES = WORLD_H*CHUNK_H;
