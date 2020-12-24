@@ -21,10 +21,13 @@ struct Entity
     std::string type;
 
     std::string faction;
+    std::string state;
 
     int initiative; // Controls what entity acts first.
     int health;
+    int damage;
 
+    std::string behavior_type;
     EntityBehavior behavior;
 
     struct { int x,y; } pos, old_pos;
@@ -65,9 +68,11 @@ struct EntityDrops
 struct EntityBase
 {
     std::string faction;
+    std::string state;
     int initiative;
     int health;
     int damage;
+    std::string behavior_type;
     EntityBehavior behavior;
     struct { int x,y; } image;
     Vec4 color;
@@ -94,11 +99,15 @@ INTERNAL void DamageEntity (Entity& e);
 // BEHAVIORS
 //
 
-INTERNAL void Entity_BehaviorPlayer (Entity& e);
-INTERNAL void Entity_BehaviorWander (Entity& e);
+INTERNAL void Entity_BehaviorPlayer     (Entity& e);
+INTERNAL void Entity_BehaviorPassive    (Entity& e);
+INTERNAL void Entity_BehaviorAggressive (Entity& e);
+INTERNAL void Entity_BehaviorAggroOnHit (Entity& e);
 
 GLOBAL const std::map<std::string,EntityBehavior> ENTITY_BEHAVIOR
 {
-    { "BehaviorPlayer", Entity_BehaviorPlayer },
-    { "BehaviorWander", Entity_BehaviorWander },
+    { "BehaviorPlayer",     Entity_BehaviorPlayer     },
+    { "BehaviorPassive",    Entity_BehaviorPassive    },
+    { "BehvaiorAggressive", Entity_BehaviorAggressive },
+    { "BehaviorAggroOnHit", Entity_BehaviorAggroOnHit }
 };

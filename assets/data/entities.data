@@ -13,7 +13,7 @@ chicken
     faction animal
     initiative 2
     health 1
-    behavior BehaviorWander
+    behavior BehaviorPassive
     image [ 1 0 ]
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
@@ -25,7 +25,7 @@ cow
     faction animal
     initiative 2
     health 3
-    behavior BehaviorWander
+    behavior BehaviorPassive
     image [ 2 0 ]
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
@@ -37,7 +37,7 @@ horse
     faction animal
     initiative 2
     health 4
-    behavior BehaviorWander
+    behavior BehaviorPassive
     image [ 3 0 ]
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
@@ -49,7 +49,7 @@ pig
     faction animal
     initiative 2
     health 3
-    behavior BehaviorWander
+    behavior BehaviorPassive
     image [ 4 0 ]
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
@@ -62,7 +62,7 @@ pig
 #     faction animal
 #     initiative 2
 #     health 2
-#     behavior BehaviorWander
+#     behavior BehaviorPassive
 #     image [ 5 0 ]
 #     color [ 207 198 194 ]
 #     particle_hit [ blood0_hit blood1_hit ]
@@ -74,10 +74,23 @@ pig
 #     faction animal
 #     initiative 2
 #     health 2
-#     behavior BehaviorWander
+#     behavior BehaviorPassive
 #     image [ 6 0 ]
 #     color [ 207 198 194 ]
 #     particle_hit [ blood0_hit blood1_hit ]
 #     particle_dead [ blood0_dead blood1_dead ]
 #     drops [ [ meat 1 2 ] ]
 # }
+
+goblin
+{
+    faction monster
+    state passive
+    initiative 1
+    health 4
+    behavior BehaviorAggroOnHit
+    image [ 7 0 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}

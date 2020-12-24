@@ -76,7 +76,7 @@ INTERNAL void MapSpawnTile (std::string type, int x, int y)
     t->draw.color.target = base.color;
 }
 
-INTERNAL void MapSpawnEntity (std::string type, int x, int y)
+INTERNAL void MapSpawnEntity (std::string type, int x, int y, std::string state_override)
 {
     // Check if we have space for entities. If we don't see if any entities can be removed.
     if (gMap.entities.size() >= MAX_ENTITIES)
@@ -109,9 +109,12 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y)
 
     e.type = type;
     e.faction = base.faction;
+    e.state = (state_override.empty()) ? base.state : state_override;
     e.initiative = base.initiative;
+    e.behavior_type = base.behavior_type;
     e.behavior = base.behavior;
     e.health = base.health;
+    e.damage = base.damage;
     e.pos.x = x;
     e.pos.y = y;
     e.old_pos.x = x;
@@ -285,6 +288,14 @@ INTERNAL void InitMap ()
     int px = (WORLD_W*CHUNK_W) / 2;
     int py = (WORLD_H*CHUNK_H) / 2;
     MapSpawnEntity("player",px,py);
+
+    // @Temporary: Spawn a goblin for testing!!!
+    // @Temporary: Spawn a goblin for testing!!!
+    // @Temporary: Spawn a goblin for testing!!!
+    // @Temporary: Spawn a goblin for testing!!!
+    #if defined(BUILD_DEBUG)
+    MapSpawnEntity("goblin",px+10,py);
+    #endif // BUILD_DEBUG
 
     // Spawn in some initial entities.
     MapRandomlySpawnEntities();

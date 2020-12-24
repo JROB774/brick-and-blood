@@ -36,15 +36,16 @@ INTERNAL void InitEntities ()
         EntityBase base = {};
 
         base.faction = data["faction"].String();
+        base.state = data["state"].String("");
         base.initiative = data["initiative"].Int(INT_MAX);
         base.health = data["health"].Int(ENTITY_INVINCIBLE);
         base.damage = data["damage"].Int(0);
 
-        std::string behavior = data["behavior"].String("none");
-        if (behavior != "none")
+        base.behavior_type = data["behavior"].String("none");
+        if (base.behavior_type != "none")
         {
-            if (ENTITY_BEHAVIOR.count(behavior)) base.behavior = ENTITY_BEHAVIOR.at(behavior);
-            else LOG_ERROR(ERR_MIN, "No known entity behavior: %s", behavior.c_str());
+            if (ENTITY_BEHAVIOR.count(base.behavior_type)) base.behavior = ENTITY_BEHAVIOR.at(base.behavior_type);
+            else LOG_ERROR(ERR_MIN, "No known entity behavior: %s", base.behavior_type.c_str());
         }
 
         if (data.Contains("image"))
@@ -231,6 +232,14 @@ INTERNAL void DamageEntity (Entity& e)
             }
         }
     }
+    // Handle the response based on behavior.
+    else
+    {
+        if (e.behavior_type == "BehaviorAggroOnHit")
+        {
+            e.state = "aggressive";
+        }
+    }
 }
 
 //
@@ -291,7 +300,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
     }
 }
 
-INTERNAL void Entity_BehaviorWander (Entity& e)
+INTERNAL void Entity_BehaviorPassive (Entity& e)
 {
     if (RandomRange(1,100) <= 25) // 25%
     {
@@ -311,4 +320,15 @@ INTERNAL void Entity_BehaviorWander (Entity& e)
         Entity* o = MapGetEntityAtPos(targetx,targety);
         if (!o) MoveEntity(e, targetx,targety);
     }
+}
+
+INTERNAL void Entity_BehaviorAggressive (Entity& e)
+{
+    // @Incomplete: ...
+}
+
+INTERNAL void Entity_BehaviorAggroOnHit (Entity& e)
+{
+    if (e.state == "passive") Entity_BehaviorPassive(e);
+    else if (e.state == "aggressive") Entity_BehaviorAggressive(e);
 }

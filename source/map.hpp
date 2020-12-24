@@ -21,7 +21,7 @@ GLOBAL constexpr int MAX_ENTITY_ACTIVE_RADIUS = 100; // Area where entities star
 //
 
 INTERNAL void    MapSpawnTile (std::string type, int x, int y);
-INTERNAL void    MapSpawnEntity (std::string type, int x, int y);
+INTERNAL void    MapSpawnEntity (std::string type, int x, int y, std::string state_override = "");
 INTERNAL void    MapSpawnParticles (std::string type, Rect region);
 INTERNAL Tile*   MapGetTileAtPos (int x, int y);             // NULL if pos is out of bounds!
 INTERNAL Entity* MapGetEntityAtPos (int x, int y);           // NULL if no entity found!
