@@ -188,11 +188,15 @@ INTERNAL bool MoveEntity (Entity& e, int x, int y)
 {
     // Get the target tile and check if the move is valid.
     Tile* tile = MapGetTileAtPos(x,y);
-    if (!tile || !tile->active || !tile->solid) // If there's no tile or it's not solid then move!
+    if (!tile || !tile->active || !tile->solid) // If there's no tile or it's not solid...
     {
-        e.pos.x = x;
-        e.pos.y = y;
-        return true;
+        Entity* entity = MapGetEntityAtPos(x,y);
+        if (!entity || !entity->active) // If there's no entity...
+        {
+            e.pos.x = x;
+            e.pos.y = y;
+            return true;
+        }
     }
     return false;
 }
