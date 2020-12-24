@@ -354,7 +354,13 @@ INTERNAL void Entity_BehaviorPassive (Entity& e)
 
 INTERNAL void Entity_BehaviorAggressive (Entity& e)
 {
-    // @Incomplete: ...
+    // Track down the player.
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p)
+    {
+        auto path = FindPath({ e.pos.x,e.pos.y }, { p->pos.x, p->pos.y });
+        if (!path.empty()) MoveEntity(e, path.back().x,path.back().y);
+    }
 }
 
 INTERNAL void Entity_BehaviorAggroOnHit (Entity& e)

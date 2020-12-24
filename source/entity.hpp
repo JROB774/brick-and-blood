@@ -114,6 +114,6 @@ GLOBAL const std::map<std::string,EntityBehavior> ENTITY_BEHAVIOR
 {
     { "BehaviorPlayer",     Entity_BehaviorPlayer     },
     { "BehaviorPassive",    Entity_BehaviorPassive    },
-    { "BehvaiorAggressive", Entity_BehaviorAggressive },
+    { "BehaviorAggressive", Entity_BehaviorAggressive },
     { "BehaviorAggroOnHit", Entity_BehaviorAggroOnHit }
 };

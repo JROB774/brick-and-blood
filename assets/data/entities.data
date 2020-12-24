@@ -98,7 +98,7 @@ goblin
     state passive
     initiative 1
     health 4
-    behavior BehaviorAggroOnHit
+    behavior BehaviorAggressive
     image [ 7 0 ]
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
