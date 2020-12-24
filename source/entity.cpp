@@ -315,13 +315,18 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
                     std::string item_name = PlayerGetEquippedItemName();
                     if (!item_name.empty())
                     {
-                        std::string category = GetItem(item_name).category;
-                        if (category == "food") PlayerEatSelectedItem();
-                        else PlayerPlaceSelectedItem(targetx,targety); // Attempt to place.
+                        PlayerPlaceSelectedItem(targetx,targety); // Attempt to place.
                     }
                 }
             }
         }
+    }
+
+    // Eat Selected Food
+
+    if (IsKeyDown(SDL_SCANCODE_SPACE))
+    {
+        PlayerEatSelectedItem(); // Attempt to eat.
     }
 }
 
