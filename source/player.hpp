@@ -6,6 +6,8 @@ GLOBAL constexpr int HOTBAR_SIZE = 9;
 GLOBAL constexpr float PLAYER_MAX_HEALTH = 100.0f;
 GLOBAL constexpr float PLAYER_MAX_HUNGER = 100.0f;
 
+GLOBAL constexpr float PLAYER_HUNGER_DECREMENT = 0.1f;
+
 enum PlayerState
 {
     PLAYER_STATE_PLAY,

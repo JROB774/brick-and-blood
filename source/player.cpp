@@ -293,6 +293,12 @@ INTERNAL void UpdatePlayerStatePlay ()
     if (IsKeyPressed(SDL_SCANCODE_7)) gPlayer.hotbar.selected_item = 6;
     if (IsKeyPressed(SDL_SCANCODE_8)) gPlayer.hotbar.selected_item = 7;
     if (IsKeyPressed(SDL_SCANCODE_9)) gPlayer.hotbar.selected_item = 8;
+
+    // If the player has performed an action then make them hungries.
+    if (gPlayer.update)
+    {
+        gPlayer.hunger -= PLAYER_HUNGER_DECREMENT;
+    }
 }
 
 INTERNAL void PlayerSetHotbarItemToSelected (int slot)
@@ -510,8 +516,8 @@ INTERNAL void RenderPlayerHeadsUp ()
         DrawImage("headsup", 4, 4, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &HEALTH_CLIP);
         DrawImage("headsup", 4,12, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &HUNGER_CLIP);
 
-        std::string health = std::to_string((int)gPlayer.health);
-        std::string hunger = std::to_string((int)gPlayer.hunger);
+        std::string health = std::to_string((int)ceilf(gPlayer.health));
+        std::string hunger = std::to_string((int)ceilf(gPlayer.hunger));
 
         float tx,ty;
 
