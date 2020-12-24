@@ -317,9 +317,8 @@ INTERNAL void PlayerSetHotbarItemToSelected (int slot)
     }
 }
 
-INTERNAL void PlayerCraftSelectedRecipe ()
+INTERNAL void PlayerCraftItem (std::string item_name)
 {
-    std::string item_name = gPlayer.inventory.recipes[gPlayer.inventory.selected_recipe];
     PlayerPickUpItem(item_name, 1);
 
     // Remove the items that were used to craft.
@@ -458,7 +457,13 @@ INTERNAL void UpdatePlayerStateInventory ()
 
                 if (IsKeyDown(SDL_SCANCODE_SPACE))
                 {
-                    PlayerCraftSelectedRecipe();
+                    // Only craft if the player doesn't have the maximum stack of this item.
+                    std::string item_name = gPlayer.inventory.recipes[gPlayer.inventory.selected_recipe];
+                    InventoryItem* item = GetInventoryItemByName(item_name);
+                    if (!item || item->amount < GetItem(item_name).stack)
+                    {
+                        PlayerCraftItem(item_name);
+                    }
                 }
             }
 
@@ -593,6 +598,7 @@ INTERNAL void RenderPlayerInventory ()
             {
                 if (item.amount > 0)
                 {
+                    // If selected then highlight.
                     Vec4 color = INVENTORY_FG_COLOR;
                     if (gPlayer.inventory.state == INVENTORY_STATE_ITEMS)
                     {
@@ -624,12 +630,20 @@ INTERNAL void RenderPlayerInventory ()
             int index = 0;
             for (auto item: gPlayer.inventory.recipes)
             {
+                // Grey out the item if the stack is full and it can't be crafted.
+                InventoryItem* ii = GetInventoryItemByName(item);
                 Vec4 color = INVENTORY_FG_COLOR;
+                if (ii && ii->amount >= GetItem(item).stack)
+                {
+                    color = SDLColorToColor({ 114,109,102,255 });
+                }
+
+                // If selected then highlight.
                 if (gPlayer.inventory.state == INVENTORY_STATE_CRAFTING)
                 {
                     if (index == gPlayer.inventory.selected_recipe)
                     {
-                        DrawFill(x,y,128,8, INVENTORY_FG_COLOR);
+                        DrawFill(x,y,128,8, color);
                         color = INVENTORY_BG_COLOR;
                     }
                 }
