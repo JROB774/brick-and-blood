@@ -41,6 +41,8 @@ INTERNAL void InitEntities ()
         base.initiative = data["initiative"].Int(INT_MAX);
         base.health = data["health"].Int(ENTITY_INVINCIBLE);
         base.damage = data["damage"].Int(0);
+        base.light = data["light"].Bool(false);
+        base.light_radius = (float)data["light_radius"].Number(0.0);
 
         base.behavior_type = data["behavior"].String("none");
         if (base.behavior_type != "none")
@@ -178,6 +180,14 @@ INTERNAL void RenderEntities (std::vector<Entity>& entities)
 
         Vec2 center = { TILE_W/2, TILE_H/2 };
         DrawImage("entity", e.draw.pos.x,e.draw.pos.y, {1,1}, center, e.draw.angle.current, FLIP_NONE, e.draw.color.current, &e.draw.clip);
+
+        // If it's a light source, draw a light.
+        if (e.light)
+        {
+            float lx = e.draw.pos.x+(TILE_W/2);
+            float ly = e.draw.pos.y+(TILE_H/2);
+            DrawLight(lx,ly,e.light_radius);
+        }
     }
 }
 

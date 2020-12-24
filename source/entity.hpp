@@ -27,6 +27,9 @@ struct Entity
     int health;
     int damage;
 
+    bool light;
+    float light_radius;
+
     std::string behavior_type;
     EntityBehavior behavior;
 
@@ -73,6 +76,8 @@ struct EntityBase
     int initiative;
     int health;
     int damage;
+    bool light;
+    float light_radius;
     std::string behavior_type;
     EntityBehavior behavior;
     struct { int x,y; } image;

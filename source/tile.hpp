@@ -19,7 +19,9 @@ struct Tile
     int hits;
 
     bool solid;
+
     bool light;
+    float light_radius;
 
     bool active;
 
@@ -59,6 +61,7 @@ struct TileBase
     Vec4 color;
     bool solid;
     bool light;
+    float light_radius;
     std::vector<std::string> particle_hit;
     std::vector<std::string> particle_break;
     std::vector<std::string> sound_hit;

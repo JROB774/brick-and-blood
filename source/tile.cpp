@@ -45,6 +45,7 @@ INTERNAL void InitTiles ()
 
         base.solid = data["solid"].Bool(true);
         base.light = data["light"].Bool(false);
+        base.light_radius = (float)data["light_radius"].Number(0.0);
 
         if (data.Contains("particle_hit"))
         {

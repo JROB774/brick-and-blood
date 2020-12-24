@@ -35,6 +35,7 @@ INTERNAL void MapPlaceTile (std::string type, int x, int y)
     t->hits = base.hits;
     t->solid = base.solid;
     t->light = base.light;
+    t->light_radius = base.light_radius;
     t->active = true;
     t->draw.clip.x = base.image.x*TILE_W;
     t->draw.clip.y = base.image.y*TILE_H;
@@ -65,6 +66,7 @@ INTERNAL void MapSpawnTile (std::string type, int x, int y)
     t->hits = base.hits;
     t->solid = base.solid;
     t->light = base.light;
+    t->light_radius = base.light_radius;
     t->active = true;
     t->draw.clip.x = base.image.x*TILE_W;
     t->draw.clip.y = base.image.y*TILE_H;
@@ -123,6 +125,8 @@ INTERNAL void MapSpawnEntity (std::string type, int x, int y, std::string state_
     e.behavior = base.behavior;
     e.health = base.health;
     e.damage = base.damage;
+    e.light = base.light;
+    e.light_radius = base.light_radius;
     e.pos.x = x;
     e.pos.y = y;
     e.old_pos.x = x;
@@ -380,6 +384,14 @@ INTERNAL void RenderMap ()
                     Vec2 scale = { t.draw.scale.current, t.draw.scale.current };
                     Vec2 center = { TILE_W/2, TILE_H/2 };
                     DrawImage("tile", x,y, scale, center, t.draw.angle.current, FLIP_NONE, t.draw.color.current, &t.draw.clip);
+
+                    // If it's a light source, draw a light.
+                    if (t.light)
+                    {
+                        float lx = (float)(((ix*CHUNK_W)+tx) * TILE_W) + (TILE_W/2);
+                        float ly = (float)(((iy*CHUNK_H)+ty) * TILE_H) + (TILE_H/2);
+                        DrawLight(lx,ly,t.light_radius);
+                    }
                 }
             }
         }

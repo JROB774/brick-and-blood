@@ -1,12 +1,17 @@
 INTERNAL void InitGame ()
 {
+    InitLighting();
     InitMap();
     InitPlayer();
+
+    EnableLighting(true);
+    SetLightingIntensity(0);
 }
 
 INTERNAL void QuitGame ()
 {
     QuitMap();
+    QuitLighting();
 }
 
 INTERNAL void UpdateGame ()
@@ -22,8 +27,10 @@ INTERNAL void UpdateGame ()
 
 INTERNAL void RenderGame ()
 {
+    BeginLighting();
     BeginCamera();
     RenderMap();
     EndCamera();
+    EndLighting();
     RenderPlayer();
 }

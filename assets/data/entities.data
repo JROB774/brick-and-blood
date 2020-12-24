@@ -4,6 +4,8 @@ player
     faction player
     initiative 0
     damage 1
+    light true
+    light_radius 48
     behavior BehaviorPlayer
     image [ 0 0 ]
     color [ 207 198 194 ]
