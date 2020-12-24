@@ -51,6 +51,7 @@ struct TileDrops
 
 struct TileBase
 {
+    std::string pretty_name;
     int hits;
     struct { int x,y; } image;
     Vec4 color;

@@ -22,6 +22,7 @@ INTERNAL void InitTiles ()
 
         TileBase base = {};
 
+        base.pretty_name = data["pretty_name"].String();
         base.hits = data["hits"].Int(TILE_INDESTRUCTIBLE);
 
         if (data.Contains("image"))

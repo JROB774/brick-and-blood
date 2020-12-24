@@ -1,5 +1,6 @@
-meat
+raw_meat
 {
+    pretty_name "Raw Meat"
     category food
     image [ 0 0 ]
     color [ 230 72 46 ]
@@ -7,6 +8,7 @@ meat
 
 wood
 {
+    pretty_name "Wood"
     category nature
     image [ 1 0 ]
     color [ 191 121 88 ]
@@ -14,6 +16,7 @@ wood
 
 rocks
 {
+    pretty_name "Rocks"
     category nature
     image [ 2 0 ]
     color [ 207 198 184 ]
@@ -22,6 +25,7 @@ rocks
 
 sticks
 {
+    pretty_name "Sticks"
     category nature
     image [ 3 0 ]
     color [ 191 121 88 ]
@@ -29,6 +33,7 @@ sticks
 
 grass
 {
+    pretty_name "Grass"
     category nature
     image [ 4 0 ]
     color [ 56 217 115 ]
@@ -37,6 +42,7 @@ grass
 
 planks
 {
+    pretty_name "Planks"
     category wood
     image [ 5 0 ]
     color [ 191 121 88 ]
@@ -46,6 +52,7 @@ planks
 
 fence
 {
+    pretty_name "Fence"
     category wood
     image [ 6 0 ]
     color [ 191 121 88 ]
@@ -55,6 +62,7 @@ fence
 
 axe
 {
+    pretty_name "Axe"
     category tool
     image [ 7 0 ]
     color [ 207 198 184 ]
@@ -63,6 +71,7 @@ axe
 }
 shovel
 {
+    pretty_name "Shovel"
     category tool
     image [ 0 1 ]
     color [ 207 198 184 ]
@@ -71,6 +80,7 @@ shovel
 }
 pickaxe
 {
+    pretty_name "Pickaxe"
     category tool
     image [ 1 1 ]
     color [ 207 198 184 ]
@@ -79,6 +89,7 @@ pickaxe
 }
 sword
 {
+    pretty_name "Sword"
     category tool
     image [ 2 1 ]
     color [ 207 198 184 ]

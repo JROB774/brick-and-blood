@@ -27,6 +27,7 @@ INTERNAL void InitItems ()
 
         ItemBase base = {};
 
+        base.pretty_name = data["pretty_name"].String();
         base.category = data["category"].String("none");
 
         if (data.Contains("image"))

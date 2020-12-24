@@ -616,7 +616,7 @@ INTERNAL void RenderPlayerInventory ()
                     }
 
                     DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item.name).clip);
-                    DrawText("main", StrUpper(item.name), x+INVENTORY_TEXT_OFF+12,y, color);
+                    DrawText("main", StrUpper(GetItem(item.name).pretty_name), x+INVENTORY_TEXT_OFF+12,y, color);
                     std::string quant = std::to_string(item.amount);
                     DrawText("main", StrUpper(quant), (x+127)-(INVENTORY_TEXT_OFF+GetTextWidth("main",quant)),y, color);
 
@@ -655,7 +655,7 @@ INTERNAL void RenderPlayerInventory ()
                 }
 
                 DrawImage("item", x+INVENTORY_TEXT_OFF,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item).clip);
-                DrawText("main", StrUpper(item), x+INVENTORY_TEXT_OFF+12,y, color);
+                DrawText("main", StrUpper(GetItem(item).pretty_name), x+INVENTORY_TEXT_OFF+12,y, color);
 
                 // Write out the recipe.
                 float rx = (x+127)-INVENTORY_TEXT_OFF;

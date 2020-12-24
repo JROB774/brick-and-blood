@@ -10,6 +10,7 @@ struct ItemIngredient
 
 struct ItemBase
 {
+    std::string pretty_name;
     std::string category;
     SDL_Rect clip;
     Vec4 color;

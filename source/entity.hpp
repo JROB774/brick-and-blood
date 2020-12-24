@@ -67,6 +67,7 @@ struct EntityDrops
 
 struct EntityBase
 {
+    std::string pretty_name;
     std::string faction;
     std::string state;
     int initiative;

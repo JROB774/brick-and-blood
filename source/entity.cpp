@@ -35,6 +35,7 @@ INTERNAL void InitEntities ()
 
         EntityBase base = {};
 
+        base.pretty_name = data["pretty_name"].String();
         base.faction = data["faction"].String();
         base.state = data["state"].String("");
         base.initiative = data["initiative"].Int(INT_MAX);

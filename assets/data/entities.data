@@ -1,5 +1,6 @@
 player
 {
+    pretty_name "Player"
     faction player
     initiative 0
     damage 1
@@ -10,6 +11,7 @@ player
 
 chicken
 {
+    pretty_name "Chicken"
     faction animal
     initiative 2
     health 1
@@ -18,10 +20,11 @@ chicken
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    drops [ [ meat 1 1 ] ]
+    drops [ [ raw_meat 1 1 ] ]
 }
 cow
 {
+    pretty_name "Cow"
     faction animal
     initiative 2
     health 3
@@ -30,10 +33,11 @@ cow
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    drops [ [ meat 2 3 ] ]
+    drops [ [ raw_meat 2 3 ] ]
 }
 horse
 {
+    pretty_name "Horse"
     faction animal
     initiative 2
     health 4
@@ -42,10 +46,11 @@ horse
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    drops [ [ meat 3 3 ] ]
+    drops [ [ raw_meat 3 3 ] ]
 }
 pig
 {
+    pretty_name "Pig"
     faction animal
     initiative 2
     health 3
@@ -54,11 +59,12 @@ pig
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    drops [ [ meat 2 2 ] ]
+    drops [ [ raw_meat 2 2 ] ]
 }
 
 # cat
 # {
+#     pretty_name "Cat"
 #     faction animal
 #     initiative 2
 #     health 2
@@ -67,10 +73,11 @@ pig
 #     color [ 207 198 194 ]
 #     particle_hit [ blood0_hit blood1_hit ]
 #     particle_dead [ blood0_dead blood1_dead ]
-#     drops [ [ meat 1 2 ] ]
+#     drops [ [ raw_meat 1 2 ] ]
 # }
 # dog
 # {
+#     pretty_name "Dog"
 #     faction animal
 #     initiative 2
 #     health 2
@@ -79,11 +86,12 @@ pig
 #     color [ 207 198 194 ]
 #     particle_hit [ blood0_hit blood1_hit ]
 #     particle_dead [ blood0_dead blood1_dead ]
-#     drops [ [ meat 1 2 ] ]
+#     drops [ [ raw_meat 1 2 ] ]
 # }
 
 goblin
 {
+    pretty_name "Goblin"
     faction monster
     state passive
     initiative 1
