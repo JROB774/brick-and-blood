@@ -613,16 +613,22 @@ INTERNAL void RenderPlayerHeadsUp ()
         float y = 6;
         for (int i=0; i<HOTBAR_SIZE; ++i)
         {
-            Vec4 color = HEADSUP_FG_COLOR;
             if (i == gPlayer.hotbar.selected_item)
             {
                 DrawFill(x,y,8,8, HEADSUP_FG_COLOR);
-                color = HEADSUP_BG_COLOR;
             }
 
             if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
             {
                 InventoryItem* item = GetInventoryItemByID(gPlayer.hotbar.items[i]);
+
+                Vec4 color = GetItem(item->name).color;
+                if (i == gPlayer.hotbar.selected_item)
+                {
+                    DrawFill(x,y,8,8, HEADSUP_FG_COLOR);
+                    color = HEADSUP_BG_COLOR;
+                }
+
                 DrawImage("item", x,y, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, color, &GetItem(item->name).clip);
 
                 // Draw the quantity.
@@ -763,7 +769,7 @@ INTERNAL void RenderPlayerInventory ()
                 if (gPlayer.hotbar.items[i] != HOTBAR_ITEM_EMPTY)
                 {
                     InventoryItem* item = GetInventoryItemByID(gPlayer.hotbar.items[i]);
-                    DrawImage("item", x,y, {1,1}, {0,0}, 0.0f, FLIP_NONE, INVENTORY_FG_COLOR, &GetItem(item->name).clip);
+                    DrawImage("item", x,y, {1,1}, {0,0}, 0.0f, FLIP_NONE, GetItem(item->name).color, &GetItem(item->name).clip);
                 }
                 x += 30;
             }
