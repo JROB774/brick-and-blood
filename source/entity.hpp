@@ -8,6 +8,8 @@ GLOBAL constexpr float ENTITY_TURN_SPEED  = 15.0f;
 GLOBAL constexpr float ENTITY_TURN_ANGLE  = 10.0f;
 GLOBAL constexpr float ENTITY_HIT_ANGLE   = 50.0f;
 
+GLOBAL constexpr int ENTITY_INVINCIBLE = -9999;
+
 enum Direction { DIR_N, DIR_E, DIR_S, DIR_W };
 
 struct Entity;

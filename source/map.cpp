@@ -181,7 +181,7 @@ INTERNAL Entity* MapGetEntityAtPos (int x, int y)
     {
         if (e.pos.x == x && e.pos.y == y)
         {
-            if (e.health > 0) return &e;
+            if (e.active) return &e;
             break;
         }
     }

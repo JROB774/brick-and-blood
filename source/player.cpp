@@ -194,6 +194,7 @@ INTERNAL void InitPlayer ()
 {
     gPlayer.state = PLAYER_STATE_PLAY;
 
+    gPlayer.health = PLAYER_MAX_HEALTH;
     gPlayer.hunger = PLAYER_MAX_HUNGER;
 
     gPlayer.input_timer = 0.0f;
@@ -504,11 +505,8 @@ INTERNAL void RenderPlayerHeadsUp ()
         DrawImage("headsup", 4, 4, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &HEALTH_CLIP);
         DrawImage("headsup", 4,12, {0.5f,0.5f}, {0,0}, 0.0f, FLIP_NONE, HEADSUP_FG_COLOR, &HUNGER_CLIP);
 
-        std::string health = "0";
-        std::string hunger = std::to_string(gPlayer.hunger);
-
-        Entity* p = MapGetFirstEntityOfType("player");
-        if (p) health = std::to_string(p->health);
+        std::string health = std::to_string((int)gPlayer.health);
+        std::string hunger = std::to_string((int)gPlayer.hunger);
 
         float tx,ty;
 

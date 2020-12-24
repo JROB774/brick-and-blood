@@ -37,7 +37,7 @@ INTERNAL void InitEntities ()
 
         base.faction = data["faction"].String();
         base.initiative = data["initiative"].Int(INT_MAX);
-        base.health = data["health"].Int(1);
+        base.health = data["health"].Int(ENTITY_INVINCIBLE);
         base.damage = data["damage"].Int(0);
 
         std::string behavior = data["behavior"].String("none");
@@ -200,14 +200,18 @@ INTERNAL void DamageEntity (Entity& e)
 {
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
     e.draw.angle.current = ENTITY_HIT_ANGLE;
-    e.health--;
-    if (e.health <= 0) e.active = false;
+
+    if (e.health != ENTITY_INVINCIBLE)
+    {
+        e.health--;
+        if (e.health <= 0) e.active = false;
+    }
 
     // Handle either hit or death visual and sound effects.
     EntityBase& base = gEntities.at(e.type);
 
     Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
-    if (e.health > 0) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
+    if (e.active) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
     else for (auto& p: base.particle_dead) MapSpawnParticles(p, particle_region);
 
     if (!base.sound_hit.empty())
@@ -216,7 +220,7 @@ INTERNAL void DamageEntity (Entity& e)
     }
 
     // Handle picking up the drops on break.
-    if (e.health <= 0)
+    if (!e.active)
     {
         if (!base.drops.empty())
         {

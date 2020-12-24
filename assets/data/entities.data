@@ -2,7 +2,6 @@ player
 {
     faction player
     initiative 0
-    health 100
     damage 1
     behavior BehaviorPlayer
     image [ 0 0 ]
