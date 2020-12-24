@@ -42,7 +42,7 @@ INTERNAL void QuitLighting ()
 INTERNAL void BeginLighting ()
 {
     // Smoothly lerp the lighting intensity.
-    gLighting.intensity = Lerp(gLighting.intensity, gLighting.target_intensity, gApplication.delta_time*10.0f);
+    gLighting.intensity = Lerp(gLighting.intensity, gLighting.target_intensity, gApplication.delta_time*2.0f);
 
     // Fill the lighting mask with ambient shadow.
     U8 intensity = (U8)((1.0f-gLighting.intensity)*255.0f);
