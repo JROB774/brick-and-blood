@@ -683,9 +683,13 @@ INTERNAL void RenderPlayerInventory ()
             float x = 27;
             float y = 35;
 
-            int index = 0;
-            for (auto item: gPlayer.inventory.items)
+            int start_pos = (gPlayer.inventory.selected_item / 11) * 11; // 11 is the max number of items that can be displayed on screen at once.
+            int end_pos = std::min(start_pos+11, (int)gPlayer.inventory.items.size());
+
+            for (int index=start_pos; index<end_pos; ++index)
             {
+                auto& item = gPlayer.inventory.items.at(index);
+
                 if (item.amount > 0)
                 {
                     // If selected then highlight.
@@ -705,7 +709,6 @@ INTERNAL void RenderPlayerInventory ()
                     DrawText("main", StrUpper(quant), (x+127)-(INVENTORY_TEXT_OFF+GetTextWidth("main",quant)),y, color);
 
                     y += 8;
-                    index++;
                 }
             }
         }
@@ -717,9 +720,13 @@ INTERNAL void RenderPlayerInventory ()
             float x = 166;
             float y = 35;
 
-            int index = 0;
-            for (auto item: gPlayer.inventory.recipes)
+            int start_pos = (gPlayer.inventory.selected_recipe / 11) * 11; // 11 is the max number of items that can be displayed on screen at once.
+            int end_pos = std::min(start_pos+11, (int)gPlayer.inventory.recipes.size());
+
+            for (int index=start_pos; index<end_pos; ++index)
             {
+                auto& item = gPlayer.inventory.recipes.at(index);
+
                 // Grey out the item if the stack is full and it can't be crafted.
                 InventoryItem* ii = GetInventoryItemByName(item);
                 Vec4 color = INVENTORY_FG_COLOR;
@@ -755,7 +762,6 @@ INTERNAL void RenderPlayerInventory ()
                 }
 
                 y += 8;
-                index++;
             }
         }
         ScissorOff();
