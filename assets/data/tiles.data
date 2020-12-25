@@ -91,7 +91,7 @@ tree7
     solid true
     particle_hit green_hit
     particle_break green_break
-    drops [ [ wood 1 3 ] [ sticks 0 1 ] ]
+    drops [ [ wood 1 3 ] [ sticks 0 1 ] [ apple 0 1 ] ]
     tools [ axe ]
 }
 
@@ -194,4 +194,102 @@ fire
     particle_hit red_hit
     particle_break red_break
     drops [ [ wood 1 3 ] [ sticks 2 4 ] [ coal 1 2 ] ]
+}
+
+workbench
+{
+    pretty_name "Workbench"
+    hits 5
+    image [ 3 2 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ workbench 1 1 ] ]
+}
+
+cobble0
+{
+    pretty_name "Cobble"
+    hits 3
+    image [ 4 2 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ cobble0 1 1 ] ]
+    tools [ pickaxe ]
+}
+cobble1
+{
+    pretty_name "Cobble"
+    hits 3
+    image [ 5 2 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ cobble1 1 1 ] ]
+    tools [ pickaxe ]
+}
+cobble2
+{
+    pretty_name "Cobble"
+    hits 3
+    image [ 6 2 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ cobble2 1 1 ] ]
+    tools [ pickaxe ]
+}
+cobble3
+{
+    pretty_name "Cobble"
+    hits 3
+    image [ 7 2 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ cobble3 1 1 ] ]
+    tools [ pickaxe ]
+}
+
+grave0
+{
+    pretty_name "Grave"
+    hits 3
+    image [ 0 3 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ rocks 2 4 ] ]
+    tools [ pickaxe ]
+}
+grave1
+{
+    pretty_name "Grave"
+    hits 3
+    image [ 1 3 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ rocks 2 4 ] ]
+    tools [ pickaxe ]
+}
+grave2
+{
+    pretty_name "Grave"
+    hits 3
+    image [ 2 3 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ rocks 2 4 ] ]
+    tools [ pickaxe ]
 }

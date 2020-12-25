@@ -4,7 +4,7 @@ raw_meat
     category food
     image [ 0 0 ]
     color [ 230 72 46 ]
-    hunger 3
+    hunger 2
     stack 12
 }
 meat
@@ -13,13 +13,22 @@ meat
     category food
     image [ 0 0 ]
     color [ 191 121 88 ]
-    hunger 10
+    hunger 12
     stack 12
     recipe
     {
         equipment fire
         ingredients [ [ raw_meat 1 ] ]
     }
+}
+apple
+{
+    pretty_name "Apple"
+    category food
+    image [ 2 2 ]
+    color [ 230 72 46 ]
+    hunger 5
+    stack 12
 }
 
 wood
@@ -69,6 +78,7 @@ planks
     place planks
     recipe
     {
+        equipment workbench
         ingredients [ [ wood 6 ] ]
     }
 }
@@ -81,6 +91,7 @@ fence
     place fence
     recipe
     {
+        equipment workbench
         ingredients [ [ wood 3 ] [ sticks 1 ] ]
     }
 }
@@ -149,5 +160,72 @@ fire
     recipe
     {
         ingredients [ [ wood 10 ] [ sticks 10 ] [ rocks 10 ] ]
+    }
+}
+
+workbench
+{
+    pretty_name "Workbench"
+    category crafting
+    image [ 5 1 ]
+    color [ 191 121 88 ]
+    place workbench
+    stack 1
+    recipe
+    {
+        ingredients [ [ wood 20 ] ]
+    }
+}
+
+cobble0
+{
+    pretty_name "Cobble"
+    category stone
+    image [ 6 1 ]
+    color [ 207 198 184 ]
+    place cobble0
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ rocks 6 ] ]
+    }
+}
+cobble1
+{
+    pretty_name "Cobble"
+    category stone
+    image [ 7 1 ]
+    color [ 207 198 184 ]
+    place cobble1
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ rocks 6 ] ]
+    }
+}
+cobble2
+{
+    pretty_name "Cobble"
+    category stone
+    image [ 0 2 ]
+    color [ 207 198 184 ]
+    place cobble2
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ rocks 6 ] ]
+    }
+}
+cobble3
+{
+    pretty_name "Cobble"
+    category stone
+    image [ 1 2 ]
+    color [ 207 198 184 ]
+    place cobble3
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ rocks 6 ] ]
     }
 }
