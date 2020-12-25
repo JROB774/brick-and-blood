@@ -5,7 +5,7 @@ player
     initiative 0
     damage 1
     light true
-    light_radius 48
+    light_radius 16
     behavior BehaviorPlayer
     image [ 0 0 ]
     color [ 207 198 194 ]
@@ -98,6 +98,7 @@ goblin
     state passive
     initiative 1
     health 16
+    damage 18
     behavior BehaviorAggressive
     image [ 7 0 ]
     color [ 207 198 194 ]

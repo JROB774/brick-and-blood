@@ -190,7 +190,7 @@ fire
     color [ 230 72 46 ]
     solid true
     light true
-    light_radius 128
+    light_radius 64
     particle_hit red_hit
     particle_break red_break
     drops [ [ wood 1 3 ] [ sticks 2 4 ] [ coal 1 2 ] ]
