@@ -1,8 +1,8 @@
 #pragma once
 
-GLOBAL constexpr int NIGHT_END = 650;
-GLOBAL constexpr int EVENING_END = 450;
-GLOBAL constexpr int DAY_END = 300;
+GLOBAL constexpr int NIGHT_END = 650; // 100
+GLOBAL constexpr int EVENING_END = 550; // 150
+GLOBAL constexpr int DAY_END = 400; // 400
 
 GLOBAL struct GameState
 {
