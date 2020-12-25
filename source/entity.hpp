@@ -109,12 +109,10 @@ INTERNAL void KillEntity (Entity& e);
 INTERNAL void Entity_BehaviorPlayer     (Entity& e);
 INTERNAL void Entity_BehaviorPassive    (Entity& e);
 INTERNAL void Entity_BehaviorAggressive (Entity& e);
-INTERNAL void Entity_BehaviorAggroOnHit (Entity& e);
 
 GLOBAL const std::map<std::string,EntityBehavior> ENTITY_BEHAVIOR
 {
     { "BehaviorPlayer",     Entity_BehaviorPlayer     },
     { "BehaviorPassive",    Entity_BehaviorPassive    },
-    { "BehaviorAggressive", Entity_BehaviorAggressive },
-    { "BehaviorAggroOnHit", Entity_BehaviorAggroOnHit }
+    { "BehaviorAggressive", Entity_BehaviorAggressive }
 };

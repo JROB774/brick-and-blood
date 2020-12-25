@@ -361,18 +361,23 @@ INTERNAL void Entity_BehaviorAggressive (Entity& e)
 {
     if (RandomRange(1,100) <= 50)
     {
-        // Track down the player.
+        // Track down the player if they're close enough otherwise just wander.
         Entity* p = MapGetFirstEntityOfType("player");
         if (p)
         {
-            auto path = FindPath({ e.pos.x,e.pos.y }, { p->pos.x, p->pos.y });
-            if (!path.empty()) MoveEntity(e, path.back().x,path.back().y);
+            if (abs(Distance(p->pos.x,p->pos.y, e.pos.x,e.pos.y)) <= 30)
+            {
+                auto path = FindPath({ e.pos.x,e.pos.y }, { p->pos.x, p->pos.y });
+                if (!path.empty()) MoveEntity(e, path.back().x,path.back().y);
+            }
+            else
+            {
+                Entity_BehaviorPassive(e);
+            }
+        }
+        else
+        {
+            Entity_BehaviorPassive(e);
         }
     }
-}
-
-INTERNAL void Entity_BehaviorAggroOnHit (Entity& e)
-{
-    if (e.state == "passive") Entity_BehaviorPassive(e);
-    else if (e.state == "aggressive") Entity_BehaviorAggressive(e);
 }
