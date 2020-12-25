@@ -92,6 +92,7 @@ axe
     image [ 7 0 ]
     color [ 207 198 184 ]
     stack 1
+    damage 4
     recipe
     {
         ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
@@ -104,6 +105,7 @@ shovel
     image [ 0 1 ]
     color [ 207 198 184 ]
     stack 1
+    damage 2
     recipe
     {
         ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
@@ -116,6 +118,7 @@ pickaxe
     image [ 1 1 ]
     color [ 207 198 184 ]
     stack 1
+    damage 3
     recipe
     {
         ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 3 ] ]
@@ -128,6 +131,7 @@ sword
     image [ 2 1 ]
     color [ 207 198 184 ]
     stack 1
+    damage 6
     recipe
     {
         ingredients [ [ sticks 3 ] [grass 2 ] [ rocks 4 ] ]

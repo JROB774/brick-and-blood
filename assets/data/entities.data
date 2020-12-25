@@ -16,7 +16,7 @@ chicken
     pretty_name "Chicken"
     faction animal
     initiative 2
-    health 1
+    health 6
     behavior BehaviorPassive
     image [ 1 0 ]
     color [ 207 198 194 ]
@@ -29,7 +29,7 @@ cow
     pretty_name "Cow"
     faction animal
     initiative 2
-    health 3
+    health 24
     behavior BehaviorPassive
     image [ 2 0 ]
     color [ 207 198 194 ]
@@ -42,7 +42,7 @@ horse
     pretty_name "Horse"
     faction animal
     initiative 2
-    health 4
+    health 40
     behavior BehaviorPassive
     image [ 3 0 ]
     color [ 207 198 194 ]
@@ -55,7 +55,7 @@ pig
     pretty_name "Pig"
     faction animal
     initiative 2
-    health 3
+    health 12
     behavior BehaviorPassive
     image [ 4 0 ]
     color [ 207 198 194 ]
@@ -69,7 +69,7 @@ pig
 #     pretty_name "Cat"
 #     faction animal
 #     initiative 2
-#     health 2
+#     health 7
 #     behavior BehaviorPassive
 #     image [ 5 0 ]
 #     color [ 207 198 194 ]
@@ -82,7 +82,7 @@ pig
 #     pretty_name "Dog"
 #     faction animal
 #     initiative 2
-#     health 2
+#     health 7
 #     behavior BehaviorPassive
 #     image [ 6 0 ]
 #     color [ 207 198 194 ]
@@ -97,7 +97,7 @@ goblin
     faction monster
     state passive
     initiative 1
-    health 4
+    health 16
     behavior BehaviorAggressive
     image [ 7 0 ]
     color [ 207 198 194 ]

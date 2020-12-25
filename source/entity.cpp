@@ -216,14 +216,14 @@ INTERNAL bool MoveEntity (Entity& e, int x, int y)
     return false;
 }
 
-INTERNAL void DamageEntity (Entity& e)
+INTERNAL void DamageEntity (Entity& e, int damage)
 {
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
     e.draw.angle.current = ENTITY_HIT_ANGLE;
 
     if (e.health != ENTITY_INVINCIBLE)
     {
-        e.health--;
+        e.health -= damage;
         if (e.health <= 0) e.active = false;
     }
 
@@ -296,7 +296,9 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
         {
             // If there's an entity at our target location, then attack.
             e.draw.angle.current = ENTITY_TURN_ANGLE*3;
-            DamageEntity(*o);
+            std::string item_name = PlayerGetEquippedItemName();
+            int damage = (item_name.empty()) ? 1 : GetItem(item_name).damage;
+            DamageEntity(*o, damage);
         }
         else
         {
@@ -332,7 +334,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
 
 INTERNAL void Entity_BehaviorPassive (Entity& e)
 {
-    if (RandomRange(1,100) <= 25) // 25%
+    if (RandomRange(1,100) <= 25)
     {
         int targetx = e.pos.x;
         int targety = e.pos.y;
@@ -354,12 +356,15 @@ INTERNAL void Entity_BehaviorPassive (Entity& e)
 
 INTERNAL void Entity_BehaviorAggressive (Entity& e)
 {
-    // Track down the player.
-    Entity* p = MapGetFirstEntityOfType("player");
-    if (p)
+    if (RandomRange(1,100) <= 50)
     {
-        auto path = FindPath({ e.pos.x,e.pos.y }, { p->pos.x, p->pos.y });
-        if (!path.empty()) MoveEntity(e, path.back().x,path.back().y);
+        // Track down the player.
+        Entity* p = MapGetFirstEntityOfType("player");
+        if (p)
+        {
+            auto path = FindPath({ e.pos.x,e.pos.y }, { p->pos.x, p->pos.y });
+            if (!path.empty()) MoveEntity(e, path.back().x,path.back().y);
+        }
     }
 }
 

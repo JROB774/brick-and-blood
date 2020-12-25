@@ -23,6 +23,7 @@ struct ItemBase
     std::string place;
     float hunger;
     int stack;
+    int damage;
     ItemRecipe recipe;
 };
 

@@ -99,7 +99,7 @@ INTERNAL void RenderEntities (std::vector<Entity>& entities);
 //
 
 INTERNAL bool MoveEntity (Entity& e, int x, int y);
-INTERNAL void DamageEntity (Entity& e);
+INTERNAL void DamageEntity (Entity& e, int damage);
 
 //
 // BEHAVIORS

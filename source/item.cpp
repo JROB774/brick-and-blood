@@ -72,6 +72,7 @@ INTERNAL void InitItems ()
         }
 
         base.stack = data["stack"].Int(99);
+        base.damage = data["damage"].Int(1);
 
         gItems.insert({ data.name, base });
     }
