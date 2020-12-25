@@ -343,17 +343,6 @@ INTERNAL void InitMap ()
     int py = (WORLD_H*CHUNK_H) / 2;
     MapSpawnEntity("player",px,py);
 
-    // @Temporary: Spawn a goblin for testing!!!
-    // @Temporary: Spawn a goblin for testing!!!
-    // @Temporary: Spawn a goblin for testing!!!
-    // @Temporary: Spawn a goblin for testing!!!
-    #if defined(BUILD_DEBUG)
-    for (int i=0; i<30; ++i)
-    {
-        MapSpawnEntity("goblin",px+RandomRange(-10,10),py+RandomRange(-10,10));
-    }
-    #endif // BUILD_DEBUG
-
     // Spawn in some initial entities.
     MapRandomlySpawnEntities();
 }
