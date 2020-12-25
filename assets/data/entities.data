@@ -95,12 +95,115 @@ goblin
 {
     pretty_name "Goblin"
     faction monster
-    state passive
     initiative 1
     health 16
     damage 18
     behavior BehaviorAggressive
     image [ 7 0 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+skeleton
+{
+    pretty_name "Skeleton"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 0 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+devil
+{
+    pretty_name "Devil"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 1 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+brute
+{
+    pretty_name "Brute"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 2 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+thing
+{
+    pretty_name "The Thing"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 3 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+knight
+{
+    pretty_name "Dark Knight"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 4 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+cultist
+{
+    pretty_name "Cultist"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 5 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+ghost
+{
+    pretty_name "Ghost"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 6 1 ]
+    color [ 207 198 194 ]
+    particle_hit [ blood0_hit blood1_hit ]
+    particle_dead [ blood0_dead blood1_dead ]
+}
+spider
+{
+    pretty_name "Spider"
+    faction monster
+    initiative 1
+    health 16
+    damage 18
+    behavior BehaviorAggressive
+    image [ 7 1 ]
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]

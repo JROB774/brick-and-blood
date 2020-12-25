@@ -234,9 +234,20 @@ INTERNAL void DamageEntity (Entity& e, int damage)
     }
 
     // If the health is below zero then kill the entity.
-    if (e.health <= 0)
+    if (e.active && e.health <= 0)
     {
         KillEntity(e);
+
+        // Drops are handled here so if an entity is killed by calling KillEntity directly (which
+        // is what the game does when night ends) the drops will not be given to the player on kill.
+        if (!base.drops.empty())
+        {
+            for (auto& drop: base.drops)
+            {
+                int quantity = RandomRange(drop.min,drop.max);
+                PlayerPickUpItem(drop.type, quantity);
+            }
+        }
     }
 }
 
@@ -249,19 +260,6 @@ INTERNAL void KillEntity (Entity& e)
     Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
     EntityBase& base = gEntities.at(e.type);
     for (auto& p: base.particle_dead) MapSpawnParticles(p, particle_region);
-
-    // Handle picking up the drops on break.
-    if (!e.active)
-    {
-        if (!base.drops.empty())
-        {
-            for (auto& drop: base.drops)
-            {
-                int quantity = RandomRange(drop.min,drop.max);
-                PlayerPickUpItem(drop.type, quantity);
-            }
-        }
-    }
 }
 
 //
