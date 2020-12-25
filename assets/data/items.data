@@ -67,6 +67,11 @@ coal
     category nature
     image [ 4 1 ]
     color [ 15 15 28 ]
+    recipe
+    {
+        equipment fire
+        ingredients [ [ wood 2 ] ]
+    }
 }
 
 planks
@@ -93,6 +98,84 @@ fence
     {
         equipment workbench
         ingredients [ [ wood 3 ] [ sticks 1 ] ]
+    }
+}
+cupboard
+{
+    pretty_name "Cupboard"
+    category wood
+    image [ 4 2 ]
+    color [ 191 121 88 ]
+    place cupboard
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ wood 10 ] ]
+    }
+}
+bookshelf
+{
+    pretty_name "Bookshelf"
+    category wood
+    image [ 5 2 ]
+    color [ 191 121 88 ]
+    place bookshelf
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ wood 10 ] ]
+    }
+}
+sign
+{
+    pretty_name "Sign"
+    category wood
+    image [ 6 2 ]
+    color [ 191 121 88 ]
+    place sign
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ wood 3 ] [ sticks 3 ] ]
+    }
+}
+chair
+{
+    pretty_name "Chair"
+    category wood
+    image [ 7 2 ]
+    color [ 191 121 88 ]
+    place chair
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ wood 4 ] ]
+    }
+}
+table
+{
+    pretty_name "Chair"
+    category wood
+    image [ 0 3 ]
+    color [ 191 121 88 ]
+    place table
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ wood 8 ] ]
+    }
+}
+bed
+{
+    pretty_name "Bed"
+    category wood
+    image [ 1 3 ]
+    color [ 191 121 88 ]
+    place bed
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ wood 10 ] ]
     }
 }
 
@@ -160,6 +243,18 @@ fire
     recipe
     {
         ingredients [ [ wood 10 ] [ sticks 10 ] [ rocks 10 ] ]
+    }
+}
+torch
+{
+    pretty_name "Torch"
+    category light
+    image [ 3 2 ]
+    color [ 191 121 88 ]
+    place torch
+    recipe
+    {
+        ingredients [ [ sticks 2 ] [ coal 1 ] ]
     }
 }
 

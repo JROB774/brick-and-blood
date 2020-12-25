@@ -181,6 +181,78 @@ fence
     drops [ [ fence 1 1 ] ]
     tools [ axe ]
 }
+cupboard
+{
+    pretty_name "Cupboard"
+    hits 2
+    image [ 4 4 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ cupboard 1 1 ] ]
+    tools [ axe ]
+}
+bookshelf
+{
+    pretty_name "Bookshelf"
+    hits 2
+    image [ 5 4 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ bookshelf 1 1 ] ]
+    tools [ axe ]
+}
+sign
+{
+    pretty_name "Sign"
+    hits 2
+    image [ 6 4 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ sign 1 1 ] ]
+    tools [ axe ]
+}
+chair
+{
+    pretty_name "Chair"
+    hits 2
+    image [ 7 4 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ chair 1 1 ] ]
+    tools [ axe ]
+}
+table
+{
+    pretty_name "Table"
+    hits 2
+    image [ 0 5 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ table 1 1 ] ]
+    tools [ axe ]
+}
+bed
+{
+    pretty_name "Bed"
+    hits 2
+    image [ 1 5 ]
+    color [ 191 121 88 ]
+    solid true
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ bed 1 1 ] ]
+    tools [ axe ]
+}
 
 fire
 {
@@ -194,6 +266,19 @@ fire
     particle_hit red_hit
     particle_break red_break
     drops [ [ wood 1 3 ] [ sticks 2 4 ] [ coal 1 2 ] ]
+}
+torch
+{
+    pretty_name "Torch"
+    hits 1
+    image [ 3 3 ]
+    color [ 191 121 88 ]
+    solid true
+    light true
+    light_radius 24
+    particle_hit brown_hit
+    particle_break brown_break
+    drops [ [ torch 1 1 ] ]
 }
 
 workbench
