@@ -190,7 +190,8 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
 
 INTERNAL void PlayerEatSelectedItem ()
 {
-    if (gPlayer.hunger >= PLAYER_MAX_HUNGER) return; // Do not eat if not hungry...
+    // Important to discard the fractional value by rounding upwards (so it matches the display hunger).
+    if (ceilf(gPlayer.hunger) >= PLAYER_MAX_HUNGER) return; // Do not eat if not hungry...
 
     size_t item_id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
     if (item_id == HOTBAR_ITEM_EMPTY) return;
