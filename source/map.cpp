@@ -264,32 +264,43 @@ INTERNAL void MapRandomlySpawnEntities ()
     Entity* p = MapGetFirstEntityOfType("player");
     if (p) // We cannot spawn entities if there is no player to base it off of.
     {
-        std::vector<std::string> animal_types = GetAllEntityTypesOfFaction("animal");
+        std::vector<std::string> to_spawn;
 
-        constexpr int CHANCES_TO_SPAWN = 3;
-        for (int i=0; i<CHANCES_TO_SPAWN; ++i)
+        if (IsDay()) // Spawn animals during the day.
         {
-            if (Random()%2 == 0) // 50%
+            to_spawn = GetAllEntityTypesOfFaction("animal");
+
+            constexpr int CHANCES_TO_SPAWN = 3;
+            for (int i=0; i<CHANCES_TO_SPAWN; ++i)
             {
-                // Determine type to spawn.
-                std::string type = animal_types.at(RandomRange(0,(int)animal_types.size()-1));
-
-                // Determine where to spawn the entities.
-                Vec2 spawn_off = { (float)RandomRange(MIN_ENTITY_SPAWN_RADIUS,MAX_ENTITY_SPAWN_RADIUS),0 };
-                spawn_off = RotateVec2(spawn_off, DegToRad(RandomFloatRange(0.0f,360.0f)));
-
-                int sx = p->pos.x + (int)spawn_off.x;
-                int sy = p->pos.y + (int)spawn_off.y;
-
-                // Determine how many to spawn.
-                int amount = RandomRange(3,7);
-                for (int j=0; j<amount; ++j)
+                if (RandomRange(1,100) <= 5)
                 {
-                    int x = RandomRange(sx-5,sx+5);
-                    int y = RandomRange(sy-5,sy+5);
-                    MapSpawnEntity(type,x,y);
+                    // Determine type to spawn.
+                    std::string type = to_spawn.at(RandomRange(0,(int)to_spawn.size()-1));
+
+                    // Determine where to spawn the entities.
+                    Vec2 spawn_off = { (float)RandomRange(MIN_ENTITY_SPAWN_RADIUS,MAX_ENTITY_SPAWN_RADIUS),0 };
+                    spawn_off = RotateVec2(spawn_off, DegToRad(RandomFloatRange(0.0f,360.0f)));
+
+                    int sx = p->pos.x + (int)spawn_off.x;
+                    int sy = p->pos.y + (int)spawn_off.y;
+
+                    // Determine how many to spawn.
+                    int amount = RandomRange(3,7);
+                    for (int j=0; j<amount; ++j)
+                    {
+                        int x = RandomRange(sx-5,sx+5);
+                        int y = RandomRange(sy-5,sy+5);
+                        MapSpawnEntity(type,x,y);
+                    }
                 }
             }
+        }
+        else if (IsNight()) // Spawn monsters at night.
+        {
+            to_spawn = GetAllEntityTypesOfFaction("monster");
+
+            // @Incomplete: ...
         }
     }
 }
@@ -361,6 +372,18 @@ INTERNAL void UpdateMap ()
     {
         MapRandomlySpawnEntities();
         UpdateEntities(gMap.entities);
+
+        // If it's day time kill all of the monsters from the night.
+        if (IsDay())
+        {
+            for (auto& e: gMap.entities)
+            {
+                if (e.faction == "monster")
+                {
+                    KillEntity(e);
+                }
+            }
+        }
     }
 
     // Always update particles, they should run in  real-time.

@@ -221,23 +221,34 @@ INTERNAL void DamageEntity (Entity& e, int damage)
     e.draw.color.current = SDLColorToColor({ 230, 72, 46, 255 });
     e.draw.angle.current = ENTITY_HIT_ANGLE;
 
-    if (e.health != ENTITY_INVINCIBLE)
-    {
-        e.health -= damage;
-        if (e.health <= 0) e.active = false;
-    }
+    if (e.health != ENTITY_INVINCIBLE) e.health -= damage;
 
-    // Handle either hit or death visual and sound effects.
-    EntityBase& base = gEntities.at(e.type);
-
+    // Handle visual particle effects.
     Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
+    EntityBase& base = gEntities.at(e.type);
     if (e.active) for (auto& p: base.particle_hit) MapSpawnParticles(p, particle_region);
-    else for (auto& p: base.particle_dead) MapSpawnParticles(p, particle_region);
 
     if (!base.sound_hit.empty())
     {
         PlaySound(base.sound_hit.at(RandomRange(0,(int)base.sound_hit.size()-1)));
     }
+
+    // If the health is below zero then kill the entity.
+    if (e.health <= 0)
+    {
+        KillEntity(e);
+    }
+}
+
+INTERNAL void KillEntity (Entity& e)
+{
+    // The entity is no longer active!
+    e.active = false;
+
+    // Handle visual particle effects.
+    Rect particle_region = { e.draw.pos.x+(TILE_W/2),e.draw.pos.y+(TILE_H/2),0,0 };
+    EntityBase& base = gEntities.at(e.type);
+    for (auto& p: base.particle_dead) MapSpawnParticles(p, particle_region);
 
     // Handle picking up the drops on break.
     if (!e.active)
@@ -249,14 +260,6 @@ INTERNAL void DamageEntity (Entity& e, int damage)
                 int quantity = RandomRange(drop.min,drop.max);
                 PlayerPickUpItem(drop.type, quantity);
             }
-        }
-    }
-    // Handle the response based on behavior.
-    else
-    {
-        if (e.behavior_type == "BehaviorAggroOnHit")
-        {
-            e.state = "aggressive";
         }
     }
 }

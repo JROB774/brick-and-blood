@@ -1,3 +1,15 @@
+INTERNAL bool IsDay ()
+{
+    int day_turns = gGameState.turns % NIGHT_END; // Get the turn counter for the current day.
+    return (day_turns < EVENING_END);
+}
+
+INTERNAL bool IsNight ()
+{
+    int day_turns = gGameState.turns % NIGHT_END; // Get the turn counter for the current day.
+    return (day_turns >= EVENING_END && day_turns < NIGHT_END);
+}
+
 INTERNAL void StartGame ()
 {
     gApplication.state = APP_STATE_GAME;

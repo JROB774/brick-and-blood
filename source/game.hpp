@@ -9,6 +9,9 @@ GLOBAL struct GameState
     int turns;
 } gGameState;
 
+INTERNAL bool IsDay   ();
+INTERNAL bool IsNight ();
+
 INTERNAL void  StartGame ();
 INTERNAL void UpdateGame ();
 INTERNAL void RenderGame ();
