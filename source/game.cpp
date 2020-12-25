@@ -10,6 +10,11 @@ INTERNAL bool IsNight ()
     return (day_turns >= EVENING_END && day_turns < NIGHT_END);
 }
 
+INTERNAL int GetDays ()
+{
+    return (gGameState.turns / NIGHT_END);
+}
+
 INTERNAL void StartGame ()
 {
     gApplication.state = APP_STATE_GAME;
@@ -32,9 +37,11 @@ INTERNAL void UpdateGame ()
 
     int day_turns = gGameState.turns % NIGHT_END; // Get the turn counter for the current day.
     // Set the lighting based on time of day.
+    #if !defined(DEBUG_ENEMY_TEST)
     if      (day_turns <     DAY_END) SetLightingIntensity(0.00f);
     else if (day_turns < EVENING_END) SetLightingIntensity(0.25f);
     else if (day_turns <   NIGHT_END) SetLightingIntensity(1.00f);
+    #endif // DEBUG_ENEMY_TEST
 
     UpdatePlayer();
     UpdateMap();
