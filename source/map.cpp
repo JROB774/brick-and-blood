@@ -300,7 +300,35 @@ INTERNAL void MapRandomlySpawnEntities ()
         {
             to_spawn = GetAllEntityTypesOfFaction("monster");
 
-            // @Incomplete: ...
+            // @Temporary: Different spawning should be used for monsters!!!
+            // @Temporary: Different spawning should be used for monsters!!!
+            // @Temporary: Different spawning should be used for monsters!!!
+
+            constexpr int CHANCES_TO_SPAWN = 3;
+            for (int i=0; i<CHANCES_TO_SPAWN; ++i)
+            {
+                if (RandomRange(1,100) <= 5)
+                {
+                    // Determine type to spawn.
+                    std::string type = to_spawn.at(RandomRange(0,(int)to_spawn.size()-1));
+
+                    // Determine where to spawn the entities.
+                    Vec2 spawn_off = { (float)RandomRange(MIN_ENTITY_SPAWN_RADIUS,MAX_ENTITY_SPAWN_RADIUS),0 };
+                    spawn_off = RotateVec2(spawn_off, DegToRad(RandomFloatRange(0.0f,360.0f)));
+
+                    int sx = p->pos.x + (int)spawn_off.x;
+                    int sy = p->pos.y + (int)spawn_off.y;
+
+                    // Determine how many to spawn.
+                    int amount = RandomRange(3,7);
+                    for (int j=0; j<amount; ++j)
+                    {
+                        int x = RandomRange(sx-5,sx+5);
+                        int y = RandomRange(sy-5,sy+5);
+                        MapSpawnEntity(type,x,y);
+                    }
+                }
+            }
         }
     }
 }
