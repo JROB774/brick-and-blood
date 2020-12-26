@@ -310,7 +310,7 @@ INTERNAL void MapRandomlySpawnEntities ()
             for (int i=0; i<CHANCES_TO_SPAWN; ++i)
             {
                 #if !defined(DEBUG_ENEMY_TEST)
-                if (RandomRange(1,100) <= (1*(GetDays()/2))) // More enemies spawn as time goes on.
+                if (RandomRange(1,100) <= (2*(GetDays()))) // More enemies spawn as time goes on.
                 #else
                 if (RandomRange(1,100) <= 25)
                 #endif
