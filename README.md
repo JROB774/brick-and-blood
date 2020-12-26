@@ -7,6 +7,8 @@
 
 ***Below is the original README for this repository.***
 
+---
+
 This project was made for 2020's **[Secret Santa Jam](https://itch.io/jam/secret-santa)**.
 It is a simple 2D turn-based top-down survival game (more of a prototype than a fully fleshed out experience).
 A download for the game can be found over on **[itch.io](https://jrob774.itch.io/brick-and-blood)**, the game
