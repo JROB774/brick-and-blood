@@ -30,9 +30,9 @@ required and all of the external dependencies are provided with the repo.
 
 The art assets are public domain assets from the [1-Bit Asset Pack](https://kenney.nl/assets/bit-pack) made by [Kenney](https://kenney.nl/).
 
-The title font is the, free for personal use, font [billieBob](https://www.1001fonts.com/billiebob-font.html) made by [JOEBOB graphics](https://www.joebobgraphics.com/).
-
 The game font is the pixel art font [Weiholmir](https://justfredrik.itch.io/weiholmir) made by [JustFredrik](https://justfredrik.itch.io/).
+
+The title font is the, free for personal use, font [billieBob](https://www.1001fonts.com/billiebob-font.html) made by [JOEBOB graphics](https://www.joebobgraphics.com/).
 
 ## License
 
