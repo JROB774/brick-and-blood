@@ -1,7 +1,7 @@
 # Secret Santa Jam (BRICK AND BLOOD)
 
 This project was made for 2020's **[Secret Santa Jam](https://itch.io/jam/secret-santa)**.
-It is a simple 2D turn-based top-down survival game (more of a prototype than a fully fleshed out experience.
+It is a simple 2D turn-based top-down survival game (more of a prototype than a fully fleshed out experience).
 A download for the game can be found over on **[itch.io](https://jrob774.itch.io/brick-and-blood)**, the game
 is also playable in browser on the same page.
 
@@ -28,11 +28,11 @@ required and all of the external dependencies are provided with the repo.
 
 ## Attribution
 
-The art assets are public domain assets from the [1-Bit Asset Pack](https://kenney.nl/assets/bit-pack) made by [Kenney](https://kenney.nl/).
+The art assets are public domain assets from the **[1-Bit Asset Pack](https://kenney.nl/assets/bit-pack)** made by **[Kenney](https://kenney.nl/)**.
 
-The game font is the pixel art font [Weiholmir](https://justfredrik.itch.io/weiholmir) made by [JustFredrik](https://justfredrik.itch.io/).
+The game font is the pixel art font **[Weiholmir](https://justfredrik.itch.io/weiholmir)** made by **[JustFredrik](https://justfredrik.itch.io/)**.
 
-The title font is the, free for personal use, font [billieBob](https://www.1001fonts.com/billiebob-font.html) made by [JOEBOB graphics](https://www.joebobgraphics.com/).
+The title font is the, free for personal use, font **[billieBob](https://www.1001fonts.com/billiebob-font.html)** made by **[JOEBOB graphics](https://www.joebobgraphics.com/)**.
 
 ## License
 
