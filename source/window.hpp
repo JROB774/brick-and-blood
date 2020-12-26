@@ -1,6 +1,6 @@
 #pragma once
 
-GLOBAL constexpr const char* WINDOW_TITLE    = "SANTAJAM";
+GLOBAL constexpr const char* WINDOW_TITLE    = "BRICK AND BLOOD";
 GLOBAL constexpr int         WINDOW_SCREEN_W = 320;
 GLOBAL constexpr int         WINDOW_SCREEN_H = 180;
 GLOBAL constexpr int         WINDOW_START_W  = WINDOW_SCREEN_W*2;
