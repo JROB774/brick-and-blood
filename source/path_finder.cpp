@@ -79,11 +79,20 @@ INTERNAL std::vector<PathPoint> FindPath (PathPoint start, PathPoint end, bool c
 
     // Now we can construct a path backwards from the goal to the start.
     PathPoint current = end;
+    int count = 0;
     while (current != start)
     {
         path.push_back(current);
         size_t index = current.y*WORLD_W_IN_TILES+current.x;
         current = path_finder.node_map[index].direction;
+
+        // THis is a hack fallback in case this loop gets stuck we just exit
+        // after a certain number of iterations (not a good solution but oh well).
+        count++;
+        if (count >= 4096)
+        {
+            break;
+        }
     }
 
     return std::move(path); // Should be able to move this for speed?
