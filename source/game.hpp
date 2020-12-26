@@ -1,15 +1,13 @@
 #pragma once
 
-// #define DEBUG_ENEMY_TEST
-
 #if !defined(DEBUG_ENEMY_TEST)
 GLOBAL constexpr int   NIGHT_END = 650; // 100 turns
 GLOBAL constexpr int EVENING_END = 550; // 150 turns
 GLOBAL constexpr int     DAY_END = 400; // 400 turns
 #else
-GLOBAL constexpr int   NIGHT_END =  40;
-GLOBAL constexpr int EVENING_END =   2;
-GLOBAL constexpr int     DAY_END =   1;
+GLOBAL constexpr int   NIGHT_END = 101;
+GLOBAL constexpr int EVENING_END =  51;
+GLOBAL constexpr int     DAY_END =  50;
 #endif // DEBUG_ENEMY_TEST
 
 GLOBAL struct GameState
