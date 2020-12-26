@@ -187,7 +187,7 @@ cultist
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    # @Incomplete: Drops...
+    drops [ [ bottle 1 3 ] ]
 }
 ghost
 {
