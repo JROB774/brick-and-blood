@@ -309,7 +309,11 @@ INTERNAL void MapRandomlySpawnEntities ()
             constexpr int CHANCES_TO_SPAWN = 3;
             for (int i=0; i<CHANCES_TO_SPAWN; ++i)
             {
-                if (RandomRange(1,100) <= (1*(GetDays()/2))) // More enemis spawn as time goes on.
+                #if !defined(DEBUG_ENEMY_TEST)
+                if (RandomRange(1,100) <= (1*(GetDays()/2))) // More enemies spawn as time goes on.
+                #else
+                if (RandomRange(1,100) <= 25)
+                #endif
                 {
                     // Determine type to spawn.
                     std::string type = to_spawn.at(RandomRange(0,(int)to_spawn.size()-1));

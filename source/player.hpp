@@ -84,6 +84,8 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount);
 INTERNAL void PlayerEatSelectedItem ();
 INTERNAL void PlayerPlaceSelectedItem (int x, int y);
 
+INTERNAL void DamagePlayer (int damage);
+
 INTERNAL void   InitPlayer ();
 INTERNAL void UpdatePlayer ();
 INTERNAL void RenderPlayer ();

@@ -237,6 +237,13 @@ INTERNAL void PlayerPlaceSelectedItem (int x, int y)
     }
 }
 
+INTERNAL void DamagePlayer (int damage)
+{
+    gPlayer.health -= damage;
+    Entity* p = MapGetFirstEntityOfType("player");
+    if (p) DamageEntity(*p, damage);
+}
+
 INTERNAL void InitPlayer ()
 {
     gPlayer.state = PLAYER_STATE_PLAY;

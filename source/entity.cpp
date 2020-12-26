@@ -234,7 +234,7 @@ INTERNAL void DamageEntity (Entity& e, int damage)
     }
 
     // If the health is below zero then kill the entity.
-    if (e.active && e.health <= 0)
+    if (e.active && e.health <= 0 && e.health != ENTITY_INVINCIBLE)
     {
         KillEntity(e);
 
@@ -363,17 +363,26 @@ INTERNAL void Entity_BehaviorAggressive (Entity& e)
         Entity* p = MapGetFirstEntityOfType("player");
         if (p)
         {
-            if (abs(Distance(p->pos.x,p->pos.y, e.pos.x,e.pos.y)) <= 30)
+            int distance = abs(Distance(p->pos.x,p->pos.y, e.pos.x,e.pos.y));
+            if (distance <= 1) // If we're close enough to the player then maybe attack.
+            {
+                if (Random() % 2 == 0)
+                {
+                    e.draw.angle.current = ENTITY_TURN_ANGLE*3;
+                    DamagePlayer(e.damage);
+                }
+            }
+            else if (distance <= 30) // Otherwise chase the player.
             {
                 auto path = FindPath({ e.pos.x,e.pos.y }, { p->pos.x, p->pos.y });
                 if (!path.empty()) MoveEntity(e, path.back().x,path.back().y);
             }
-            else
+            else // Or just wander around if not.
             {
                 Entity_BehaviorPassive(e);
             }
         }
-        else
+        else // Or just wander around if not.
         {
             Entity_BehaviorPassive(e);
         }
