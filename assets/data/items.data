@@ -369,4 +369,9 @@ healthpotion
     color [ 230 72 46 ]
     heal 10
     stack 12
+    recipe
+    {
+        equipment cauldron
+        ingredients [ [ bottle 1 ] [ apple 1 ] ]
+    }
 }
