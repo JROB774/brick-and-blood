@@ -185,7 +185,7 @@ cupboard
 {
     pretty_name "Cupboard"
     hits 2
-    image [ 4 4 ]
+    image [ 4 3 ]
     color [ 191 121 88 ]
     solid true
     particle_hit brown_hit
@@ -197,7 +197,7 @@ bookshelf
 {
     pretty_name "Bookshelf"
     hits 2
-    image [ 5 4 ]
+    image [ 5 3 ]
     color [ 191 121 88 ]
     solid true
     particle_hit brown_hit
@@ -209,7 +209,7 @@ sign
 {
     pretty_name "Sign"
     hits 2
-    image [ 6 4 ]
+    image [ 6 3 ]
     color [ 191 121 88 ]
     solid true
     particle_hit brown_hit
@@ -221,7 +221,7 @@ chair
 {
     pretty_name "Chair"
     hits 2
-    image [ 7 4 ]
+    image [ 7 3 ]
     color [ 191 121 88 ]
     solid true
     particle_hit brown_hit
@@ -233,7 +233,7 @@ table
 {
     pretty_name "Table"
     hits 2
-    image [ 0 5 ]
+    image [ 0 4 ]
     color [ 191 121 88 ]
     solid true
     particle_hit brown_hit
@@ -245,7 +245,7 @@ bed
 {
     pretty_name "Bed"
     hits 2
-    image [ 1 5 ]
+    image [ 1 4 ]
     color [ 191 121 88 ]
     solid true
     particle_hit brown_hit
