@@ -325,11 +325,17 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
         }
     }
 
-    // Eat Selected Food
+    // Use Selected Item
 
     if (IsKeyDown(SDL_SCANCODE_SPACE))
     {
-        PlayerEatSelectedItem(); // Attempt to eat.
+        std::string item_name = PlayerGetEquippedItemName();
+        if (!item_name.empty())
+        {
+            auto& item = GetItem(item_name);
+            if (item.category == "food") PlayerEatSelectedItem(); // Attempt to eat.
+            else if (item.category == "magic") PlayerDrinkSelectedItem(); // Attempt to drink.
+        }
     }
 }
 

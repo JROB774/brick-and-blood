@@ -191,7 +191,7 @@ INTERNAL void PlayerPickUpItem (std::string name, int amount)
 INTERNAL void PlayerEatSelectedItem ()
 {
     // Important to discard the fractional value by rounding upwards (so it matches the display hunger).
-    if (ceilf(gPlayer.hunger) >= PLAYER_MAX_HUNGER) return; // Do not eat if not hungry...
+    if (ceilf(gPlayer.hunger) >= gPlayer.max_hunger) return; // Do not eat if not hungry...
 
     size_t item_id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
     if (item_id == HOTBAR_ITEM_EMPTY) return;
@@ -202,11 +202,38 @@ INTERNAL void PlayerEatSelectedItem ()
         float hunger = GetItem(item->name).hunger;
         if (hunger > 0)
         {
-            gPlayer.hunger = std::clamp(gPlayer.hunger+hunger, 0.0f,PLAYER_MAX_HUNGER);
+            gPlayer.hunger = std::clamp(gPlayer.hunger+hunger, 0.0f,gPlayer.max_hunger);
             item->amount--;
             if (item->amount <= 0)
             {
                 PlayerRefreshInventory();
+            }
+        }
+    }
+}
+
+INTERNAL void PlayerDrinkSelectedItem ()
+{
+    size_t item_id = gPlayer.hotbar.items[gPlayer.hotbar.selected_item];
+    if (item_id == HOTBAR_ITEM_EMPTY) return;
+
+    InventoryItem* item = GetInventoryItemByID(item_id);
+    if (item)
+    {
+        if (item->name == "healthpotion")
+        {
+            // Important to discard the fractional value by rounding upwards (so it matches the display hunger).
+            if (ceilf(gPlayer.health) >= gPlayer.max_health) return; // Do not heal if not hurt...
+
+            float heal = GetItem(item->name).heal;
+            if (heal > 0)
+            {
+                gPlayer.health = std::clamp(gPlayer.health+heal, 0.0f,gPlayer.max_health);
+                item->amount--;
+                if (item->amount <= 0)
+                {
+                    PlayerRefreshInventory();
+                }
             }
         }
     }
@@ -248,8 +275,11 @@ INTERNAL void InitPlayer ()
 {
     gPlayer.state = PLAYER_STATE_PLAY;
 
-    gPlayer.health = PLAYER_MAX_HEALTH;
-    gPlayer.hunger = PLAYER_MAX_HUNGER;
+    gPlayer.max_health = 100.0f;
+    gPlayer.max_hunger = 100.0f;
+
+    gPlayer.health = gPlayer.max_health;
+    gPlayer.hunger = gPlayer.max_hunger;
 
     gPlayer.input_timer = 0.0f;
     gPlayer.update = false;
@@ -378,8 +408,8 @@ INTERNAL void UpdatePlayerStatePlay ()
                 }
             }
         }
-        gPlayer.hunger = std::clamp(gPlayer.hunger, 0.0f,PLAYER_MAX_HUNGER);
-        gPlayer.health = std::clamp(gPlayer.health, 0.0f,PLAYER_MAX_HEALTH);
+        gPlayer.hunger = std::clamp(gPlayer.hunger, 0.0f,gPlayer.max_hunger);
+        gPlayer.health = std::clamp(gPlayer.health, 0.0f,gPlayer.max_health);
     }
 }
 

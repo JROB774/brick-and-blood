@@ -207,19 +207,19 @@ axe
         ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 2 ] ]
     }
 }
-shovel
-{
-    pretty_name "Shovel"
-    category tool
-    image [ 0 1 ]
-    color [ 207 198 184 ]
-    stack 1
-    damage 2
-    recipe
-    {
-        ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
-    }
-}
+# shovel
+# {
+#     pretty_name "Shovel"
+#     category tool
+#     image [ 0 1 ]
+#     color [ 207 198 184 ]
+#     stack 1
+#     damage 2
+#     recipe
+#     {
+#         ingredients [ [ sticks 3 ] [grass 1 ] [ rocks 1 ] ]
+#     }
+# }
 pickaxe
 {
     pretty_name "Pickaxe"
@@ -286,6 +286,20 @@ workbench
         ingredients [ [ wood 20 ] ]
     }
 }
+cauldron
+{
+    pretty_name "Cauldron"
+    category crafting
+    image [ 4 3 ]
+    color [ 207 198 184 ]
+    place cauldron
+    stack 1
+    recipe
+    {
+        equipment workbench
+        ingredients [ [ rocks 30 ] [ wood 5 ] ]
+    }
+}
 
 cobble0
 {
@@ -338,4 +352,21 @@ cobble3
         equipment workbench
         ingredients [ [ rocks 6 ] ]
     }
+}
+
+bottle
+{
+    pretty_name "Bottle"
+    category magic
+    image [ 5 3 ]
+    color [ 207 198 184 ]
+}
+healthpotion
+{
+    pretty_name "Health P."
+    category magic
+    image [ 6 3 ]
+    color [ 230 72 46 ]
+    heal 10
+    stack 12
 }

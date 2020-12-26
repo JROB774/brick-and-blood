@@ -291,6 +291,19 @@ workbench
     particle_hit brown_hit
     particle_break brown_break
     drops [ [ workbench 1 1 ] ]
+    tools [ axe ]
+}
+cauldron
+{
+    pretty_name "Cauldron"
+    hits 5
+    image [ 7 4 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ cauldron 1 1 ] ]
+    tools [ pickaxe ]
 }
 
 cobble0
@@ -351,7 +364,7 @@ rubble0
     solid true
     particle_hit grey_hit
     particle_break grey_break
-    drops [ [ stone 1 2 ] ]
+    drops [ [ rocks 1 2 ] ]
     tools [ pickaxe ]
 }
 rubble1
@@ -363,7 +376,7 @@ rubble1
     solid true
     particle_hit grey_hit
     particle_break grey_break
-    drops [ [ stone 2 3 ] ]
+    drops [ [ rocks 2 3 ] ]
     tools [ pickaxe ]
 }
 
@@ -410,7 +423,7 @@ bones0
     hits 1
     image [ 4 4 ]
     color [ 207 198 184 ]
-    solid true
+    solid false
     particle_hit grey_hit
     particle_break grey_break
     drops [ [ bones 1 2 ] ]
@@ -421,7 +434,7 @@ bones1
     hits 1
     image [ 5 4 ]
     color [ 207 198 184 ]
-    solid true
+    solid false
     particle_hit grey_hit
     particle_break grey_break
     drops [ [ bones 1 2 ] ]
@@ -433,7 +446,7 @@ cobweb
     hits 1
     image [ 6 4 ]
     color [ 207 198 184 ]
-    solid true
+    solid false
     particle_hit grey_hit
     particle_break grey_break
     drops [ [ cobweb 1 1 ] ]

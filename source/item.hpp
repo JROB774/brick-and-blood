@@ -22,6 +22,7 @@ struct ItemBase
     Vec4 color;
     std::string place;
     float hunger;
+    float heal;
     int stack;
     int damage;
     ItemRecipe recipe;

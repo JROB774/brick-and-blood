@@ -5,9 +5,6 @@ GLOBAL constexpr int EQUIPMENT_CRAFT_DISTANCE = 5;
 GLOBAL constexpr size_t HOTBAR_ITEM_EMPTY = 0;
 GLOBAL constexpr int HOTBAR_SIZE = 9;
 
-GLOBAL constexpr float PLAYER_MAX_HEALTH = 100.0f;
-GLOBAL constexpr float PLAYER_MAX_HUNGER = 100.0f;
-
 GLOBAL constexpr float PLAYER_HUNGER_GREAT = 98.0f;
 GLOBAL constexpr float PLAYER_HUNGER_HIGH = 90.0f;
 GLOBAL constexpr float PLAYER_HUNGER_LOW = 30.0f;
@@ -39,6 +36,9 @@ struct InventoryItem
 GLOBAL struct Player
 {
     PlayerState state;
+
+    float max_health;
+    float max_hunger;
 
     float health;
     float hunger;
@@ -82,6 +82,7 @@ INTERNAL std::string PlayerGetEquippedItemName ();
 INTERNAL void PlayerPickUpItem (std::string name, int amount);
 
 INTERNAL void PlayerEatSelectedItem ();
+INTERNAL void PlayerDrinkSelectedItem ();
 INTERNAL void PlayerPlaceSelectedItem (int x, int y);
 
 INTERNAL void DamagePlayer (int damage);
