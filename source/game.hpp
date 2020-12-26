@@ -2,7 +2,7 @@
 
 // #define DEBUG_ENEMY_TEST
 
-#if defined(DEBUG_ENEMY_TEST)
+#if !defined(DEBUG_ENEMY_TEST)
 GLOBAL constexpr int   NIGHT_END = 650; // 100 turns
 GLOBAL constexpr int EVENING_END = 550; // 150 turns
 GLOBAL constexpr int     DAY_END = 400; // 400 turns
