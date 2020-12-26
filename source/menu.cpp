@@ -50,7 +50,7 @@ INTERNAL void UpdateMenu ()
                 }
             }
             // Handle the action based on the currently selected main menu option.
-            if (IsKeyPressed(SDL_SCANCODE_SPACE) && !gMenuState.changing)
+            if ((IsKeyPressed(SDL_SCANCODE_SPACE) || IsKeyPressed(SDL_SCANCODE_RETURN)) && !gMenuState.changing)
             {
                 switch (gMenuState.option)
                 {

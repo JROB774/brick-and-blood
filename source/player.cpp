@@ -343,7 +343,8 @@ INTERNAL void UpdatePlayerStatePlay ()
         IsKeyPressed(SDL_SCANCODE_RIGHT) ||
         IsKeyPressed(SDL_SCANCODE_DOWN ) ||
         IsKeyPressed(SDL_SCANCODE_LEFT ) ||
-        IsKeyPressed(SDL_SCANCODE_SPACE))
+        IsKeyPressed(SDL_SCANCODE_SPACE) ||
+        IsKeyPressed(SDL_SCANCODE_RETURN))
     {
         gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME * 3; // Initial cooldown is longer...
         gPlayer.update = true;
@@ -357,7 +358,8 @@ INTERNAL void UpdatePlayerStatePlay ()
         IsKeyDown(SDL_SCANCODE_RIGHT) ||
         IsKeyDown(SDL_SCANCODE_DOWN ) ||
         IsKeyDown(SDL_SCANCODE_LEFT ) ||
-        IsKeyDown(SDL_SCANCODE_SPACE))
+        IsKeyDown(SDL_SCANCODE_SPACE) ||
+        IsKeyDown(SDL_SCANCODE_RETURN))
     {
         gPlayer.input_timer -= gApplication.delta_time;
         if (gPlayer.input_timer <= 0.0f)
@@ -469,21 +471,23 @@ INTERNAL void UpdatePlayerStateInventory ()
     bool update = false;
 
     // If any of the player's input keys are pressed we update the simulation.
-    if (IsKeyPressed(SDL_SCANCODE_W)    ||
-        IsKeyPressed(SDL_SCANCODE_S)    ||
-        IsKeyPressed(SDL_SCANCODE_UP)   ||
-        IsKeyPressed(SDL_SCANCODE_DOWN) ||
-        IsKeyPressed(SDL_SCANCODE_SPACE))
+    if (IsKeyPressed(SDL_SCANCODE_W)     ||
+        IsKeyPressed(SDL_SCANCODE_S)     ||
+        IsKeyPressed(SDL_SCANCODE_UP)    ||
+        IsKeyPressed(SDL_SCANCODE_DOWN)  ||
+        IsKeyPressed(SDL_SCANCODE_SPACE) ||
+        IsKeyPressed(SDL_SCANCODE_RETURN))
     {
         gPlayer.input_timer = PLAYER_INPUT_REFRESH_TIME * 3; // Initial cooldown is longer...
         update = true;
     }
     // This system exists so that keys can be held.
-    if (IsKeyDown(SDL_SCANCODE_W)    ||
-        IsKeyDown(SDL_SCANCODE_S)    ||
-        IsKeyDown(SDL_SCANCODE_UP)   ||
-        IsKeyDown(SDL_SCANCODE_DOWN) ||
-        IsKeyDown(SDL_SCANCODE_SPACE))
+    if (IsKeyDown(SDL_SCANCODE_W)     ||
+        IsKeyDown(SDL_SCANCODE_S)     ||
+        IsKeyDown(SDL_SCANCODE_UP)    ||
+        IsKeyDown(SDL_SCANCODE_DOWN)  ||
+        IsKeyDown(SDL_SCANCODE_SPACE) ||
+        IsKeyDown(SDL_SCANCODE_RETURN))
     {
         gPlayer.input_timer -= gApplication.delta_time;
         if (gPlayer.input_timer <= 0.0f)
@@ -573,7 +577,7 @@ INTERNAL void UpdatePlayerStateInventory ()
 
                 gPlayer.inventory.selected_recipe = std::clamp(gPlayer.inventory.selected_recipe, 0, (int)gPlayer.inventory.recipes.size()-1);
 
-                if (IsKeyDown(SDL_SCANCODE_SPACE))
+                if (IsKeyDown(SDL_SCANCODE_SPACE) || IsKeyDown(SDL_SCANCODE_RETURN))
                 {
                     // Only craft if the player doesn't have the maximum stack of this item.
                     std::string item_name = gPlayer.inventory.recipes[gPlayer.inventory.selected_recipe];

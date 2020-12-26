@@ -327,7 +327,7 @@ INTERNAL void Entity_BehaviorPlayer (Entity& e)
 
     // Use Selected Item
 
-    if (IsKeyDown(SDL_SCANCODE_SPACE))
+    if (IsKeyDown(SDL_SCANCODE_SPACE) || IsKeyDown(SDL_SCANCODE_RETURN))
     {
         std::string item_name = PlayerGetEquippedItemName();
         if (!item_name.empty())
