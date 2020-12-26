@@ -169,7 +169,7 @@ chair
 }
 table
 {
-    pretty_name "Chair"
+    pretty_name "Table"
     category wood
     image [ 0 3 ]
     color [ 191 121 88 ]
