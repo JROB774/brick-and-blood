@@ -58,7 +58,7 @@ INTERNAL void SetFullscreen (bool enable)
 
     gWindow.fullscreen = enable;
     SDL_SetWindowFullscreen(gWindow.window, (gWindow.fullscreen) ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-    // @Hack: Shouldn't really be referencing this stuff in engine code.
+    // Hack: Shouldn't really be referencing this stuff in engine code.
     if (!gApplication.editor) SDL_ShowCursor((gWindow.fullscreen) ? SDL_DISABLE : SDL_ENABLE);
 }
 

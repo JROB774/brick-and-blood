@@ -131,7 +131,6 @@ devil
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    # @Incomplete: Drops...
 }
 brute
 {
@@ -145,7 +144,6 @@ brute
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    # @Incomplete: Drops...
 }
 thing
 {
@@ -159,7 +157,6 @@ thing
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    # @Incomplete: Drops...
 }
 knight
 {
@@ -173,7 +170,6 @@ knight
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    # @Incomplete: Drops...
 }
 cultist
 {
@@ -201,7 +197,6 @@ ghost
     color [ 207 198 194 ]
     particle_hit [ blood0_hit blood1_hit ]
     particle_dead [ blood0_dead blood1_dead ]
-    # @Incomplete: Drops...
 }
 spider
 {

@@ -460,8 +460,6 @@ INTERNAL void PlayerCraftItem (std::string item_name)
 
 INTERNAL void UpdatePlayerStateInventory ()
 {
-    // @Incomplete: Need to handle scrolling the inventory and crafting lists when there are too many items...
-
     if (IsKeyPressed(SDL_SCANCODE_TAB))
     {
         CloseInventory();

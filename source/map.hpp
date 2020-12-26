@@ -27,7 +27,6 @@ INTERNAL Tile*              MapGetTileAtPos (int x, int y);             // NULL 
 INTERNAL Entity*            MapGetEntityAtPos (int x, int y);           // NULL if no entity found!
 INTERNAL Entity*            MapGetFirstEntityOfType (std::string type); // NULL if no entity found!
 INTERNAL std::vector<Tile*> MapGetAllLoadedTilesOfType (std::string type);
-INTERNAL int                MapGetNumberOfEntitiesOfFaction (std::string faction);
 
 //
 // SYSTEMS

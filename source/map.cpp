@@ -259,12 +259,6 @@ INTERNAL std::vector<Tile*> MapGetAllLoadedTilesOfType (std::string type)
     return tiles;
 }
 
-INTERNAL int MapGetNumberOfEntitiesOfFaction (std::string faction)
-{
-    // @Incomplete: ...
-    return 0;
-}
-
 INTERNAL void MapRandomlySpawnEntities ()
 {
     Entity* p = MapGetFirstEntityOfType("player");
@@ -339,8 +333,6 @@ INTERNAL void MapRandomlySpawnEntities ()
 
 INTERNAL void InitMap ()
 {
-    // @Incomplete: In the future we want to load a map if there is one present. For now we just always generate.
-
     // Reset all of the map data.
     QuitMap();
 
