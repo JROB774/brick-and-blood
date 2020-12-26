@@ -342,6 +342,31 @@ cobble3
     tools [ pickaxe ]
 }
 
+rubble0
+{
+    pretty_name "Rubble"
+    hits 2
+    image [ 2 4 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ stone 1 2 ] ]
+    tools [ pickaxe ]
+}
+rubble1
+{
+    pretty_name "Rubble"
+    hits 2
+    image [ 3 4 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ stone 2 3 ] ]
+    tools [ pickaxe ]
+}
+
 grave0
 {
     pretty_name "Grave"
@@ -377,4 +402,40 @@ grave2
     particle_break grey_break
     drops [ [ rocks 2 4 ] ]
     tools [ pickaxe ]
+}
+
+bones0
+{
+    pretty_name "Bone Pile"
+    hits 1
+    image [ 4 4 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ bones 1 2 ] ]
+}
+bones1
+{
+    pretty_name "Bone Pile"
+    hits 1
+    image [ 5 4 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ bones 1 2 ] ]
+}
+
+cobweb
+{
+    pretty_name "Cobweb"
+    hits 1
+    image [ 6 4 ]
+    color [ 207 198 184 ]
+    solid true
+    particle_hit grey_hit
+    particle_break grey_break
+    drops [ [ cobweb 1 1 ] ]
+    tools [ sword ]
 }

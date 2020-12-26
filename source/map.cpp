@@ -261,7 +261,8 @@ INTERNAL std::vector<Tile*> MapGetAllLoadedTilesOfType (std::string type)
 
 INTERNAL int MapGetNumberOfEntitiesOfFaction (std::string faction)
 {
-
+    // @Incomplete: ...
+    return 0;
 }
 
 INTERNAL void MapRandomlySpawnEntities ()

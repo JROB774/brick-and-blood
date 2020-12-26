@@ -73,6 +73,21 @@ coal
         ingredients [ [ wood 2 ] ]
     }
 }
+cobweb
+{
+    pretty_name "Cobweb"
+    category nature
+    image [ 2 3 ]
+    color [ 207 198 184 ]
+    place cobweb
+}
+bones
+{
+    pretty_name "Bones"
+    category nature
+    image [ 3 3 ]
+    color [ 207 198 184 ]
+}
 
 planks
 {
