@@ -1,4 +1,4 @@
-# Secret Santa Jam (BRICK AND BLOOD)
+# BRICK AND BLOOD (Secret Santa Jam)
 
 This project was made for 2020's **[Secret Santa Jam](https://itch.io/jam/secret-santa)**.
 It is a simple 2D turn-based top-down survival game (more of a prototype than a fully fleshed out experience).
